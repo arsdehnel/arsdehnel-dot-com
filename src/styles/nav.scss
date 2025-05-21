@@ -1,0 +1,140 @@
+@use 'sass:color';
+@use "./variables";
+
+@function tint($color, $percentage) {
+	@return color.mix(white, $color, $percentage);
+}
+
+nav.nav-main {
+	a {
+		&:hover::before {
+			background: tint(#444, 40%);
+		}
+
+		&::before {
+			background: tint(#444, 70%);
+		}
+
+		// &.home {
+		//     &:hover::before {
+		//         background: tint(variables.$home_color, 40%);
+		//     }
+
+		//     &::before {
+		//         background: tint(variables.$home_color, 70%);
+		//     }
+		// }
+
+		// &.tech {
+		//     &:hover::before {
+		//         background: tint(variables.$tech_color, 40%);
+		//     }
+
+		//     &::before {
+		//         background: tint(variables.$tech_color, 70%);
+		//     }
+		// }
+
+		// &.food {
+		//     &:hover::before {
+		//         background: tint(variables.$food_color, 40%);
+		//     }
+
+		//     &::before {
+		//         background: tint(variables.$food_color, 70%);
+		//     }
+		// }
+
+		// &.wood {
+		//     &:hover::before {
+		//         background: tint(variables.$wood_color, 40%);
+		//     }
+
+		//     &::before {
+		//         background: tint(variables.$wood_color, 70%);
+		//     }
+		// }
+
+		// &.about {
+		//     &:hover::before {
+		//         background: tint(variables.$about_color, 40%);
+		//     }
+
+		//     &::before {
+		//         background: tint(variables.$about_color, 70%);
+		//     }
+		// }
+
+		// &.secured {
+		//     &:hover::before {
+		//         background: tint(variables.$secured_color, 40%);
+		//     }
+
+		//     &::before {
+		//         background: tint(variables.$secured_color, 70%);
+		//     }
+		// }
+	}
+
+	a.active {
+
+		color: #ccc;
+		text-shadow: none;
+
+		&::before {
+			background: #444;			
+		}
+
+		// &.home::before {
+		//     background: variables.$home_color;
+		// }
+
+		// &.tech::before {
+		//     background: variables.$tech_color;
+		// }
+
+		// &.food::before {
+		//     background: variables.$food_color;
+		// }
+
+		// &.wood::before {
+		//     background: variables.$wood_color;
+		// }
+
+		// &.about::before {
+		//     background: variables.$about_color;
+		// }
+
+		// &.secured::before {
+		//     background: variables.$secured_color;
+		// }
+	}
+}
+
+// nav.nav-sub {
+
+//     .home & {
+//         background: variables.$home_color;
+//     }
+
+//     .tech & {
+//         background: variables.$tech_color;
+//     }
+
+//     .food & {
+//         background: variables.$food_color;
+//     }
+
+//     .wood & {
+//         background: variables.$wood_color;
+//     }
+
+//     .about & {
+//         background: variables.$about_color;
+//     }
+
+//     .secured & {
+//         background: variables.$secured_color;
+//     }
+
+// }

@@ -1,0 +1,24 @@
+.posts-wrapper {
+    display: flex;
+    > div {
+        flex: 0 0 25vw;
+        margin: 0 1rem;
+        border: 2px solid #ccc;
+        border-radius: .5rem;
+        min-height: 60vh;
+        a {
+            color: blue;
+            text-decoration: none;
+        }
+
+        h3 {
+            margin: 0;
+            background-color: #eee;
+            padding: 1rem;
+            border-radius: .5rem .5rem 0 0;
+        }
+        > * {
+            padding: 0 1rem;
+        }
+    }
+}

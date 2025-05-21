@@ -1,0 +1,33 @@
+@use 'sass:color';
+@use "./variables";
+
+@function tint($color, $percentage) {
+  @return color.mix(white, $color, $percentage);
+}
+
+// main { 
+//   &.home{
+//     box-shadow: 0 0 8px 2px variables.$home_color;
+//     background: tint( variables.$home_color, 80% );
+//   }
+//   &.tech{
+//     box-shadow: 0 0 8px 2px variables.$tech_color;
+//     background: tint( variables.$tech_color, 80% );
+//   }
+//   &.food{
+//     box-shadow: 0 0 8px 2px variables.$food_color;
+//     background: tint( variables.$food_color, 80% );
+//   }
+//   &.wood{
+//     box-shadow: 0 0 8px 2px variables.$wood_color;
+//     background: tint( variables.$wood_color, 80% );
+//   }
+//   &.about{
+//     box-shadow: 0 0 8px 2px variables.$about_color;
+//     background: tint( variables.$about_color, 80% );
+//   }
+//   &.secured{
+//     box-shadow: 0 0 8px 2px variables.$secured_color;
+//     background: tint( variables.$secured_color, 80% );
+//   }
+// }
