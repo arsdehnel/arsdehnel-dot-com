@@ -6,7 +6,7 @@ import html from "remark-html";
 
 export default function Page({ data, content }) {
 	return <main>
-		<h1>{ data.title }</h1>
+		<h1>{ data?.title }</h1>
 		<article dangerouslySetInnerHTML={{ __html: content }} />
 	</main>
 }
