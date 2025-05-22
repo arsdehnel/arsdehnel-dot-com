@@ -1,10 +1,6 @@
-import path from 'path';
-import fs from 'fs/promises';
-import matter from "gray-matter";
-import { remark } from "remark";
-import html from "remark-html";
+import getAllPosts from '@/utils/get-all-posts';
 
-export default function Page({ posts }) {
+export default function Posts({ posts }) {
 	return (
 		<>
 			<h2>Posts</h2>
@@ -12,7 +8,7 @@ export default function Page({ posts }) {
 				{
 					posts.map( p => {
 						return (
-							<div>
+							<div key={ p.key }>
 								<h3><a href={ p.slug }>{ p.data.title }</a></h3>
 								<div>Date: { p.data.date }</div>
 								<div dangerouslySetInnerHTML={ { __html: p.content } } />
@@ -25,7 +21,7 @@ export default function Page({ posts }) {
 	);
 }
 
-export async function getStaticProps({ params }) {
+export async function getStaticProps() {
 
 	const posts = await getAllPosts();
 
@@ -34,43 +30,4 @@ export async function getStaticProps({ params }) {
 			posts
 		},
 	}
-}
-
-const postsDirectory = path.join(process.cwd(), 'posts')
-
-async function markdownToHtml(markdown) {
-	const result = await remark().use(html).process(markdown);
-	return result.toString();
-}
-
-async function getPostBySlug(slug) {
-
-	const filePath = path.join(postsDirectory, `${slug}.md`);
-	const fileContents = await fs.readFile(filePath, 'utf8')
-	const { data, content } = matter(fileContents);
-
-	return {
-		slug,
-		data,
-		content: await markdownToHtml(content)
-	}
-
-}
-
-async function getAllPosts() {
-
-	const filenames = await fs.readdir(postsDirectory)
-
-	return await Promise.all(filenames.map(async filename => {
-
-		const post = await getPostBySlug(filename.replace('.md', ''))
-
-		return {
-			filename,
-			...post,
-			slug: `/posts/${filename.replace('.md', '')}`,
-		}
-
-	}))
-
 }
