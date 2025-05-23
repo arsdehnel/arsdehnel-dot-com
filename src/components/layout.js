@@ -1,6 +1,6 @@
 import {useRouter} from 'next/router';
-import Head from "next/head";
 import Link from "next/link";
+import { AiFillGithub, AiFillLinkedin, AiFillGitlab } from "react-icons/ai";
 
 export default function Layout({ children }) {
 	const router = useRouter()
@@ -27,7 +27,11 @@ export default function Layout({ children }) {
 				<main>
 					{ children }
 				</main>
-				<footer>&copy; 2025 Adam Dehnel</footer>
+				<footer>
+					<a href="https://github.com/arsdehnel"><AiFillGithub /></a>
+					<a href="https://www.linkedin.com/in/adamdehnel/"><AiFillLinkedin /></a>
+					<a href="https://gitlab.com/arsdehnel"><AiFillGitlab /></a>
+				</footer>
 			</div>
 		</>
 	)
