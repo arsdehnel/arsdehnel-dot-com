@@ -3,12 +3,14 @@ import Link from 'next/link'
 import parsePost from '@/utils/parse-post';
 import getAllPosts from '@/utils/get-all-posts';
 
-export default function Post({ data, content }) {
-	return <main>
-		<div className="breadcrumbs"><Link href="/posts">&lt; Posts</Link></div>
-		<h1>{ data?.title }</h1>
-		<article dangerouslySetInnerHTML={{ __html: content }} />
-	</main>
+export default function Post({ title, content }) {
+	return (
+		<>
+			<div className="breadcrumbs"><Link href="/posts">&lt; Posts</Link></div>
+			<h1>{ title }</h1>
+			<article className="post-content" dangerouslySetInnerHTML={{ __html: content }} />
+		</>
+	)
 }
 
 export async function getStaticPaths() {

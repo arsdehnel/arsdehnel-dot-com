@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import Link from 'next/link'
 
 import getAllPosts from '@/utils/get-all-posts';
@@ -11,9 +12,9 @@ export default function Posts({ posts }) {
 					posts.map( p => {
 						return (
 							<div key={ p.key }>
-								<h3><Link href={ p.slug }>{ p.data.title }</Link></h3>
-								<div>Date: { p.data.date }</div>
-								<div dangerouslySetInnerHTML={ { __html: p.content } } />
+								<h3><Link href={ p.slug }>{ p.title }</Link></h3>
+								<div>Date: { p.date }</div>
+								<p>{ p.excerpt }</p>
 							</div>
 						)
 					}) 

@@ -1,6 +1,7 @@
 ---
 title: Dining Table Refinish
-excerpt: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Praesent elementum facilisis leo vel fringilla est ullamcorper eget. At imperdiet dui accumsan sit amet nulla facilities morbi tempus."
+excerpt: >-
+  A long overdue project to take our generations-old dining room table and prepare it for decades more use.
 date: '2025-05-21'
 categories: 
   - wood
@@ -14,7 +15,7 @@ Our dining table is the same one that my grandparents had at their house when I 
 
 While I hoped the stripping and refinishing process was going to be pretty quick I've done enough projects to know estimates are a joke and it inevitably would take two or three times as long as I planned.  Since this is our only proper dining space and we use it for breakfast pretty much every day I figured I should whip up a quick temporary table.  Perhaps I overdid it but I just figured if I made a temporary table then the project would go quickly and if I threw a board on some sawhorses it would end up taking months.  
 
-![](temporary-table.jpg)
+![](temporary-table.jpg "Temporary Table")
 
 ## Breaking it Down
 

@@ -3,18 +3,33 @@ import matter from "gray-matter";
 import { remark } from "remark";
 import html from "remark-html";
 
+const imgParseRegex = new RegExp( /!\[(?<altText>.*)\]\s*\((?<filename>.*?)(?=\"|\))(?<title>\".*\")?\)/g );
+
 export default async function parsePost(filePath) {
 
+    const pathChunks = filePath.split( '/' ).slice( -2, -1 );
+    const slugPartial = pathChunks[ 0 ];
     const fileContents = await fs.readFile(filePath, 'utf8')
     const { data, content } = matter(fileContents);
 
-    // coverImage: "/assets/blog/dynamic-routing/cover.jpg"
-    // ogImage:
-    //   url: "/assets/blog/dynamic-routing/cover.jpg"
+    const matches = content.matchAll( imgParseRegex );
+
+    let postContent = content;
+    for( const match of matches ) {
+        const [ originalRef, altText, originalFilename, title ] = match;
+        const filename = `/posts/${ slugPartial }/${ originalFilename }`;
+        const updTitle = title ? ( title.charAt( 0 ) === "\"" ? title.substring( 1, title.length - 2 ) : title ) : '';
+        const updRef = `![${ altText }](${ filename } "${ updTitle }")`
+        postContent = postContent.replace( originalRef, updRef )
+    }
 
     return {
-        data,
-        content: await markdownToHtml(content)
+        ...data,
+        coverImage: `/posts/${ slugPartial }/thumbnail.jpg`,
+        ogImage: {
+            url: `/posts/${ slugPartial }/thumbnail.jpg`
+        },
+        content: await markdownToHtml(postContent)
     }
 
 }
