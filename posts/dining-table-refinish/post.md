@@ -22,7 +22,6 @@ While I hoped the stripping and refinishing process was going to be pretty quick
 Started with just pulling it all apart taking off the apron and hardware.
 
 ![](underside-half-stripped.jpg)
-
 ![](underside-no-hardware.jpg)
 
 The apron had some very dated decorative trim on it that had accumulated a lot of grime over the years and also had started cracking off.  Rather than trying to patch it and strip it I decided to just remove it entirely.  Cleans the lines up a bit and simplified the refinishing process quite a bit.  
