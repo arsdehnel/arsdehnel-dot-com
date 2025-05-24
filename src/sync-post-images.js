@@ -11,10 +11,9 @@ console.log( '\n👉 Syncing post images to the public directory so they actuall
 for ( const srcPath of postImages ) {
 
     const relativePath = srcPath.replace( srcDir, '' );
-
-    console.log( `  📁 Processing ${ relativePath }` );
-
     const destPath = srcPath.replace( srcDir, destDir );
+
+    console.log( `  📁 Processing ${ relativePath } from ${ srcPath } to ${ destPath }` );
 
     await fs.mkdir( path.dirname( destPath ), { recursive: true } );
     await fs.copyFile( srcPath, destPath );
