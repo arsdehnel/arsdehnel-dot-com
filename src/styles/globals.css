@@ -26,13 +26,18 @@ header {
     height: 30px;
     .header-box {
         position: absolute;
-        top: 1rem;
+        top: .25rem;
         right: 0;
-        width: 40%;
+        width: 90%;
         color: #444;
         padding: 8px 0 18px 8px;
         border-radius: 6px;
         margin: 0;
+
+        @media (min-width: 42em) {
+            top: 1rem;
+            width: 40%;
+        }
     
         &::before {
             content: '';
