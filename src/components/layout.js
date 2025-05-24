@@ -10,7 +10,7 @@ export default function Layout({ children }) {
 				<header>
 					<div className="header-box">
 						<h1>Adam Dehnel</h1>
-						<div>father | nerd | cook | woodworker</div>
+						<div className="tagline">father | nerd | cook | woodworker</div>
 					</div>
 				</header>
 				<nav className="nav-main">
