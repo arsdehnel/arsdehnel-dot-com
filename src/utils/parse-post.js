@@ -17,7 +17,7 @@ export default async function parsePost(filePath) {
     let postContent = content;
     for( const match of matches ) {
         const [ originalRef, altText, originalFilename, title ] = match;
-        const filename = `/posts/${ slugPartial }/${ originalFilename }`;
+        const filename = `${ process.env.CI ? "/arsdehnel-dot-com" : "" }/posts/${ slugPartial }/${ originalFilename }`;
         const updTitle = title ? ( title.charAt( 0 ) === "\"" ? title.substring( 1, title.length - 2 ) : title ) : '';
         const updRef = `![${ altText }](${ filename } "${ updTitle }")`
         postContent = postContent.replace( originalRef, updRef )
