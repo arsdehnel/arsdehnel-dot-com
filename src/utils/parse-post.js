@@ -1,7 +1,7 @@
 import fs from 'fs/promises';
 import matter from "gray-matter";
-import { remark } from "remark";
-import html from "remark-html";
+
+import markdownToHtml from './markdown-to-html';
 
 const imgParseRegex = new RegExp( /!\[(?<altText>.*)\]\s*\((?<filename>.*?)(?=\"|\))(?<title>\".*\")?\)/g );
 
@@ -32,9 +32,4 @@ export default async function parsePost(filePath) {
         content: await markdownToHtml(postContent)
     }
 
-}
-
-async function markdownToHtml(markdown) {
-    const result = await remark().use(html).process(markdown);
-    return result.toString();
 }
