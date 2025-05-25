@@ -23,9 +23,7 @@ export async function getStaticPaths() {
 
 export async function getStaticProps({ params }) {
 
-	const postPath = path.join( postsDirectory, params.slug, 'post.md' )
-	
-	const post = await parsePost(postPath)
+	const post = await parsePost(params.slug)
 
 	// By returning { props: { posts } }, the Post component
 	// will receive `posts` as a prop at build time
@@ -35,5 +33,3 @@ export async function getStaticProps({ params }) {
 		},
 	}
 }
-
-const postsDirectory = path.join(process.cwd(), 'posts')

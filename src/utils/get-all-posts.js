@@ -8,27 +8,26 @@ const postsDirectory = path.join(process.cwd(), 'posts')
 export default async function getAllPosts() {
 
     const postsFiles = await fs.readdir(postsDirectory)
-    const postEntries = await Promise.all( postsFiles.map( async filename => {
-        const stats = await fs.lstat( path.join( postsDirectory, filename ) );
+    let postEntries = await Promise.all( postsFiles.map( async dirEntry => {
+        const stats = await fs.lstat( path.join( postsDirectory, dirEntry ) );
         return {
-            filename,
+            dirEntry,
             isDir: stats.isDirectory()
         }
     }))
 
-    const postDirs = postEntries.filter( e => e.isDir ).map( e => e.filename );
+    postEntries = postEntries.filter( p => p.isDir || p.dirEntry.endsWith( '.md' ) )
 
-    return await Promise.all(postDirs.map(async dir => {
+    return await Promise.all(postEntries.map(async ( { dirEntry, isDir } ) => {
 
-        const postPath = path.join( postsDirectory, dir, 'post.md' )
-
-        const post = await parsePost(postPath)
+        const slugPartial = isDir ? dirEntry : dirEntry.replace( '.md', '' );
+        const post = await parsePost(slugPartial)
 
         return {
-            key: dir,
-            filename: dir,
+            key: dirEntry,
+            filename: dirEntry,
             ...post,
-            slug: `/posts/${dir}`,
+            slug: `/posts/${slugPartial}`,
         }
 
     }))

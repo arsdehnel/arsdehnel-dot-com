@@ -1,15 +1,30 @@
+import path from 'path';
 import fs from 'fs/promises';
 import matter from "gray-matter";
 
 import markdownToHtml from './markdown-to-html';
 
+const postsDirectory = path.join(process.cwd(), 'posts')
 const imgParseRegex = new RegExp( /!\[(?<altText>.*)\]\s*\((?<filename>.*?)(?=\"|\))(?<title>\".*\")?\)/g );
 
-export default async function parsePost(filePath) {
+export default async function parsePost( slug ) {
 
-    const pathChunks = filePath.split( '/' ).slice( -2, -1 );
+    let isDir = true;
+    try {
+        await fs.access( path.join( postsDirectory, slug ) );
+    } catch( err ) {
+        isDir = false;
+    }
+    
+    // const postPath = path.join( postsDirectory, params.slug, 'post.md' )
+    let postPath = path.join( postsDirectory, `${ slug }.md` )
+    if( isDir ) {
+        postPath = path.join( postsDirectory, slug, 'post.md' )
+    }
+
+    const pathChunks = postPath.split( '/' ).slice( -2, -1 );
     const slugPartial = pathChunks[ 0 ];
-    const fileContents = await fs.readFile(filePath, 'utf8')
+    const fileContents = await fs.readFile(postPath, 'utf8')
     const { data, content } = matter(fileContents);
 
     const matches = content.matchAll( imgParseRegex );
