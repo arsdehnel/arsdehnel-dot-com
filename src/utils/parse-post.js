@@ -2,7 +2,7 @@ import path from 'path';
 import fs from 'fs/promises';
 import matter from "gray-matter";
 
-import markdownToHtml from './markdown-to-html';
+import markdownToHtml from './markdown-to-html.js';
 
 const postsDirectory = path.join(process.cwd(), 'posts')
 const imgParseRegex = new RegExp( /!\[(?<altText>.*)\]\s*\((?<filename>.*?)(?=\"|\))(?<title>\".*\")?\)/g );
@@ -27,14 +27,21 @@ export default async function parsePost( slug ) {
     const fileContents = await fs.readFile(postPath, 'utf8')
     const { data, content } = matter(fileContents);
 
-    const matches = content.matchAll( imgParseRegex );
+    const imageRefs = content.matchAll( imgParseRegex );
+    const images = [];
 
     let postContent = content;
-    for( const match of matches ) {
-        const [ originalRef, altText, originalFilename, title ] = match;
-        const filename = `${ process.env.CI ? "/arsdehnel-dot-com" : "" }/posts/${ slugPartial }/${ originalFilename }`;
+    for( const imageRef of imageRefs ) {
+        const [ originalRef, altText, srcFilename, title ] = imageRef;
         const updTitle = title ? ( title.charAt( 0 ) === "\"" ? title.substring( 1, title.length - 2 ) : title ) : '';
-        const updRef = `![${ altText }](${ filename } "${ updTitle }")`
+        images.push( {
+            ref: originalRef, 
+            altText, 
+            filename: srcFilename.trim(), 
+            title: updTitle
+        })
+        const servedPath = `${ process.env.CI ? "/arsdehnel-dot-com" : "" }/posts/${ slugPartial }/${ srcFilename }`;
+        const updRef = `![${ altText }](${ servedPath } "${ updTitle }")`
         postContent = postContent.replace( originalRef, updRef )
     }
 
@@ -44,6 +51,7 @@ export default async function parsePost( slug ) {
         ogImage: {
             url: `/posts/${ slugPartial }/thumbnail.jpg`
         },
+        images,
         content: await markdownToHtml(postContent)
     }
 

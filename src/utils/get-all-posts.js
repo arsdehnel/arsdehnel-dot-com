@@ -1,7 +1,7 @@
 import path from 'path';
 import fs from 'fs/promises';
 
-import parsePost from '@/utils/parse-post';
+import parsePost from './parse-post.js';
 
 const postsDirectory = path.join(process.cwd(), 'posts')
 
