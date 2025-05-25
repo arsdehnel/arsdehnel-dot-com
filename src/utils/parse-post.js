@@ -9,19 +9,14 @@ const imgParseRegex = new RegExp( /!\[(?<altText>.*)\]\s*\((?<filename>.*?)(?=\"
 
 export default async function parsePost( slug ) {
 
-    let isDir = true;
+    let postPath = path.join( postsDirectory, `${ slug }.md` ) 
     try {
         await fs.access( path.join( postsDirectory, slug ) );
+        postPath = path.join( postsDirectory, slug, 'post.md' )
     } catch( err ) {
-        isDir = false;
+        // nothing, just need to use the try/catch to determine if the post is in a directory or just the root posts folder as a markdown file
     }
     
-    // const postPath = path.join( postsDirectory, params.slug, 'post.md' )
-    let postPath = path.join( postsDirectory, `${ slug }.md` )
-    if( isDir ) {
-        postPath = path.join( postsDirectory, slug, 'post.md' )
-    }
-
     const pathChunks = postPath.split( '/' ).slice( -2, -1 );
     const slugPartial = pathChunks[ 0 ];
     const fileContents = await fs.readFile(postPath, 'utf8')
