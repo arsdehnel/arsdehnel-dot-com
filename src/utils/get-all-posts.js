@@ -8,17 +8,16 @@ const postsDirectory = path.join(process.cwd(), 'posts')
 export default async function getAllPosts() {
 
     const postsFiles = await fs.readdir(postsDirectory)
-    let postEntries = await Promise.all( postsFiles.map( async dirEntry => {
+
+    const postEntries = await Promise.all( postsFiles.map( async dirEntry => { 
+
         const stats = await fs.lstat( path.join( postsDirectory, dirEntry ) );
-        return {
-            dirEntry,
-            isDir: stats.isDirectory()
+        const isDir = stats.isDirectory();
+
+        // catching things like .DS_store and other non-entry-files
+        if( !isDir && !dirEntry.endsWith( '.md' ) ) {
+            return;
         }
-    }))
-
-    postEntries = postEntries.filter( p => p.isDir || p.dirEntry.endsWith( '.md' ) )
-
-    return await Promise.all(postEntries.map(async ( { dirEntry, isDir } ) => {
 
         const slugPartial = isDir ? dirEntry : dirEntry.replace( '.md', '' );
         const post = await parsePost(slugPartial)
@@ -30,6 +29,9 @@ export default async function getAllPosts() {
             slug: `/posts/${slugPartial}`,
         }
 
-    }))
+    } ) )
+
+    // return any defined entries sorted by date to have newest first although right now we're comparing dates as strings which could break later
+    return postEntries.filter( Boolean ).sort( ( a, b ) => b.date.localeCompare( a.date ) );
 
 }
