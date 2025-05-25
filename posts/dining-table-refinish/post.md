@@ -39,7 +39,6 @@ Once I had it all broken down, the apron details removed, and cracks patched it 
 As things progressed I also used my [Rockler Circle Cutting Jig](https://www.rockler.com/rockler-circle-cutting-jig) to remove the dated [ogee profile](https://en.wikipedia.org/wiki/Ogee) on the ends and just ripped it off with a circular saw for the leaves.  Then it was just sanding, sanding, sanding!
 
 ![](midway-progress.jpg)
-
 ![](sanding-complete.jpg)
 
 ## Finished Up
@@ -51,5 +50,4 @@ After the sanding was finally done it was time for finishing it up.  After some 
 Once that was all applied, sanded, and dried it was time to get it put back into the kitchen!  Looks pretty great I think although now I want to redo the floors as it kind of blends in a bit too much.  Oh well, that's for another day!
 
 ![](finished-top-view.jpg)
-
 ![](complete-and-reinstalled.jpg)
