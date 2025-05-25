@@ -1,9 +1,7 @@
 import chalkTemplate from 'chalk-template';
 import getAllPosts from './utils/get-all-posts.js';
 import getAltText from './utils/get-alt-text.js';
-import saveAltTexts from './utils/save-alt-texts.js';
-
-import imgAltTexts from "./image-alt-texts.json" with { type: "json" };
+import saveAltText from './utils/save-alt-text.js';
 
 const posts = await getAllPosts();
 
@@ -17,19 +15,17 @@ for( const post of posts ) {
 
         const imgPath = `${ post.slug.substring( 1 ) }/${ img.filename }`
 
-        if( imgAltTexts[ imgPath ] ) {
+        if( img.altText ) {
             console.log( chalkTemplate`    ⏩ Already have alt text` );
             continue;
         }
 
         const altText = await getAltText( imgPath );
 
-        imgAltTexts[ imgPath ] = altText;
+        await saveAltText( imgPath, altText );
 
         console.log( chalkTemplate`    ✅ Generated alt text {blue ${ altText }}` );
         
     }
 
 }
-
-await saveAltTexts( imgAltTexts );

@@ -3,6 +3,7 @@ import fs from 'fs/promises';
 import matter from "gray-matter";
 
 import markdownToHtml from './markdown-to-html.js';
+import imgAltTexts from "../image-alt-texts.json" with { type: "json" };
 
 const postsDirectory = path.join(process.cwd(), 'posts')
 const imgParseRegex = new RegExp( /!\[(?<altText>.*)\]\s*\((?<filename>.*?)(?=\"|\))(?<title>\".*\")?\)/g );
@@ -27,16 +28,19 @@ export default async function parsePost( slug ) {
 
     let postContent = content;
     for( const imageRef of imageRefs ) {
-        const [ originalRef, altText, srcFilename, title ] = imageRef;
+        let [ originalRef, altText, srcFilename, title ] = imageRef;
+        srcFilename = srcFilename.trim();
         const updTitle = title ? ( title.charAt( 0 ) === "\"" ? title.substring( 1, title.length - 2 ) : title ) : '';
+        const imgPath = `posts/${ slugPartial }/${ srcFilename }`;
+        const publishAltText = altText ? altText : imgAltTexts[ imgPath ];
         images.push( {
             ref: originalRef, 
-            altText, 
-            filename: srcFilename.trim(), 
+            altText: publishAltText, 
+            filename: srcFilename, 
             title: updTitle
         })
-        const servedPath = `${ process.env.CI ? "/arsdehnel-dot-com" : "" }/posts/${ slugPartial }/${ srcFilename }`;
-        const updRef = `![${ altText }](${ servedPath } "${ updTitle }")`
+        const servedPath = `${ process.env.CI ? "/arsdehnel-dot-com" : "/" }${ imgPath }`;
+        const updRef = `![${ publishAltText }](${ servedPath } "${ updTitle }")`
         postContent = postContent.replace( originalRef, updRef )
     }
 
