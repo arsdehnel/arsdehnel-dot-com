@@ -1,6 +1,4 @@
-import Image from 'next/image'
-import Link from 'next/link'
-
+import PostCard from '@/components/post-card';
 import getAllPosts from '@/utils/get-all-posts';
 
 export default function Posts({ posts }) {
@@ -9,15 +7,7 @@ export default function Posts({ posts }) {
 			<h2>Posts</h2>
 			<div className="posts-wrapper">
 				{
-					posts.map( p => {
-						return (
-							<div key={ p.key }>
-								<h3><Link href={ p.slug }>{ p.title }</Link></h3>
-								<div>Date: { p.date }</div>
-								<p>{ p.excerpt }</p>
-							</div>
-						)
-					}) 
+					posts.map( p => <PostCard key={ p.key } { ...p } /> ) 
 				}
 			</div>
 		</>
