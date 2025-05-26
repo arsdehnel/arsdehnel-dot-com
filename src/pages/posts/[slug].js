@@ -1,13 +1,14 @@
-import path from 'path';
 import Link from 'next/link'
 import parsePost from '@/utils/parse-post';
 import getAllPosts from '@/utils/get-all-posts';
+import Categories from '@/components/categories';
 
-export default function Post({ title, content }) {
+export default function Post({ title, categories, content }) {
 	return (
 		<>
 			<div className="breadcrumbs"><Link href="/posts">&lt; Posts</Link></div>
 			<h1>{ title }</h1>
+			<Categories categories={ categories } />
 			<article className="post-content" dangerouslySetInnerHTML={{ __html: content }} />
 		</>
 	)

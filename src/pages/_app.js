@@ -1,6 +1,8 @@
 import Head from 'next/head'
 
 import "@/styles/globals.css";
+
+import "@/styles/categories.scss"
 import "@/styles/home.scss";
 import "@/styles/main.scss";
 import "@/styles/nav.scss";
