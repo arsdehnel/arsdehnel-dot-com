@@ -1,14 +1,16 @@
 .posts-wrapper {
-    
+
     @media (min-width: 60em) {
         display: flex;
+        max-width: 1200px;
+        margin: 0 auto;
         > div {
             min-height: 60vh;
         }
     }
 
     > div {
-        flex: 1 0 25vw;
+        flex: 1 0 200px;
         margin: 0 1rem 1rem;
         border: 2px solid #ccc;
         border-radius: .5rem;
@@ -31,6 +33,8 @@
 }
 
 .post-content {
+    max-width: 1200px;
+    margin: 0 auto;
     img {
         width: 400px;
     }

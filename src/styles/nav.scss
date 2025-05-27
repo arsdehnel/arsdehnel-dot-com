@@ -5,7 +5,62 @@
 	@return color.mix(white, $color, $percentage);
 }
 
+/* ---------------------------------------------
+     originated from http://lea.verou.me/2013/10/slanted-tabs-with-css-3d-transforms/
+--------------------------------------------- */
 nav.nav-main {
+    margin: 3rem auto 0;
+    display: flex;
+
+    a {
+        position: relative;
+        margin: 0 .5rem 0 0;
+        padding: 1.5em 3em 1em 1em;
+        font-family: "Montserrat Subrayada", arial, sans-serif;
+        color: #444;
+        text-decoration: none;
+
+        &::before {
+            transition: all .2s linear;
+        }
+
+        &::before {
+            content: ''; 
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: .5em;
+            left: 0;
+            z-index: -1;
+            border-bottom: none;
+            border-radius: 10px 10px 0 0;
+            box-shadow: 0 2px hsla(0, 0%, 100%, .5) inset;
+            transform: translateZ(0) perspective(5px) rotateX(2deg);
+            transform-origin: bottom left;
+        }
+    }
+
+    a::before {
+        border: .1em solid #aaa;
+    }
+
+    a.selected {
+        z-index: 2;
+        color: white;
+        text-shadow: 0 0 4px #555;
+
+        &::before {
+            margin-bottom: -1px;
+            border-top-width: 1px;
+            border-bottom: 0;
+        }
+    }
+}
+
+nav.nav-main {
+	max-width: 1200px;
+	width: 100%;
+
 	a {
 		&:hover::before {
 			background: tint(#444, 40%);
@@ -14,66 +69,6 @@ nav.nav-main {
 		&::before {
 			background: tint(#444, 70%);
 		}
-
-		// &.home {
-		//     &:hover::before {
-		//         background: tint(variables.$home_color, 40%);
-		//     }
-
-		//     &::before {
-		//         background: tint(variables.$home_color, 70%);
-		//     }
-		// }
-
-		// &.tech {
-		//     &:hover::before {
-		//         background: tint(variables.$tech_color, 40%);
-		//     }
-
-		//     &::before {
-		//         background: tint(variables.$tech_color, 70%);
-		//     }
-		// }
-
-		// &.food {
-		//     &:hover::before {
-		//         background: tint(variables.$food_color, 40%);
-		//     }
-
-		//     &::before {
-		//         background: tint(variables.$food_color, 70%);
-		//     }
-		// }
-
-		// &.wood {
-		//     &:hover::before {
-		//         background: tint(variables.$wood_color, 40%);
-		//     }
-
-		//     &::before {
-		//         background: tint(variables.$wood_color, 70%);
-		//     }
-		// }
-
-		// &.about {
-		//     &:hover::before {
-		//         background: tint(variables.$about_color, 40%);
-		//     }
-
-		//     &::before {
-		//         background: tint(variables.$about_color, 70%);
-		//     }
-		// }
-
-		// &.secured {
-		//     &:hover::before {
-		//         background: tint(variables.$secured_color, 40%);
-		//     }
-
-		//     &::before {
-		//         background: tint(variables.$secured_color, 70%);
-		//     }
-		// }
 	}
 
 	a.active {
@@ -84,57 +79,5 @@ nav.nav-main {
 		&::before {
 			background: #444;			
 		}
-
-		// &.home::before {
-		//     background: variables.$home_color;
-		// }
-
-		// &.tech::before {
-		//     background: variables.$tech_color;
-		// }
-
-		// &.food::before {
-		//     background: variables.$food_color;
-		// }
-
-		// &.wood::before {
-		//     background: variables.$wood_color;
-		// }
-
-		// &.about::before {
-		//     background: variables.$about_color;
-		// }
-
-		// &.secured::before {
-		//     background: variables.$secured_color;
-		// }
 	}
 }
-
-// nav.nav-sub {
-
-//     .home & {
-//         background: variables.$home_color;
-//     }
-
-//     .tech & {
-//         background: variables.$tech_color;
-//     }
-
-//     .food & {
-//         background: variables.$food_color;
-//     }
-
-//     .wood & {
-//         background: variables.$wood_color;
-//     }
-
-//     .about & {
-//         background: variables.$about_color;
-//     }
-
-//     .secured & {
-//         background: variables.$secured_color;
-//     }
-
-// }

@@ -7,6 +7,8 @@ import "@/styles/home.scss";
 import "@/styles/main.scss";
 import "@/styles/nav.scss";
 import "@/styles/posts.scss";
+import "@/styles/typography.scss";
+
 
 import Layout from '../components/layout'
 
