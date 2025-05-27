@@ -25,7 +25,9 @@ export default function Layout({ children }) {
 					</Link>
 				</nav>
 				<main>
-					{ children }
+					<div className="content-wrapper">
+						{ children }
+					</div>
 				</main>
 				<footer>
 					<a href="https://github.com/arsdehnel"><AiFillGithub /></a>

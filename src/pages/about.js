@@ -41,7 +41,7 @@ Started early. Cooking for groups in college.
 
 Grandpa. Craig. College Desk. Kitchen.`
 
-export default function Food({ html }) {
+export default function About({ html }) {
 	
 	return (
 		<>

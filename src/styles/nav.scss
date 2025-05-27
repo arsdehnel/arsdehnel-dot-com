@@ -11,6 +11,8 @@
 nav.nav-main {
     margin: 3rem auto 0;
     display: flex;
+	max-width: 1200px;
+	width: 100%;
 
     a {
         position: relative;
@@ -22,9 +24,8 @@ nav.nav-main {
 
         &::before {
             transition: all .2s linear;
-        }
-
-        &::before {
+            border: .1em solid #aaa;
+            background: tint(#444, 70%);
             content: ''; 
             position: absolute;
             top: 0;
@@ -38,46 +39,20 @@ nav.nav-main {
             transform: translateZ(0) perspective(5px) rotateX(2deg);
             transform-origin: bottom left;
         }
-    }
 
-    a::before {
-        border: .1em solid #aaa;
-    }
-
-    a.selected {
-        z-index: 2;
-        color: white;
-        text-shadow: 0 0 4px #555;
-
-        &::before {
-            margin-bottom: -1px;
-            border-top-width: 1px;
-            border-bottom: 0;
-        }
-    }
-}
-
-nav.nav-main {
-	max-width: 1200px;
-	width: 100%;
-
-	a {
-		&:hover::before {
+        &:hover::before {
 			background: tint(#444, 40%);
 		}
 
-		&::before {
-			background: tint(#444, 70%);
-		}
-	}
+        &.active {
 
-	a.active {
+            color: #ccc;
+            text-shadow: none;
+    
+            &::before {
+                background: #444;			
+            }
+        }
 
-		color: #ccc;
-		text-shadow: none;
-
-		&::before {
-			background: #444;			
-		}
-	}
+    }
 }
