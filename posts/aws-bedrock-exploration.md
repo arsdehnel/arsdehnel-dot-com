@@ -5,6 +5,7 @@ excerpt: >-
 date: '2025-05-18'
 categories: 
   - cloud tech
+  - development
 ---
 
 I've never had a situation at work that's driven me to get into Bedrock but it's long overdue.  I created a [quick repo](https://github.com/arsdehnel/bedrock-exploration) to play around with it, capture some scripts, and see where it led.  It was my first real development calling models in a way that would be used for anything semi-real.  I'd done some scripts and `curl` commands to call chatGPT and all that but this had a bit more purpose behind it. 
