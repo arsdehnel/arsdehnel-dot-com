@@ -1,17 +1,25 @@
 .posts-wrapper {
 
-    @media (min-width: 60em) {
+    @media screen and (min-width: 40em) {
         display: flex;
-        > div {
-            min-height: 60vh;
+        flex-wrap: wrap;
+        justify-content: space-between;
+     
+        .post-card {
+            flex: 0 1 calc(50% - 1em);
         }
     }
 
-    > div {
-        flex: 1 0 200px;
-        margin: 0 1rem 1rem;
+    @media screen and (min-width: 60em) {
+        .post-card {
+            flex: 0 1 calc(25% - 1em);
+        }
+    }
+
+    .post-card {
         border: 2px solid #ccc;
         border-radius: .5rem;
+        margin-bottom: 1rem;
         
         a {
             color: blue;
