@@ -39,7 +39,7 @@ export default async function parsePost( slug ) {
             filename: srcFilename, 
             title: updTitle
         })
-        const servedPath = `${ process.env.CI ? "/arsdehnel-dot-com/" : "/" }${ imgPath }`;
+        const servedPath = `/${ imgPath }`;
         const updRef = `![${ publishAltText }](${ servedPath } "${ updTitle }")`
         postContent = postContent.replace( originalRef, updRef )
     }
