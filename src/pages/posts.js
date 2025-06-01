@@ -1,16 +1,23 @@
-import PostCard from '@/components/post-card';
-import getAllPosts from '@/utils/get-all-posts';
+import { useRouter } from 'next/router'
 
-export default function Posts({ posts }) {
+import Categories from '@/components/categories';
+import getAllPosts from '@/utils/get-all-posts';
+import PostListing from '@/components/post-listing';
+
+export default function Posts({ posts, categories }) {
+
+	const router = useRouter()
+	
+	const filters = {};
+	Object.keys( router.query ).forEach( key => {
+		filters[ key ] = router.query[ key ].split( ',' );
+	})
 
 	return (
 		<>
 			<h2>Posts</h2>
-			<div className="posts-wrapper">
-				{
-					posts.map( p => <PostCard key={ p.slugPartial } { ...p } /> ) 
-				}
-			</div>
+			<Categories categories={ categories } />
+			<PostListing posts={ posts } filters={ filters } />
 		</>
 	);
 }
@@ -18,10 +25,13 @@ export default function Posts({ posts }) {
 export async function getStaticProps() {
 
 	const posts = await getAllPosts();
+	const categories = Array.from( new Set( posts.flatMap( p => p.categories ) ) ).sort();
 
 	return {
 		props: {
-			posts
+			posts,
+			categories
 		},
 	}
+
 }
