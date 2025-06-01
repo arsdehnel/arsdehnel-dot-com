@@ -44,9 +44,19 @@ export default async function parsePost( slug ) {
         postContent = postContent.replace( originalRef, updRef )
     }
 
+    if( slugPartial === 'dining-table-refinish' ) {
+        const coverImgPath = `posts/${ slugPartial }/thumbnail.jpg` 
+        data.coverImage = `/${ coverImgPath }`
+        data.coverImageAltText = imgAltTexts[ coverImgPath ]
+        images.push( {
+            altText: imgAltTexts[ coverImgPath ], 
+            filename: 'thumbnail.jpg', 
+            title: 'Thumbnail'
+        })
+    }
+
     return {
         ...data,
-        coverImage: `/posts/${ slugPartial }/thumbnail.jpg`,
         ogImage: {
             url: `/posts/${ slugPartial }/thumbnail.jpg`
         },

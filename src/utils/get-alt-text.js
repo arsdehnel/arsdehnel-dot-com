@@ -8,7 +8,11 @@ let client;
 
 export default async function getAltText( imgPath ) {
 
-    const base64Img = await readFile( resolve( import.meta.dirname, '../..', imgPath ), "base64" );
+    const fullImgPath = resolve( import.meta.dirname, '../..', imgPath );
+
+    console.log( chalkTemplate`    📂 Reading {cyan ${ fullImgPath }} into a base64 string` );
+
+    const base64Img = await readFile( fullImgPath, "base64" );
 
     if( !client ) {
         client = new BedrockRuntimeClient({

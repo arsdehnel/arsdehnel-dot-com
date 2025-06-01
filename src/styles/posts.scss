@@ -26,6 +26,17 @@
             text-decoration: none;
         }
 
+        img {
+            float: right;
+            height: 128px;
+            width: 128px;
+            margin: 0 1rem 0 1rem;
+        }
+
+        .post-content {
+            padding: 1rem;
+        }
+
         h3 {
             margin: 0;
             background-color: #eee;

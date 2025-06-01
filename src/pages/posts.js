@@ -2,6 +2,7 @@ import PostCard from '@/components/post-card';
 import getAllPosts from '@/utils/get-all-posts';
 
 export default function Posts({ posts }) {
+
 	return (
 		<>
 			<h2>Posts</h2>
