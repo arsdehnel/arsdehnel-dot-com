@@ -14,19 +14,13 @@
         margin-right: .5rem;
         background-color: #eee;
     }
-    .category-icon,
-    .category-label {
-        padding: .25rem .5rem;
-    }
     .category-icon {
-        // display: inline-block;
         background-color: slategrey;
         fill: white;
         color: white;
-        // padding: 0 .5em;
-        // border-radius: .5rem 0 0 .5rem;
+        padding: .3rem .5rem 0 .6rem;
     }
     .category-label {
-        padding-right: .75rem;
+        padding: .25rem .75rem .25rem .5rem;
     }
 }

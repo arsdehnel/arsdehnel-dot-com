@@ -19,7 +19,7 @@ export default function Categories( { categories } ) {
                 categories.map( c => {
                     const Icon = iconMap[ c ] || BiBlock;
                     return (
-                        <div className="category-tag">
+                        <div className="category-tag" key={ c }>
                             <span className="category-icon"><Icon /></span>
                             <span className="category-label">{ c }</span>
                         </div>
