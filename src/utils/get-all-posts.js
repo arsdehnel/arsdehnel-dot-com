@@ -23,7 +23,7 @@ export default async function getAllPosts() {
         const post = await parsePost(slugPartial)
 
         return {
-            key: dirEntry,
+            slugPartial,
             filename: dirEntry,
             ...post,
             slug: `/posts/${slugPartial}`,

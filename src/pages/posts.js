@@ -8,7 +8,7 @@ export default function Posts({ posts }) {
 			<h2>Posts</h2>
 			<div className="posts-wrapper">
 				{
-					posts.map( p => <PostCard key={ p.key } { ...p } /> ) 
+					posts.map( p => <PostCard key={ p.slugPartial } { ...p } /> ) 
 				}
 			</div>
 		</>
