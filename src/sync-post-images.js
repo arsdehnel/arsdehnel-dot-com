@@ -5,7 +5,7 @@ import path from 'path';
 
 const srcDir = path.resolve( import.meta.dirname, '../posts' )
 const destDir = path.resolve( import.meta.dirname, '../public/posts' )
-const postImages = await glob( `${ srcDir }/**/*.jpg` );
+const postImages = await glob( `${ srcDir }/**/*.{jpg,png}` );
 
 console.log( '\n👉 Syncing post images to the public directory so they actually end up on the site' );
 

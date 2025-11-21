@@ -10,14 +10,7 @@ const imgParseRegex = new RegExp( /!\[(?<altText>.*)\]\s*\((?<filename>.*?)(?=\"
 
 export default async function parsePost( slug ) {
 
-    let postPath = path.join( postsDirectory, `${ slug }.md` ) 
-    try {
-        await fs.access( path.join( postsDirectory, slug ) );
-        postPath = path.join( postsDirectory, slug, 'post.md' )
-    } catch( err ) {
-        // nothing, just need to use the try/catch to determine if the post is in a directory or just the root posts folder as a markdown file
-    }
-    
+    const postPath = path.join( postsDirectory, slug, 'post.md' )    
     const pathChunks = postPath.split( '/' ).slice( -2, -1 );
     const slugPartial = pathChunks[ 0 ];
     const fileContents = await fs.readFile(postPath, 'utf8')
@@ -44,22 +37,22 @@ export default async function parsePost( slug ) {
         postContent = postContent.replace( originalRef, updRef )
     }
 
-    if( slugPartial === 'dining-table-refinish' ) {
-        const coverImgPath = `posts/${ slugPartial }/thumbnail.jpg` 
+    if( data.thumbnail ) {
+        const coverImgPath = `posts/${ slugPartial }/${ data.thumbnail }` 
         data.coverImage = coverImgPath
-        data.coverImageAltText = imgAltTexts[ coverImgPath ]
+        data.coverImageAltText = imgAltTexts[ coverImgPath ] || null;
+        data.ogImage = {
+            url: `posts/${ slugPartial }/${ data.thumbnail }`
+        };
         images.push( {
-            altText: imgAltTexts[ coverImgPath ], 
-            filename: 'thumbnail.jpg', 
+            altText: imgAltTexts[ coverImgPath ] || '', 
+            filename: data.thumbnail, 
             title: 'Thumbnail'
         })
     }
 
     return {
         ...data,
-        ogImage: {
-            url: `posts/${ slugPartial }/thumbnail.jpg`
-        },
         images,
         content: await markdownToHtml(postContent)
     }

@@ -2,6 +2,7 @@
 title: Dining Table Refinish
 excerpt: >-
   A long overdue project to take our generations-old dining room table and prepare it for decades more use.
+thumbnail: thumbnail.jpg
 date: '2025-05-21'
 categories: 
   - wood
