@@ -2,6 +2,7 @@
 title: Camping Car Storage
 excerpt: >-
   We do a big road trip with tent camping every year and it was time to build something custom.
+thumbnail: thumbnail.jpg
 date: '2025-05-25'
 categories: 
   - wood
