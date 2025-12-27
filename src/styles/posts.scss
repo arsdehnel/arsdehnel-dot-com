@@ -18,7 +18,7 @@
 
     .post-card {
         max-width: 260px;
-        padding: 1rem;
+        padding: 1rem 1rem .25rem 1rem;
         border-radius: .25rem;
         box-shadow: 2px 2px 10px #bebebe;
 
@@ -31,15 +31,9 @@
         }
 
         h3 {
-            padding: 1rem 0 0 0;
+            padding-top: 1rem;
             margin: 0;
             color: black;
-        }
-
-        h5 {
-            color: #707070;
-            text-transform: uppercase;
-            font-weight: 200;
         }
 
         p {
@@ -47,6 +41,12 @@
             color: #252525;
         }
 
+        h5 {
+            color: #707070;
+            text-transform: uppercase;
+            font-weight: 200;
+        }
+        
         &:hover {
             box-shadow: 4px 4px 15px #b0b0b0;
             transform: translateY(-5px);
