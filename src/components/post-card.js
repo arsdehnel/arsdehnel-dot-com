@@ -3,8 +3,9 @@ import Link from 'next/link'
 export default function PostCard( { slug, title, date, excerpt, coverImage, coverImageAltText } ) {
 
     return (
-        <div className="post-card">
         <Link href={ slug }>
+            <div className="post-card">
+        
             {/* <h3><Link href={ slug }>{ title }</Link></h3> */}
             <div className="post-content">
                 {
@@ -16,11 +17,13 @@ export default function PostCard( { slug, title, date, excerpt, coverImage, cove
                         alt={ coverImageAltText }
                     />
                 }
-                <h3>{ title }</h3>
-                <h5>{ date }</h5>
-                <p>{ excerpt }</p>
+                <h3 className="no-underline">{ title }</h3>
+                <h5 className="no-underline">{ date }</h5>
+                <p className="no-underline">{ excerpt }</p>
             </div>
-        </Link>
+        
         </div>
+        
+        </Link>
     )
 }
