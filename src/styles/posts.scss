@@ -59,7 +59,9 @@
     flex-direction: row;
     align-items: baseline;
     justify-content: space-between;
-    background-color: red;
+    @media screen and (max-width: 920px) {
+        flex-direction: column;
+    }
 }
 
 .post-content {
