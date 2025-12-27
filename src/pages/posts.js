@@ -15,8 +15,10 @@ export default function Posts({ posts, categories }) {
 
 	return (
 		<>
+		<div className='post-header'>
 			<h2>Posts</h2>
 			<Categories categories={ categories } />
+		</div>
 			<PostListing posts={ posts } filters={ filters } />
 		</>
 	);
