@@ -6,7 +6,6 @@ export default function PostCard( { slug, title, date, excerpt, coverImage, cove
         <Link href={ slug }>
             <div className="post-card">
         
-            {/* <h3><Link href={ slug }>{ title }</Link></h3> */}
             <div className="post-content">
                 {
                     coverImage &&
