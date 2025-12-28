@@ -9,7 +9,7 @@
      originated from http://lea.verou.me/2013/10/slanted-tabs-with-css-3d-transforms/
 --------------------------------------------- */
 nav.nav-main {
-    margin: 3rem auto 0;
+    margin: 8rem auto 0;
     display: flex;
 	max-width: 1200px;
 	width: 100%;
@@ -17,15 +17,17 @@ nav.nav-main {
     a {
         position: relative;
         margin: 0 .5rem 0 0;
-        padding: 1.5em 3em 1em 1em;
-        font-family: "Montserrat Subrayada", arial, sans-serif;
-        color: #444;
+        padding: 1.5em 2.5em 1em 1em;
+        font-family: monospace;
+        font-weight: 600;
+        font-size: 18px;
+        color: #474747;
         text-decoration: none;
+        letter-spacing: .5px;
 
         &::before {
-            transition: all .2s linear;
-            border: .1em solid #aaa;
-            background: tint(#444, 70%);
+            transition: all .2s ease-in-out;
+            background: #eeeeeeb5;
             content: ''; 
             position: absolute;
             top: 0;
@@ -35,23 +37,24 @@ nav.nav-main {
             z-index: -1;
             border-bottom: none;
             border-radius: 10px 10px 0 0;
-            box-shadow: 0 2px hsla(0, 0%, 100%, .5) inset;
+            box-shadow: 0 2px #ffffff80 inset;
             transform: translateZ(0) perspective(5px) rotateX(2deg);
             transform-origin: bottom left;
         }
 
         &:hover::before {
-			background: tint(#444, 40%);
+            background: #eeeeee;
 		}
 
         &.active {
 
-            color: #ccc;
+            color: #eee;
             text-shadow: none;
     
             &::before {
-                background: #444;			
+                background: #1b344c;			
             }
+
         }
 
     }
