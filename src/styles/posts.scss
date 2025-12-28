@@ -22,17 +22,21 @@
         }
 
         h3 {
-            padding-top: 1rem;
+            font-family: monospace;
+            font-size: 26px;
+            color: #000099;
+            padding-top: .5rem;
             margin: 0;
-            color: black;
+            transition: .1s ease-in-out;
         }
 
         p {
-            height: 100%;
+            height: auto;
             color: #252525;
         }
 
-        h5 {
+        h4 {
+            font-family: monospace;
             color: #707070;
             text-transform: uppercase;
             font-weight: 200;
@@ -41,6 +45,9 @@
         &:hover {
             box-shadow: 0px 4px 15px #b0b0b0;
             transform: translateY(-5px);
+            h3 {
+                color: coral;
+            }
         }
     }
 }

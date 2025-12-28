@@ -5,7 +5,6 @@ export default function PostCard( { slug, title, date, excerpt, coverImage, cove
     return (
         <Link href={ slug } className="post-card">
             <div >
-        
             <div className="post-content">
                 {
                     coverImage &&
@@ -16,7 +15,7 @@ export default function PostCard( { slug, title, date, excerpt, coverImage, cove
                 }
                 <h3 className="no-underline">{ title }</h3>
                 <p className="no-underline">{ excerpt }</p>
-                <h5 className="no-underline">{ date }</h5>
+                <h4 className="no-underline">{ date }</h4>
             </div>
         
         </div>

@@ -2,15 +2,12 @@
     display: flex;
     flex-wrap: wrap;
     gap: .5rem;
-    //@media screen and (min-width: 40em) {
-        //position: absolute;
-        //top: 1rem;
-        //right: 1rem;
-    //}
+
     a {
         text-decoration: none;
     }
     .category-tag {
+        font-family: monospace;
         align-items: center;
         border-radius: .75rem;
         position: relative;
@@ -18,7 +15,6 @@
         overflow: hidden;
         display: flex;
         box-shadow: inset 0 0 0 2px slategray;
-        //margin-right: .5rem;
         background-color: #eee;
     }
     .category-icon {
