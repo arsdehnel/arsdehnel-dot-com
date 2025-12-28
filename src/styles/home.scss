@@ -1,8 +1,14 @@
 .home-columns {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    gap: 3rem;
+    transition: all .3s ease-in-out;
+    @media (max-width: 42em) {
+        flex-direction: column;
+    }
 
     .post-card {
+        width: 300px;
         padding: 1rem;
         display: flex;
         border-radius: .25rem;
@@ -10,8 +16,7 @@
         transition: all .3s ease-in-out;
 
         img {
-            float: left;
-            width: 300px;
+            width: 100%;
             height: auto;
             margin-right: 1rem;
         }
