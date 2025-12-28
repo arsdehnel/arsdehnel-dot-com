@@ -16,7 +16,7 @@ export default function Posts({ posts, categories }) {
 	return (
 		<>
 		<div className='post-header'>
-			<h2>Posts</h2>
+			<h1>Posts</h1>
 			<Categories categories={ categories } />
 		</div>
 			<PostListing posts={ posts } filters={ filters } />

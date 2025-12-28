@@ -11,8 +11,6 @@ export default function PostCard( { slug, title, date, excerpt, coverImage, cove
                     coverImage &&
                     <img
                         src={ coverImage }
-                        // width={ 500 }
-                        // height={ 500 }
                         alt={ coverImageAltText }
                     />
                 }
