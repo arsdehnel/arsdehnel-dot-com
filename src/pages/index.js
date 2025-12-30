@@ -7,7 +7,7 @@ export default function Home({ latestPost }) {
 			<div className="home-columns">
 				<div>
 					<h1>👋 Welcome to my site!</h1>
-					<p>This site is about me in all aspects of life. It started as a place to share technology-related things I'm curious about as they relate to my career but evolved into just something about me. It's important to know more about a person than just what code repositories they have and how they approach modern software development. This tries to cover what's important to me and how I approach all things in life, not just software and technology.</p>
+					<p>This site is about me in all aspects of life. It started as a place to share technology-related things I&apos;m curious about as they relate to my career but evolved into just something about me. It&apos;s important to know more about a person than just what code repositories they have and how they approach modern software development. This tries to cover what&apos;s important to me and how I approach all things in life, not just software and technology.</p>
 				</div>
 				<div>
 					<h2>Latest Post</h2>
