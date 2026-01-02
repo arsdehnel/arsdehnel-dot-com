@@ -68,7 +68,7 @@ jobs:
         #   static_site_generator: next
       - name: Build with Next.js
         run: |
-          node src/sync-post-images.js
+          pnpm prep-posts
           pnpm next build
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3

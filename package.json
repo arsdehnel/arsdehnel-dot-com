@@ -7,7 +7,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "prep-posts": "node src/sync-post-images.js"
   },
   "dependencies": {
     "glob": "^11.0.2",
