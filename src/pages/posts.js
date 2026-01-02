@@ -10,7 +10,9 @@ export default function Posts({ posts, categories }) {
 	
 	const filters = {};
 	Object.keys( router.query ).forEach( key => {
-		filters[ key ] = router.query[ key ].split( ',' );
+		if( router.query[ key ].length > 0 ) {
+			filters[ key ] = router.query[ key ].split( ',' );
+		}
 	})
 
 	return (
