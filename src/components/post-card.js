@@ -13,9 +13,9 @@ export default function PostCard( { slug, title, date, excerpt, coverImage, cove
                         alt={ coverImageAltText }
                     />
                 }
-                <h3 className="no-underline">{ title }</h3>
-                <p className="no-underline">{ excerpt }</p>
-                <h4 className="no-underline">{ date }</h4>
+                <h3 className='no-underline'>{ title }</h3>
+                <p className='no-underline'>{ excerpt }</p>
+                <h4 className='no-underline'>{ date }</h4>
             </div>
         
         </div>
