@@ -6,6 +6,9 @@ export default function Categories( { categories } ) {
         <div className="categories">
             {
                 categories.map( c => {
+                    if( !iconMap[ c ] ) {
+                        return <div style={ { background: 'red', padding: 20 }}>🚨 No category found for { c }</div>
+                    }
                     const Icon = iconMap[ c ];
                     return (
                         <a key={ c } href={ `/posts?categories=${ c }` }>
