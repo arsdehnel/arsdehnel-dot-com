@@ -1,12 +1,12 @@
 import markdownToHtml from "@/utils/markdown-to-html";
 
-const content = `## About Me
+const content = `# About Me
 
-### Father
+## Father
 
 Holy hell so much of all the feels.
 
-### Nerd
+## Nerd
 
 #### Youngster Hack
 
@@ -32,12 +32,12 @@ FED. Gulp. Grunt. Backbone. Bootstrap.
 
 Architect. AWS. Microservices. Leading the team.
 
-### Cook
+## Cook
 
 Started early. Cooking for groups in college.
 
 
-### Woodworker
+## Woodworker
 
 Grandpa. Craig. College Desk. Kitchen.`
 

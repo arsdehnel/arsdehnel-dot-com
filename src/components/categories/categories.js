@@ -7,7 +7,7 @@ export default function Categories( { categories } ) {
             {
                 categories.map( c => {
                     if( !iconMap[ c ] ) {
-                        return <div style={ { background: 'red', padding: 20 }}>🚨 No category found for { c }</div>
+                        return <div key={ c } style={ { background: 'red', padding: 20 }}>🚨 No category found for { c }</div>
                     }
                     const Icon = iconMap[ c ];
                     return (
