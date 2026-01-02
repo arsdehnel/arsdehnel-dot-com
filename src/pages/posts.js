@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router'
 
-import Categories from '@/components/categories';
+import Categories from '@/components/categories/categories';
 import getAllPosts from '@/utils/get-all-posts';
 import PostListing from '@/components/post-listing';
 

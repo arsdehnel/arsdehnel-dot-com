@@ -1,15 +1,4 @@
-import { BiBlock } from "react-icons/bi";
-import { GiWoodBeam } from "react-icons/gi";
-import { GrCloudComputer } from "react-icons/gr";
-import { LuBookOpenText, LuCodeXml, LuTentTree } from "react-icons/lu";
-
-const iconMap = {
-    'book': LuBookOpenText,
-    'camping': LuTentTree,
-    'cloud tech': GrCloudComputer,
-    'development': LuCodeXml,
-    'wood': GiWoodBeam,
-}
+import iconMap from "./icon-map";
 
 export default function Categories( { categories } ) {
 
@@ -17,7 +6,10 @@ export default function Categories( { categories } ) {
         <div className="categories">
             {
                 categories.map( c => {
-                    const Icon = iconMap[ c ] || BiBlock;
+                    if( !iconMap[ c ] ) {
+                        return <div key={ c } style={ { background: 'red', padding: 20 }}>🚨 No category found for { c }</div>
+                    }
+                    const Icon = iconMap[ c ];
                     return (
                         <a key={ c } href={ `/posts?categories=${ c }` }>
                             <div className="category-tag">

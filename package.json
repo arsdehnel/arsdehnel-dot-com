@@ -8,7 +8,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "prepare": "husky"
+    "prepare": "husky",
+    "prep-posts": "node src/sync-post-images.js"
   },
   "dependencies": {
     "glob": "^11.0.2",

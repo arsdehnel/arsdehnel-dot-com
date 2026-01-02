@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import parsePost from '@/utils/parse-post';
 import getAllPosts from '@/utils/get-all-posts';
-import Categories from '@/components/categories';
+import Categories from '@/components/categories/categories';
 
 export default function Post({ title, categories, content }) {
 	return (
