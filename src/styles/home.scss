@@ -8,6 +8,22 @@
         gap: 0;
     }
 
+    .site-section-cards {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+        .site-section-card {
+            display: flex;
+            border-radius: 1rem;
+            padding: 1rem;
+            background: orange;
+            h3, p {
+                padding: 0;
+                margin: 0;
+            }
+        }
+    }
+
     .post-card {
         width: 300px;
         padding: 1rem;
