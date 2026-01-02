@@ -3,6 +3,7 @@ title: Integrated Life & Limited Agency
 excerpt: >-
   Sometimes life connects dots you didn't even know existed. A company meeting about 'integrated life' and a Christian historian's thoughts on 'limited agency' shouldn't have anything to do with each other. But they changed how I am thinking about work, control, and what it means to live realistically.
 date: '2026-01-01'
+thumbnail: thumbnail.jpg
 categories: 
   - self-care
 ---
