@@ -17,7 +17,7 @@ export default function Posts({ posts, categories }) {
 		<>
 		<div className='post-header'>
 			<h1>Posts</h1>
-			<Categories categories={ categories } />
+			<Categories categories={ categories } selectedCategories={ filters.categories }	 />
 		</div>
 			<PostListing posts={ posts } filters={ filters } />
 		</>
