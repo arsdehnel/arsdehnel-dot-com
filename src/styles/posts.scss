@@ -18,10 +18,6 @@
             width: 100%
         }
 
-        .no-underline {
-            text-decoration-thickness: 0;
-        }
-
         h3 {
             font-family: monospace;
             font-size: 24px;
@@ -46,6 +42,7 @@
         &:hover {
             box-shadow: 0px 4px 15px #b0b0b0;
             transform: translateY(-5px);
+            cursor: pointer;
             h3 {
                 color: coral;
             }
