@@ -6,6 +6,7 @@ import "@/styles/categories.scss"
 import "@/styles/home.scss";
 import "@/styles/main.scss";
 import "@/styles/nav.scss";
+import "@/styles/post-card.scss";
 import "@/styles/posts.scss";
 
 import Layout from '../components/layout'
