@@ -1,7 +1,7 @@
 import getAllPosts from '@/utils/get-all-posts';
-import PostCard from '@/components/post-card';
+import PostListing from '@/components/post-listing';
 
-export default function Home({ latestPost }) {
+export default function Home({ latestPosts }) {
 	return (
 		<>
 			<div className="home-columns">
@@ -32,8 +32,8 @@ export default function Home({ latestPost }) {
 						</div>
 				</div>
 				<div>
-					<h2>Latest Post</h2>
-					<PostCard { ...latestPost } />
+					<h2>Latest Posts</h2>
+					<PostListing posts={ latestPosts } />
 				</div>
 			</div>
 		</>
@@ -46,7 +46,7 @@ export async function getStaticProps() {
 
 	return {
 		props: {
-			latestPost: posts[ 0 ]
+			latestPosts: posts.slice( 0, 4 )
 		},
 	}
 }
