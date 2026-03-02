@@ -8,7 +8,7 @@
         border-radius: 3px;
         padding: 10rem 15rem 18rem 5rem;
         background-color: #0f520973;
-        // background-image: url("images/luca-bravo-ESkw2ayO2As-unsplash.jpg");
+        background-image: url("/mountain-stream.jpg");
     }
 
     .site-section-cards {
@@ -98,5 +98,34 @@
                 color: coral;
             }
         }
+    }
+}
+
+.section-intro {
+    // max-width: 600px;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    h2 {
+        font-family: monospace;
+        color: #0d3d6d;
+        font-size: 32px;
+        margin-bottom: 1rem;
+    }
+    p {
+        color: #252525;
+        font-size: 18px;
+    }
+}
+
+.more-link {
+    font-family: monospace;
+    color: #0d3d6d;
+    text-decoration-thickness: 0;
+    transition: all .1s ease-in-out;
+
+    &:hover {
+        color: coral;
+        text-decoration-thickness: 2px;
     }
 }
