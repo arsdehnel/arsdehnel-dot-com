@@ -9,10 +9,12 @@
      originated from http://lea.verou.me/2013/10/slanted-tabs-with-css-3d-transforms/
 --------------------------------------------- */
 nav.nav-main {
-    margin: 8rem auto 0;
+    // margin: 8rem auto 0;
     display: flex;
-	max-width: 1200px;
+    flex-direction: row;
+    align-items: center;
 	width: 100%;
+    height: 5rem;
 
     a {
         position: relative;
@@ -38,7 +40,6 @@ nav.nav-main {
             border-bottom: none;
             border-radius: 10px 10px 0 0;
             box-shadow: 0 2px #ffffff80 inset;
-            transform: translateZ(0) perspective(5px) rotateX(2deg);
             transform-origin: bottom left;
         }
 

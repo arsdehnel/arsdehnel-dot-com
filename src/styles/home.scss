@@ -1,15 +1,9 @@
 .home-columns {
     display: flex;
     flex-direction: column;
-    gap: 4rem;
+    gap: 7rem;
     transition: all .3s ease-in-out;
-
-    .intro {
-        border-radius: 3px;
-        padding: 10rem 15rem 18rem 5rem;
-        background-color: #0f520973;
-        background-image: url("/mountain-stream.jpg");
-    }
+    width: auto !important;
 
     .site-section-cards {
         display: flex;
@@ -98,12 +92,52 @@
     }
 }
 
+.home-hero {
+    background-image: url("/mountain-stream.jpg");
+    background-size: cover;
+    background-position: center;
+    min-height: 400px;
+    height: 70vh;
+    border-radius: 3px;
+    margin-bottom: 3rem;
+}
+
+.home-hero-content {
+    display: flex;
+    position: relative;
+    top: 32rem;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    text-align: center;
+    padding: 1rem 3rem;
+    max-width: 800px;
+    background-color: #0d3d6dc2;
+    backdrop-filter: blur(5px);
+    border-radius: 3px;
+    h1 {
+        font-family: monospace;
+        color: white;
+        font-size: 42px;
+        margin-top: 0;
+        margin-bottom: -1rem;
+    }
+    p {
+        color: white;
+        font-size: 18px;
+    }
+}
+
 section {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: .5rem;
-    // margin: 2rem 0;
+}
+
+.posts {
+    margin-bottom: 10rem;
 }
 
 .section-intro {

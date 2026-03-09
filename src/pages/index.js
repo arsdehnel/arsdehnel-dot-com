@@ -5,10 +5,14 @@ export default function Home({ latestPosts }) {
 	return (
 		<>
 			<div className="home-columns">
-				{/* <div className="intro">
-					<h1>👋 Welcome to my site!</h1>
-					<p>This site is about me in all aspects of life. It started as a place to share technology-related things I&apos;m curious about as they relate to my career but evolved into just something about me. It&apos;s important to know more about a person than just what code repositories they have and how they approach modern software development. This tries to cover what&apos;s important to me and how I approach all things in life, not just software and technology.</p>
-				</div> */}
+				
+				<section className="home-hero">
+					<div className="home-hero-content">
+						<h1>👋 Welcome to my site!</h1>
+							<p>This site is about me in all aspects of life. It started as a place to share technology-related things I&apos;m curious about as they relate to my career but evolved into just something about me. It&apos;s important to know more about a person than just what code repositories they have and how they approach modern software development. This tries to cover what&apos;s important to me and how I approach all things in life, not just software and technology.</p>
+					</div>
+				</section>
+				
 				<section>
 					<div className='section-intro'>
 						<h2>Who I Am</h2>
@@ -39,7 +43,7 @@ export default function Home({ latestPosts }) {
 					<a className="more-link" href="/about">More About Me</a>
 				</section>
 
-				<section>
+				<section className='posts'>
 					<div className='section-intro'>
 						<h2>Latest Posts</h2>
 						<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
