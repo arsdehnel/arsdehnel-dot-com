@@ -18,7 +18,7 @@ a {
 }
 
 /* ---------------------------------------------
-     header
+     header - turned off for now, but may be used in the future
 --------------------------------------------- */
 header {
     .header-box {
@@ -83,6 +83,7 @@ header {
 --------------------------------------------- */
 footer {
     padding: 1rem;
+    padding-top: 2rem;
     text-align: center;
     font-size: 2rem;
     a {
