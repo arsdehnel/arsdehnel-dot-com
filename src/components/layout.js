@@ -7,20 +7,14 @@ export default function Layout({ children }) {
 	return (
 		<>
 			<div className="layout-wrapper">
-				{/* <header>
-					<div className="header-box">
-						<h1>Adam Dehnel</h1>
-						<div className="tagline">father | nerd | cook | woodworker</div>
-					</div>
-				</header> */}
 				<nav className="nav-main">
-					<Link href="/posts" className={ router.pathname.startsWith( "/posts" ) ? "active" : "" }>
+					<Link href="/posts" className={ router.pathname.startsWith( "/posts" ) ? "active" : "" } id="secondary-link">
 						Posts
 					</Link>					
-					<Link href="/" className={ router.pathname === "/" ? "active" : "" } className="home">
+					<Link href="/" className={ router.pathname === "/" ? "active" : "" } id="home">
 						Adam Dehnel
 					</Link>
-					<Link href="/about" className={ router.pathname === "/about" ? "active" : "" }>
+					<Link href="/about" className={ router.pathname === "/about" ? "active" : "" } id="secondary-link">
 						About
 					</Link>
 				</nav>
