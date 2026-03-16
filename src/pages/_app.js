@@ -18,7 +18,7 @@ export default function App({ Component, pageProps }) {
 				<title>Adam Dehnel</title>
 				<meta name="viewport" content="width=device-width, initial-scale=1" />
 			</Head>
-			<Layout>
+			<Layout mainClass={pageProps.mainClass}>
 				<Component {...pageProps} />
 			</Layout>
 		</>

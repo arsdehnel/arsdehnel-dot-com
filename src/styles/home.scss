@@ -92,10 +92,21 @@
     }
 }
 
-.home-hero {
+main.home {
     background-image: url("/mountain-stream.jpg");
-    background-size: cover;
-    background-position: center;
+    background-size: contain;
+    background-position: top center;
+    background-repeat: no-repeat;
+    background-color: #ddd;
+
+    width: 100%;
+    min-height: 70vh;
+}
+
+.home-hero {
+//     background-image: url("/mountain-stream.jpg");
+//     background-size: cover;
+//     background-position: center;
     width: 100%;
     min-height: 400px;
     height: 70vh;

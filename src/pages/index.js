@@ -112,6 +112,7 @@ export async function getStaticProps() {
 	return {
 		props: {
 			latestPosts: posts.slice(0, 4),
+			mainClass: "home",
 		},
 	};
 }

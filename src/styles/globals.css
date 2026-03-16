@@ -1,6 +1,8 @@
 body {
 	font-family: Helvetica, sans-serif;
 	background: slategrey;
+	margin: 0;
+	padding: 0;
 }
 
 .layout-wrapper {

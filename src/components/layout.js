@@ -2,7 +2,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { AiFillGithub, AiFillGitlab, AiFillLinkedin } from "react-icons/ai";
 
-export default function Layout({ children }) {
+export default function Layout({ children, mainClass }) {
 	const router = useRouter();
 	return (
 		<div className="layout-wrapper">
@@ -29,7 +29,7 @@ export default function Layout({ children }) {
 					About
 				</Link>
 			</nav>
-			<main>
+			<main className={mainClass}>
 				<div className="content-wrapper">{children}</div>
 			</main>
 			<footer>

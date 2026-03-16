@@ -7,7 +7,6 @@
 		"dev": "next dev",
 		"build": "next build",
 		"start": "next start",
-		"lint": "next lint",
 		"biome:fix": "biome check --write .",
 		"prepare": "husky",
 		"prep-posts": "node src/sync-post-images.js"

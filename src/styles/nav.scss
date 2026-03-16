@@ -8,12 +8,15 @@
 nav.nav-main {
     display: flex;
     flex-direction: row;
-    // position: sticky;
+    position: sticky;
+    top: 0;
+    z-index: 9;
     justify-content: center;
     align-content: center;
     align-items: baseline;
     gap: .5rem;
     padding: 1rem;
+    background-color: slategrey;
     // margin-bottom: .25rem;
 
     #home {
