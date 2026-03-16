@@ -4,11 +4,11 @@ import { LuBookOpenText, LuCodeXml, LuTentTree } from "react-icons/lu";
 import { MdChildCare } from "react-icons/md";
 
 export default {
-    'book': LuBookOpenText,
-    'camping': LuTentTree,
-    'career': GrUserWorker,
-    'cloud tech': GrCloudComputer,
-    'development': LuCodeXml,
-    'self-care': MdChildCare,
-    'wood': GiWoodBeam,
-}
+	book: LuBookOpenText,
+	camping: LuTentTree,
+	career: GrUserWorker,
+	"cloud tech": GrCloudComputer,
+	development: LuCodeXml,
+	"self-care": MdChildCare,
+	wood: GiWoodBeam,
+};

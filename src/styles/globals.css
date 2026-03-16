@@ -1,47 +1,46 @@
 body {
-    font-family: Helvetica, sans-serif;
-    background: slategrey;
+	font-family: Helvetica, sans-serif;
+	background: slategrey;
 }
 
-
 .layout-wrapper {
-    display: flex;
-    flex-direction: column;
+	display: flex;
+	flex-direction: column;
 }
 
 a {
-    color: #1b344c;
-    transition: .1s;
-    &:hover {
-        color: coral;
-    }
+	color: #1b344c;
+	transition: 0.1s;
+	&:hover {
+		color: coral;
+	}
 }
 
 /* ---------------------------------------------
      breadcrumbs
 --------------------------------------------- */
 .breadcrumbs {
-    a {
-        text-decoration: none;
-    }
+	a {
+		text-decoration: none;
+	}
 }
 
 /* ---------------------------------------------
      footer
 --------------------------------------------- */
 footer {
-    padding: 1rem;
-    padding-top: 2rem;
-    text-align: center;
-    font-size: 2rem;
-    a {
-        padding: 0 1rem;
-        color: white;
-    }
+	padding: 1rem;
+	padding-top: 2rem;
+	text-align: center;
+	font-size: 2rem;
+	a {
+		padding: 0 1rem;
+		color: white;
+	}
 }
 
 h2 {
-    font-size: 30px;
-    font-family: monospace;
-    color: #0d3d6d;
+	font-size: 30px;
+	font-family: monospace;
+	color: #0d3d6d;
 }

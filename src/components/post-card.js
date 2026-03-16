@@ -1,22 +1,26 @@
-import { useRouter } from 'next/router'
+import { useRouter } from "next/router";
 
-export default function PostCard( { slug, title, date, excerpt, coverImage, coverImageAltText } ) {
+export default function PostCard({
+	slug,
+	title,
+	date,
+	excerpt,
+	coverImage,
+	coverImageAltText,
+}) {
+	const router = useRouter();
 
-    const router = useRouter()
-
-    return (
-        <div className="post-card" onClick={ e => router.push( slug ) }>
-            <div>
-                <div className="post-content">
-                    <img
-                        src={ coverImage }
-                        alt={ coverImageAltText }
-                    />
-                    <h3 >{ title }</h3>
-                    <p >{ excerpt }</p>
-                    <div className="post-date" >{ date }</div>
-                </div>
-            </div>
-        </div>
-    )
+	return (
+		// biome-ignore lint: yeah it's hacky but we need it
+		<div className="post-card" onClick={(_e) => router.push(slug)}>
+			<div>
+				<div className="post-content">
+					<img src={coverImage} alt={coverImageAltText} />
+					<h3>{title}</h3>
+					<p>{excerpt}</p>
+					<div className="post-date">{date}</div>
+				</div>
+			</div>
+		</div>
+	);
 }

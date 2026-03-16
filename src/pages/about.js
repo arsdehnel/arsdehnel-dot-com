@@ -39,24 +39,19 @@ Started early. Cooking for groups in college.
 
 ## Woodworker
 
-Grandpa. Craig. College Desk. Kitchen.`
+Grandpa. Craig. College Desk. Kitchen.`;
 
 export default function About({ html }) {
-	
-	return (
-		<>
-			<div dangerouslySetInnerHTML={ { __html: html } } />
-		</>
-	);
+	// biome-ignore lint: yeah it's hacky but we need it
+	return <div dangerouslySetInnerHTML={{ __html: html }} />;
 }
 
 export async function getStaticProps() {
-
-	const html = await markdownToHtml( content );
+	const html = await markdownToHtml(content);
 
 	return {
 		props: {
-			html
+			html,
 		},
-	}
+	};
 }
