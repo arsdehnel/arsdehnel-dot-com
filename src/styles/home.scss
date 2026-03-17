@@ -94,12 +94,12 @@
 
 main.home {
     background-image: url("/mountain-stream.jpg");
-    background-size: cover;
+    background-size: contain;
     background-position: top center;
     background-repeat: no-repeat;
     // background-color: #ddd;
     width: auto;
-    height: 70vh;
+    min-height: 70vh;
 }
 
 .home-hero {
