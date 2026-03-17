@@ -3,7 +3,7 @@
     flex-direction: column;
     gap: 7rem;
     transition: all .3s ease-in-out;
-    width: auto !important;
+    height: auto;
 
     .site-section-cards {
         display: flex;
@@ -94,30 +94,28 @@
 
 main.home {
     background-image: url("/mountain-stream.jpg");
-    background-size: contain;
+    background-size: cover;
     background-position: top center;
     background-repeat: no-repeat;
-    background-color: #ddd;
-
-    width: 100%;
-    min-height: 70vh;
+    // background-color: #ddd;
+    width: auto;
+    height: 70vh;
 }
 
 .home-hero {
-//     background-image: url("/mountain-stream.jpg");
-//     background-size: cover;
-//     background-position: center;
     width: 100%;
-    min-height: 400px;
-    height: 70vh;
+    height: auto;
+    // min-height: 400px;
+    // height: 70vh;
     border-radius: 3px;
     margin-bottom: 3rem;
 }
 
 .home-hero-content {
     display: flex;
-    position: relative;
-    top: 32rem;
+    margin-top: 70vh;
+    // position: relative;
+    // top: 32rem;
     flex-direction: column;
     align-items: center;
     justify-content: center;

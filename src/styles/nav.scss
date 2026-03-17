@@ -16,8 +16,8 @@ nav.nav-main {
     align-items: baseline;
     gap: .5rem;
     padding: 1rem;
-    background-color: slategrey;
-    // margin-bottom: .25rem;
+    background-color: rgba(112, 128, 144, 0.804);
+    backdrop-filter: blur(3px);
 
     #home {
         font-family: monospace;
