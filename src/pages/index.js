@@ -4,6 +4,8 @@ import getAllPosts from "@/utils/get-all-posts";
 export default function Home({ latestPosts }) {
 	return (
 		<div className="home-columns">
+			<section className="home-image" />
+
 			<section className="home-hero">
 				<div className="home-hero-content">
 					<h1>👋 Welcome to my site!</h1>
@@ -19,7 +21,7 @@ export default function Home({ latestPosts }) {
 				</div>
 			</section>
 
-			<section>
+			<section className="home-who-am-i">
 				<div className="section-intro">
 					<h2>Who I Am</h2>
 					<p>
@@ -95,7 +97,7 @@ export default function Home({ latestPosts }) {
 						eiusmod tempor incididunt ut labore et dolore magna aliqua.
 					</p>
 				</div>
-				<div>
+				<div className="home-posts">
 					<PostListing posts={latestPosts} />
 				</div>
 				<a className="more-link" href="/posts">
@@ -111,7 +113,7 @@ export async function getStaticProps() {
 
 	return {
 		props: {
-			latestPosts: posts.slice(0, 4),
+			latestPosts: posts.slice(0, 3),
 			mainClass: "home",
 		},
 	};

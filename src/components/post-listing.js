@@ -11,10 +11,10 @@ export default function PostListing({ posts, filters }) {
 	}
 
 	return (
-		<div className="posts-wrapper">
+		<>
 			{filteredPosts.map((p) => (
 				<PostCard key={p.slugPartial} {...p} />
 			))}
-		</div>
+		</>
 	);
 }

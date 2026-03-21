@@ -42,9 +42,6 @@ importers:
       '@biomejs/biome':
         specifier: 2.4.7
         version: 2.4.7
-      '@eslint/eslintrc':
-        specifier: ^3
-        version: 3.3.1
       chalk-template:
         specifier: ^1.1.0
         version: 1.1.0

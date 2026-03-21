@@ -23,7 +23,9 @@ export default function Posts({ posts, categories }) {
 					selectedCategories={filters.categories}
 				/>
 			</div>
-			<PostListing posts={posts} filters={filters} />
+			<div className="posts-wrapper">
+				<PostListing posts={posts} filters={filters} />
+			</div>
 		</>
 	);
 }
