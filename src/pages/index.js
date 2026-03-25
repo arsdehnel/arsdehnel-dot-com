@@ -1,3 +1,4 @@
+import Image from "next/image";
 import PostListing from "@/components/post-listing";
 import getAllPosts from "@/utils/get-all-posts";
 
@@ -31,9 +32,11 @@ export default function Home({ latestPosts }) {
 				</div>
 				<div className="site-section-cards">
 					<div className="site-section-card">
-						<img
+						<Image
 							className="home-card-image"
-							src="public/posts/camping-car-storage/initial-prototype.jpg"
+							src="/about-cards/father.jpg"
+							width={400}
+							height={400}
 							alt="alt text here"
 						/>
 						<h3>Father</h3>
