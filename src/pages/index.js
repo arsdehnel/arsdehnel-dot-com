@@ -37,7 +37,7 @@ export default function Home({ latestPosts }) {
 							src="/about-cards/father.jpg"
 							width={400}
 							height={400}
-							alt="alt text here"
+							alt="A smiling man in sunglasses and a baseball cap takes a selfie with two young blonde boys at a rushing waterfall. White water cascades over large gray rocks in the background, surrounded by green foliage. All three are grinning at the camera on a sunny day outdoors."
 						/>
 						<h3>Father</h3>
 						<p>
@@ -52,7 +52,7 @@ export default function Home({ latestPosts }) {
 							src="/about-cards/nerd.jpg"
 							width={400}
 							height={400}
-							alt="alt text here"
+							alt="A young person in a white long-sleeve shirt sits at a home computer desk, focused on reading or writing in a notebook. The desktop setup includes a CRT monitor, speakers, and various cables. A backpack and school supplies are visible nearby, suggesting homework or studying time."
 						/>
 						<h3>Nerd</h3>
 						<p>
@@ -66,7 +66,7 @@ export default function Home({ latestPosts }) {
 							src="/about-cards/cook.jpg"
 							width={400}
 							height={400}
-							alt="alt text here"
+							alt="A white plate on a wooden table holds three pasta dishes: ribbon pasta with tomato sauce and grated cheese, plain ravioli with black pepper, and a chicory salad with shaved parmesan. Each portion is arranged in its own section on the plate, creating a trio sampler."
 						/>
 						<h3>Cook</h3>
 						<p>
@@ -82,7 +82,7 @@ export default function Home({ latestPosts }) {
 							src="/about-cards/woodworker.jpg"
 							width={400}
 							height={400}
-							alt="alt text here"
+							alt="A kitchen island with butcher block top and teal-painted drawers, all fully opened to reveal organized storage of dishes, food containers, and kitchen items. A simple holiday centerpiece with a candle, star, and Christmas tree decorations sits on a red placemat on top."
 						/>
 						<h3>Woodworker</h3>
 						<p>
