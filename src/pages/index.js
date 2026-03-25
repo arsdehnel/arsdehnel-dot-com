@@ -47,9 +47,11 @@ export default function Home({ latestPosts }) {
 						</p>
 					</div>
 					<div className="site-section-card">
-						<img
+						<Image
 							className="home-card-image"
-							src="public/posts/camping-car-storage/initial-prototype.jpg"
+							src="/about-cards/nerd.jpg"
+							width={400}
+							height={400}
 							alt="alt text here"
 						/>
 						<h3>Nerd</h3>
@@ -59,9 +61,11 @@ export default function Home({ latestPosts }) {
 						</p>
 					</div>
 					<div className="site-section-card">
-						<img
+						<Image
 							className="home-card-image"
-							src="public/posts/camping-car-storage/initial-prototype.jpg"
+							src="/about-cards/cook.jpg"
+							width={400}
+							height={400}
 							alt="alt text here"
 						/>
 						<h3>Cook</h3>
@@ -73,14 +77,16 @@ export default function Home({ latestPosts }) {
 						</p>
 					</div>
 					<div className="site-section-card">
-						<img
+						<Image
 							className="home-card-image"
-							src="public/posts/camping-car-storage/initial-prototype.jpg"
+							src="/about-cards/woodworker.jpg"
+							width={400}
+							height={400}
 							alt="alt text here"
 						/>
 						<h3>Woodworker</h3>
 						<p>
-							My grandfather had a workshop in their basement and I have
+							My grandfather had a workshop in his basement and I have
 							incredibly fond memories of spending time there. I&apos;ve built
 							up quite the shop myself now and love every minute I spend out
 							there.
