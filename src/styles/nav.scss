@@ -19,13 +19,19 @@ nav.nav-main {
     background-color: rgba(112, 128, 144, 0.804);
     backdrop-filter: blur(3px);
 
-    #home {
-        font-family: monospace;
+    .home-link{
+        font-family: "Big Shoulders Stencil", sans-serif;
         font-size: 38px;
+        font-optical-sizing: auto;
+        font-weight: 800;
+        font-style: normal;
     }
 
-    #secondary-link {
-        font-family: monospace;
+    .secondary-link {
+        font-family: "Oswald", sans-serif;
+        font-optical-sizing: auto;
+        font-weight: 600;
+        font-style: normal;
         font-size: 22px;
     }
 

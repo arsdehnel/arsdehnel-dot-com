@@ -11,6 +11,7 @@
 		"prep-posts": "node src/sync-post-images.js"
 	},
 	"dependencies": {
+		"classnames": "^2.5.1",
 		"glob": "^11.0.2",
 		"gray-matter": "^4.0.3",
 		"next": "15.3.1",
