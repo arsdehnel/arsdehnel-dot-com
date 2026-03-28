@@ -32,9 +32,9 @@ export default function Home({ latestPosts, aboutSections }) {
 					</p>
 				</div>
 				<div className="site-section-cards">
-					{aboutSections?.map(({ slug, title, intro, image }) => (
+					{aboutSections?.map(({ slugPartial, title, intro, image }) => (
 						<AboutSectionCard
-							key={slug}
+							key={slugPartial}
 							title={title}
 							intro={intro}
 							image={image}
