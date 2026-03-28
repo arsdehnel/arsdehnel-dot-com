@@ -1,4 +1,4 @@
-import getAboutContent from "@/utils/get-about-content";
+import getAboutSections from "@/utils/get-about-sections";
 import markdownToHtml from "@/utils/markdown-to-html";
 
 export default function About({ html }) {
@@ -7,7 +7,8 @@ export default function About({ html }) {
 }
 
 export async function getStaticProps() {
-	const content = await getAboutContent();
+	const sections = await getAboutSections();
+	const content = sections.map(({ content }) => content).join("\n\n");
 	const html = await markdownToHtml(content);
 
 	return {

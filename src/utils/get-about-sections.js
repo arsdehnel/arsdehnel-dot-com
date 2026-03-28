@@ -4,10 +4,10 @@ import matter from "gray-matter";
 
 const aboutContentDir = path.join(process.cwd(), "content/about");
 
-export default async function getAboutContent() {
+export default async function getAboutSections() {
 	const aboutFiles = await fs.readdir(aboutContentDir);
 
-	const aboutContent = [];
+	const aboutSections = [];
 
 	await Promise.all(
 		aboutFiles.map(async (dirEntry) => {
@@ -23,18 +23,13 @@ export default async function getAboutContent() {
 			);
 			const { data, content } = matter(fileContents);
 
-			aboutContent.push({ slugPartial, ...data, content: content.toString() });
+			aboutSections.push({ slugPartial, ...data, content: content.toString() });
 		}),
 	);
 
-	return aboutContent
-		.sort((a, b) => {
-			if (a.order > b.order) return 1;
-			if (a.order < b.order) return -1;
-			return 0;
-		})
-		.reduce((acc, { content }) => {
-			acc += content + "\n\n";
-			return acc;
-		}, "");
+	return aboutSections.sort((a, b) => {
+		if (a.order > b.order) return 1;
+		if (a.order < b.order) return -1;
+		return 0;
+	});
 }

@@ -1,4 +1,9 @@
 ---
+title: Cook
+intro: I certainly have childhood memories of food and helping in the kitchen but my passion for cooking has been on a slow simmer building throughout my life to where now it&apos;s something I think about all the time.
+image:
+  src: /about-cards/cook.jpg
+  alt: 'A white plate on a wooden table holds three pasta dishes: ribbon pasta with tomato sauce and grated cheese, plain ravioli with black pepper, and a chicory salad with shaved parmesan. Each portion is arranged in its own section on the plate, creating a trio sampler.'
 order: 3
 ---
 

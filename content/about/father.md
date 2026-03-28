@@ -1,12 +1,17 @@
 ---
+title: Father
 order: 1
+intro: Being a father is the most important role I play in life. The other roles exist to support this or really could be expressed as just a part of this.
+image:
+  src: /about-cards/father.jpg
+  alt: A smiling man in sunglasses and a baseball cap takes a selfie with two young blonde boys at a rushing waterfall. White water cascades over large gray rocks in the background, surrounded by green foliage. All three are grinning at the camera on a sunny day outdoors.
 ---
 
-## Father
+### Father
 
 Holy hell so much of all the feels.
 
-### Father First‽ 
+#### Father First‽ 
 
 I'm starting the "about" page with a section on being a father which clearly makes this non-chronological and for that I kind of annoy myself.  My brain wants order to things and to have things match the expected order.  So I apologize to you and also to me about this ordering but it is the only way this page feels right.   
 
