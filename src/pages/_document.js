@@ -7,7 +7,11 @@ export default function Document() {
 				<meta name="description" content="Personal site for Adam Dehnel" />
 				<link rel="icon" href="/favicon.ico" />
 				<link rel="preconnect" href="https://fonts.googleapis.com" />
-				<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+				<link
+					rel="preconnect"
+					href="https://fonts.gstatic.com"
+					crossOrigin="anonymous"
+				/>
 				<link
 					href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Stencil:opsz,wght@10..72,100..900&family=Inconsolata:wght@200..900&family=Oswald:wght@200..700&display=swap"
 					rel="stylesheet"
