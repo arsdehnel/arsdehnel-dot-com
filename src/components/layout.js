@@ -7,34 +7,6 @@ export default function Layout({ children, mainClass }) {
 	const router = useRouter();
 	return (
 		<div className="layout-wrapper">
-			<div
-				style={{
-					position: "sticky",
-					top: 0,
-					right: 0,
-					height: 20,
-					zIndex: 100,
-				}}
-			>
-				<button
-					type="button"
-					onClick={() => (document.body.className = "font-roboto")}
-				>
-					Roboto
-				</button>
-				<button
-					type="button"
-					onClick={() => (document.body.className = "font-inconsolata")}
-				>
-					Inconsolata
-				</button>
-				<button
-					type="button"
-					onClick={() => (document.body.className = "font-pt")}
-				>
-					PT Mono
-				</button>
-			</div>
 			<nav className="nav-main">
 				<Link
 					href="/posts"
