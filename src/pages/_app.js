@@ -2,6 +2,7 @@ import Head from "next/head";
 
 import "@/styles/globals.css";
 
+import "@/styles/about.scss";
 import "@/styles/categories.scss";
 import "@/styles/home.scss";
 import "@/styles/main.scss";
