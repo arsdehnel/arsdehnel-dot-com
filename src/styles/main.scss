@@ -1,9 +1,3 @@
-@use "sass:color";
-
-@function tint($color, $percentage) {
-	@return color.mix(white, $color, $percentage);
-}
-
 main {
 	background: #f7f7f7;
 	display: block;

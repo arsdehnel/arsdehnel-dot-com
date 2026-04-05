@@ -75,7 +75,11 @@ main.home .content-wrapper {
 	background-position: center;
 	background-repeat: no-repeat;
 	width: auto;
-	min-height: 70vh;
+	min-height: 90vh;
+	margin: -10rem -1rem 0;
+	@media only screen and (min-width: 1200px) {
+		margin: -7rem -1rem 0;
+	}
 }
 
 .home-hero {
@@ -99,7 +103,6 @@ main.home .content-wrapper {
 	gap: 2rem;
 	margin: 2rem 0;
 	@media only screen and (min-width: 1200px) {
-		margin: 5rem 0 2rem;
 		flex-direction: row;
 		width: 1200px;
 		max-width: 1200px;

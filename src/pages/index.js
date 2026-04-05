@@ -27,8 +27,9 @@ export default function Home({ latestPosts, aboutSections }) {
 				<div className="section-intro">
 					<h2>Who I Am</h2>
 					<p>
-						Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
-						eiusmod tempor incididunt ut labore et dolore magna aliqua.
+						I sort of hate to categorize myself or slot my life into just a few
+						buckets but these cover the major personas I like to consider for
+						myself as part of daily life.
 					</p>
 				</div>
 				<div className="site-section-cards">
@@ -50,8 +51,9 @@ export default function Home({ latestPosts, aboutSections }) {
 				<div className="section-intro">
 					<h2>Latest Posts</h2>
 					<p>
-						Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
-						eiusmod tempor incididunt ut labore et dolore magna aliqua.
+						I'm always trying to post more and share what's going on in life and
+						in my head. Certainly they don't cover everything but it's at least
+						a glimpse into my inner workings.
 					</p>
 				</div>
 				<div className="home-posts">
