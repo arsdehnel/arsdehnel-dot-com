@@ -1,24 +1,29 @@
-h1, h2, h3, h4, h5, h6 {
-    font-family: "Oswald", sans-serif;
-    font-optical-sizing: auto;
-    font-weight: 600;
-    font-style: normal;
-    color: #0d3d6d;
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	font-family: "Oswald", sans-serif;
+	font-optical-sizing: auto;
+	font-weight: 600;
+	font-style: normal;
+	color: #0d3d6d;
 }
 h2 {
 	font-size: 30px;
 }
 h3 {
-    font-size: 24px;
+	font-size: 24px;
 }
 h4 {
-    font-size: 20px;
+	font-size: 20px;
 }
 h5 {
-    font-size: 18px;
+	font-size: 18px;
 }
 h6 {
-    font-size: 16px;
+	font-size: 16px;
 }
 body {
 	font-family: "Inconsolata", monospace;

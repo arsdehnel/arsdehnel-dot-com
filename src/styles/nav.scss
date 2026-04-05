@@ -1,62 +1,55 @@
-@use 'sass:color';
-@use "./variables";
-
-@function tint($color, $percentage) {
-	@return color.mix(white, $color, $percentage);
-}
-
 nav.nav-main {
-    display: flex;
-    flex-direction: row;
-    position: sticky;
-    top: 0;
-    z-index: 9;
-    justify-content: center;
-    align-content: center;
-    align-items: baseline;
-    gap: .5rem;
-    padding: 1rem;
-    background-color: rgba(112, 128, 144, 0.804);
-    backdrop-filter: blur(3px);
+	display: flex;
+	flex-direction: row;
+	position: sticky;
+	top: 0;
+	z-index: 9;
+	justify-content: center;
+	align-content: center;
+	align-items: baseline;
+	gap: 0.5rem;
+	padding: 1rem;
+	background-color: rgba(112, 128, 144, 0.804);
+	backdrop-filter: blur(3px);
 
-    .home-link{
-        font-family: "Big Shoulders Stencil", sans-serif;
-        font-size: 38px;
-        font-optical-sizing: auto;
-        font-weight: 800;
-        font-style: normal;
-    }
+	.home-link {
+		font-family: "Big Shoulders Stencil", sans-serif;
+		font-size: 38px;
+		font-optical-sizing: auto;
+		font-weight: 800;
+		font-style: normal;
+	}
 
-    .secondary-link {
-        font-family: "Oswald", sans-serif;
-        font-optical-sizing: auto;
-        font-weight: 600;
-        font-style: normal;
-        font-size: 22px;
-    }
+	.secondary-link {
+		font-family: "Oswald", sans-serif;
+		font-optical-sizing: auto;
+		font-weight: 600;
+		font-style: normal;
+		font-size: 22px;
+	}
 
-    a {
-        font-weight: 600;
-        position: relative;
-        padding: .5rem 1rem;
-        // background-color: red;
-        color: #1b344c;
-        text-decoration: none;
-        text-align: center;
-        letter-spacing: .5px;
-        border-radius: 5px;
-        transition: all .1s ease-in-out;
+	a {
+		font-weight: 600;
+		position: relative;
+		padding: 0.5rem 1rem;
+		// background-color: red;
+		color: #1b344c;
+		text-decoration: none;
+		text-align: center;
+		letter-spacing: 0.5px;
+		border-radius: 5px;
+		transition: all 0.1s ease-in-out;
 
-        &:hover {
-            color: coral;
+		&:hover {
+			color: coral;
 		}
 
-        &.active {
-            color: #ffffff;
-    
-            &::before {
-                background: #1b344c;			
-            }
-        }
-    }
+		&.active {
+			color: #ffffff;
+
+			&::before {
+				background: #1b344c;
+			}
+		}
+	}
 }

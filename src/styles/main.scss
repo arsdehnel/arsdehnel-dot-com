@@ -1,5 +1,4 @@
-@use 'sass:color';
-@use "./variables";
+@use "sass:color";
 
 @function tint($color, $percentage) {
 	@return color.mix(white, $color, $percentage);
