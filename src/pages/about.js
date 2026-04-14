@@ -1,59 +1,57 @@
-import classnames from "classnames";
-import Image from "next/image";
-import getAboutSections from "@/utils/get-about-sections";
+import markdownToHtml from "@/utils/markdown-to-html";
 
-export default function About({ sections }) {
-	return (
-		<>
-			<h1>About Me</h1>
-			<div className="about-quadrant-wrapper">
-				{sections.map(({ slugPartial, title, content, image }) => (
-					<div
-						key={slugPartial}
-						className={classnames(
-							"about-quadrant",
-							`about-quadrant-${slugPartial}`,
-						)}
-					>
-						<h3>{title}</h3>
-						<p>
-							<span className="about-quadrant-shape" />
-							{content}
-						</p>
-						<Image
-							className="about-quadrant-image"
-							src={image.src}
-							width={150}
-							height={150}
-							alt={image.alt}
-						/>
-					</div>
-				))}
-				<div className="center-image" />
-			</div>
-		</>
-	);
+const content = `# About Me
+
+## Father
+
+Holy hell so much of all the feels.
+
+## Nerd
+
+#### Youngster Hack
+
+Growing up I wasn't really sure what I wanted to do &emdash; probably like most kids after we pass the age of thinking we could be a superhero and realize that being a professional athlete or move star is quite the long shot. Got our first desktop computer for Christmas in 1993 and looking back on it I see now it was the first thing that I really felt like I loved to do and was good at. I mean it was Windows 2.5 and seeing what I could do with a \`.bat\` file injected into the boot sequence on a 386SX running at a cracking 16Mhz but somehow that was _so fun_.
+
+#### Figuring Things Out
+
+High school. Band. Choir. Youth Group.
+
+#### College
+
+Lots of games. Dropped the major. Started the side business.
+
+#### Early Career
+
+Learning the ropes
+
+#### Development for Real
+
+FED. Gulp. Grunt. Backbone. Bootstrap.
+
+#### Hitting My Stride
+
+Architect. AWS. Microservices. Leading the team.
+
+## Cook
+
+Started early. Cooking for groups in college.
+
+
+## Woodworker
+
+Grandpa. Craig. College Desk. Kitchen.`;
+
+export default function About({ html }) {
+	// biome-ignore lint: yeah it's hacky but we need it
+	return <div dangerouslySetInnerHTML={{ __html: html }} />;
 }
 
-const defaultContent =
-	"lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas, voluptate. Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas, voluptate. Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas, voluptate. Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas, voluptate. Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas, voluptate. Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas, voluptate. Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas, voluptate. ";
-
 export async function getStaticProps() {
-	const sections = await getAboutSections();
-
-	const aboutSections = sections
-		.filter(({ slugPartial }) => slugPartial !== "_intro")
-		.map(({ slugPartial, ...rest }) => ({
-			slugPartial,
-			...rest,
-			content:
-				rest.insights?.map(({ hook }) => `${hook}.`).join(" ") ||
-				defaultContent,
-		}));
+	const html = await markdownToHtml(content);
 
 	return {
 		props: {
-			sections: aboutSections,
+			html,
 		},
 	};
 }
