@@ -102,9 +102,9 @@ main.home .content-wrapper {
 	flex-direction: column;
 	gap: 2rem;
 	margin: 2rem 0;
-	@media only screen and (min-width: 1200px) {
+	@media only screen and (min-width: 700px) {
 		flex-direction: row;
-		width: 1200px;
+		width: 100%;
 		max-width: 1200px;
 	}
 	.post-card {
