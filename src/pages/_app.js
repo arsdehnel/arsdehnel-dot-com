@@ -1,15 +1,17 @@
-import Head from 'next/head'
+import Head from "next/head";
 
 import "@/styles/globals.css";
 
-import "@/styles/categories.scss"
+import "@/styles/about.scss";
+import "@/styles/categories.scss";
 import "@/styles/home.scss";
 import "@/styles/main.scss";
 import "@/styles/nav.scss";
 import "@/styles/post-card.scss";
 import "@/styles/posts.scss";
+import "@/styles/typography.scss";
 
-import Layout from '../components/layout'
+import Layout from "../components/layout";
 
 export default function App({ Component, pageProps }) {
 	return (
@@ -18,9 +20,9 @@ export default function App({ Component, pageProps }) {
 				<title>Adam Dehnel</title>
 				<meta name="viewport" content="width=device-width, initial-scale=1" />
 			</Head>
-			<Layout>
+			<Layout mainClass={pageProps.mainClass}>
 				<Component {...pageProps} />
 			</Layout>
 		</>
-	)
+	);
 }
