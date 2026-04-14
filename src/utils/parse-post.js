@@ -13,6 +13,16 @@ export default async function parsePost(slug) {
 	const postPath = path.join(postsDirectory, slug, "post.md");
 	const pathChunks = postPath.split("/").slice(-2, -1);
 	const slugPartial = pathChunks[0];
+	let fileExists = true;
+	try {
+		await fs.access(postPath);
+	} catch (err) {
+		console.log(`File ${postPath} does not exist, skipping: ${err}`);
+		fileExists = false;
+	}
+	if (!fileExists) {
+		return;
+	}
 	const fileContents = await fs.readFile(postPath, "utf8");
 	const { data, content } = matter(fileContents);
 

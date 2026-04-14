@@ -21,6 +21,10 @@ export default async function getAllPosts() {
 			const slugPartial = isDir ? dirEntry : dirEntry.replace(".md", "");
 			const post = await parsePost(slugPartial);
 
+			if (!post) {
+				return;
+			}
+
 			return {
 				slugPartial,
 				filename: dirEntry,
