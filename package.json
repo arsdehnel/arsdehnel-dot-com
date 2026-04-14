@@ -7,6 +7,7 @@
 		"biome:fix": "biome check --write .",
 		"build": "next build",
 		"dev": "next dev",
+		"lint": "next lint",
 		"prep-posts": "node src/sync-post-images.js",
 		"prepare": "husky",
 		"start": "next start"
@@ -29,14 +30,25 @@
 	},
 	"devDependencies": {
 		"@aws-sdk/client-bedrock-runtime": "^3.812.0",
-		"@biomejs/biome": "2.4.7",
+		"@biomejs/biome": "2.4.11",
+		"@commitlint/cli": "^20.5.0",
+		"@commitlint/config-conventional": "^20.5.0",
+		"@eslint/eslintrc": "^3",
+		"@semantic-release/changelog": "^6.0.3",
+		"@semantic-release/commit-analyzer": "^13.0.1",
+		"@semantic-release/git": "^10.0.1",
+		"@semantic-release/github": "^12.0.6",
+		"@semantic-release/npm": "^13.1.5",
+		"@semantic-release/release-notes-generator": "^14.1.0",
 		"chalk-template": "^1.1.0",
+		"conventional-changelog-conventionalcommits": "^9.3.1",
 		"eslint": "^9",
 		"eslint-config-next": "15.3.1",
 		"husky": "^9.1.7",
 		"lint-staged": "^16.4.0",
-		"prettier": "^3.8.1",
-		"prettier-plugin-packagejson": "^3.0.2"
+		"prettier": "^3.8.2",
+		"prettier-plugin-packagejson": "^3.0.2",
+		"semantic-release": "^25.0.3"
 	},
 	"packageManager": "pnpm@10.32.1"
 }
