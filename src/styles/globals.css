@@ -1,98 +1,41 @@
 body {
-    font-family: Helvetica, sans-serif;
-    background: slategrey;
+	background: slategrey;
+	margin: 0;
+	padding: 0;
 }
 
-
 .layout-wrapper {
-    display: flex;
-    flex-direction: column;
+	display: flex;
+	flex-direction: column;
 }
 
 a {
-    color: #1b344c;
-    transition: .1s;
-    &:hover {
-        color: coral;
-    }
-}
-
-/* ---------------------------------------------
-     header
---------------------------------------------- */
-header {
-    .header-box {
-        position: absolute;
-        top: 2rem;
-        right: 0;
-        width: 90%;
-        color: #eee;
-        padding: 16px 0 26px 16px;
-        border-radius: 6px;
-        margin: 0;
-
-        @media (min-width: 50em) {
-            width: 40%;
-        }
-    
-        &::before {
-            content: '';
-            position: absolute;
-            top: 6px;
-            right: 0;
-            bottom: .5em;
-            left: 0;
-            z-index: -1;
-            border-radius: 10px 0 0 10px;
-            box-shadow: 0 1px #ffffff80 inset;
-            transform: translateZ(0) perspective(40px) rotateX(-2deg);
-            transform-origin: bottom right;
-            background: #1b344c;
-        }
-    
-        h1 {
-            margin: 0;
-            padding: 0;
-            color: coral;
-            text-decoration: none;
-            white-space: nowrap;
-        }
-
-        .tagline {
-            font-family: monospace;
-            font-size: 16px;
-            font-weight: 600;
-            white-space: nowrap;
-            letter-spacing: .5px;
-            margin-top: 4px;
-        }
-    }
+	color: #1b344c;
+	transition: 0.1s;
+	&:hover {
+		color: coral;
+	}
 }
 
 /* ---------------------------------------------
      breadcrumbs
 --------------------------------------------- */
 .breadcrumbs {
-    a {
-        text-decoration: none;
-    }
+	a {
+		text-decoration: none;
+	}
 }
 
 /* ---------------------------------------------
      footer
 --------------------------------------------- */
 footer {
-    padding: 1rem;
-    text-align: center;
-    font-size: 2rem;
-    a {
-        padding: 0 1rem;
-        color: white;
-    }
-}
-
-h2 {
-    font-size: 30px;
-    font-family: monospace;
-    color: #0d3d6d;
+	padding: 1rem;
+	padding-top: 2rem;
+	text-align: center;
+	font-size: 2rem;
+	a {
+		padding: 0 1rem;
+		color: white;
+	}
 }

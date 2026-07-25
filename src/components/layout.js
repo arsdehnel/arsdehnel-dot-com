@@ -1,40 +1,56 @@
-import {useRouter} from 'next/router';
+import classnames from "classnames";
 import Link from "next/link";
-import { AiFillGithub, AiFillLinkedin, AiFillGitlab } from "react-icons/ai";
+import { useRouter } from "next/router";
+import { AiFillGithub, AiFillGitlab, AiFillLinkedin } from "react-icons/ai";
 
-export default function Layout({ children }) {
-	const router = useRouter()
+export default function Layout({ children, mainClass }) {
+	const router = useRouter();
 	return (
-		<>
-			<div className="layout-wrapper">
-				<header>
-					<div className="header-box">
-						<h1>Adam Dehnel</h1>
-						<div className="tagline">father | nerd | cook | woodworker</div>
-					</div>
-				</header>
-				<nav className="nav-main">
-					<Link href="/" className={ router.pathname === "/" ? "active" : "" }>
-						Home
-					</Link>
-					<Link href="/posts" className={ router.pathname.startsWith( "/posts" ) ? "active" : "" }>
-						Posts
-					</Link>
-					<Link href="/about" className={ router.pathname === "/about" ? "active" : "" }>
-						About
-					</Link>
-				</nav>
-				<main>
-					<div className="content-wrapper">
-						{ children }
-					</div>
-				</main>
-				<footer>
-					<a href="https://github.com/arsdehnel"><AiFillGithub /></a>
-					<a href="https://www.linkedin.com/in/adamdehnel/"><AiFillLinkedin /></a>
-					<a href="https://gitlab.com/arsdehnel"><AiFillGitlab /></a>
-				</footer>
-			</div>
-		</>
-	)
+		<div className="layout-wrapper">
+			<nav className="nav-main">
+				<Link
+					href="/posts"
+					className={classnames({
+						active: router.pathname.startsWith("/posts"),
+						"secondary-link": true,
+					})}
+					id="secondary-link"
+				>
+					Posts
+				</Link>
+				<Link
+					href="/"
+					className={classnames({
+						active: router.pathname === "/",
+						"home-link": true,
+					})}
+				>
+					Adam Dehnel
+				</Link>
+				<Link
+					href="/about"
+					className={classnames({
+						active: router.pathname === "/about",
+						"secondary-link": true,
+					})}
+				>
+					About
+				</Link>
+			</nav>
+			<main className={mainClass}>
+				<div className="content-wrapper">{children}</div>
+			</main>
+			<footer>
+				<a href="https://github.com/arsdehnel">
+					<AiFillGithub />
+				</a>
+				<a href="https://www.linkedin.com/in/adamdehnel/">
+					<AiFillLinkedin />
+				</a>
+				<a href="https://gitlab.com/arsdehnel">
+					<AiFillGitlab />
+				</a>
+			</footer>
+		</div>
+	);
 }

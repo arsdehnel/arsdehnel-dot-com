@@ -1,0 +1,172 @@
+$center_image_size: 300px;
+$quadrant_radius: calc($center_image_size / 2);
+
+.about-quadrant-wrapper {
+	position: relative;
+	display: flex;
+	flex-wrap: wrap;
+	margin: 1rem auto;
+
+	.about-quadrant {
+		position: relative;
+		padding: 1rem;
+		height: 250px;
+		flex: 1 0 40%;
+		box-shadow: inset 0 0 5px #666;
+		display: flex;
+	}
+
+	h3 {
+		position: absolute;
+		font-size: 2rem;
+		font-weight: 500;
+		text-transform: uppercase;
+		color: orange;
+		margin: 0;
+		line-height: 1;
+		letter-spacing: 0.5rem;
+		width: 280px;
+	}
+
+	.about-quadrant p {
+		font-size: 14px;
+		line-height: 1.65;
+		margin: 0;
+		text-align: justify;
+	}
+
+	.center-image {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		width: $center_image_size;
+		height: $center_image_size;
+		border-radius: 50%;
+		background: rgba(255, 128, 0, 0.2);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-size: 13px;
+		z-index: 10;
+		pointer-events: none;
+	}
+
+	.about-quadrant-image {
+		position: absolute;
+	}
+
+	.about-quadrant-shape {
+		height: 100%;
+		width: $quadrant_radius;
+		background: transparent;
+	}
+
+	.about-quadrant-father {
+		border-radius: 12px 0 0 0;
+		h3 {
+			transform-origin: 0 100%;
+			transform: rotate(-90deg);
+			left: 0;
+			bottom: 0;
+			text-align: right;
+		}
+		.about-quadrant-shape {
+			float: right;
+			shape-outside: radial-gradient(
+				$quadrant_radius at bottom right,
+				#000 98%,
+				#0000
+			);
+			img {
+				border-radius: 500px 0 0 0;
+			}
+		}
+		.about-quadrant-image {
+			right: 0;
+			bottom: 0;
+			clip-path: circle($quadrant_radius at 100% 100%);
+		}
+	}
+
+	.about-quadrant-nerd {
+		border-radius: 0 12px 0 0;
+		h3 {
+			transform-origin: 100% 100%;
+			transform: rotate(90deg);
+			right: 0;
+			bottom: 0;
+			text-align: left;
+		}
+		.about-quadrant-shape {
+			float: left;
+			shape-outside: radial-gradient(
+				$quadrant_radius at bottom left,
+				#000 98%,
+				#0000
+			);
+			img {
+				border-radius: 0 500px 0 0;
+			}
+		}
+		.about-quadrant-image {
+			left: 0;
+			bottom: 0;
+			clip-path: circle($quadrant_radius at 0% 100%);
+		}
+	}
+
+	.about-quadrant-cook {
+		border-radius: 0 0 0 12px;
+		h3 {
+			transform-origin: 0 100%;
+			transform: rotate(-90deg);
+			left: 0;
+			bottom: 0;
+			text-align: right;
+		}
+		.about-quadrant-shape {
+			float: right;
+			shape-outside: radial-gradient(
+				$quadrant_radius at top right,
+				#000 98%,
+				#0000
+			);
+			img {
+				border-radius: 0 0 0 500px;
+			}
+		}
+		.about-quadrant-image {
+			right: 0;
+			top: 0;
+			clip-path: circle($quadrant_radius at 100% 0%);
+		}
+	}
+
+	.about-quadrant-woodworker {
+		border-radius: 0 0 12px 0;
+		h3 {
+			transform-origin: 100% 100%;
+			transform: rotate(90deg);
+			right: 0;
+			bottom: 0;
+			text-align: left;
+		}
+		.about-quadrant-shape {
+			float: left;
+			shape-outside: radial-gradient(
+				$quadrant_radius at top left,
+				#000 98%,
+				#0000
+			);
+			img {
+				border-radius: 0 0 500px 0;
+			}
+		}
+		.about-quadrant-image {
+			left: 0;
+			top: 0;
+			clip-path: circle($quadrant_radius at 0% 0%);
+		}
+	}
+}

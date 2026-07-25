@@ -1,41 +1,45 @@
-import { useRouter } from 'next/router'
+import { useRouter } from "next/router";
 
-import Categories from '@/components/categories/categories';
-import getAllPosts from '@/utils/get-all-posts';
-import PostListing from '@/components/post-listing';
+import Categories from "@/components/categories/categories";
+import PostListing from "@/components/post-listing";
+import getAllPosts from "@/utils/get-all-posts";
 
 export default function Posts({ posts, categories }) {
+	const router = useRouter();
 
-	const router = useRouter()
-	
 	const filters = {};
-	Object.keys( router.query ).forEach( key => {
-		if( router.query[ key ].length > 0 ) {
-			filters[ key ] = router.query[ key ].split( ',' );
+	Object.keys(router.query).forEach((key) => {
+		if (router.query[key].length > 0) {
+			filters[key] = router.query[key].split(",");
 		}
-	})
+	});
 
 	return (
 		<>
-		<div className='post-header'>
-			<h1>Posts</h1>
-			<Categories categories={ categories } selectedCategories={ filters.categories }	 />
-		</div>
-			<PostListing posts={ posts } filters={ filters } />
+			<div className="posts-header">
+				<h1>Posts</h1>
+				<Categories
+					categories={categories}
+					selectedCategories={filters.categories}
+				/>
+			</div>
+			<div className="posts-wrapper">
+				<PostListing posts={posts} filters={filters} />
+			</div>
 		</>
 	);
 }
 
 export async function getStaticProps() {
-
 	const posts = await getAllPosts();
-	const categories = Array.from( new Set( posts.flatMap( p => p.categories ) ) ).sort();
+	const categories = Array.from(
+		new Set(posts.flatMap((p) => p.categories)),
+	).sort();
 
 	return {
 		props: {
 			posts,
-			categories
+			categories,
 		},
-	}
-
+	};
 }

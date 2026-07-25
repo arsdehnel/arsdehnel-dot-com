@@ -1,16 +1,178 @@
+main.home .content-wrapper {
+	max-width: 100%;
+}
 .home-columns {
-    display: flex;
-    flex-direction: row;
-    gap: 3rem;
-    transition: all .3s ease-in-out;
-    @media (max-width: 50em) {
-        flex-direction: column;
-        gap: 0;
-    }
+	display: flex;
+	flex-direction: column;
+	gap: 7rem;
+	transition: all 0.3s ease-in-out;
+	height: auto;
 
-    .post-card {
-        width: 300px;
-        padding: 1rem;
-        display: flex;
-    }
+	.site-section-cards {
+		display: flex;
+		flex-direction: column;
+		gap: 2rem;
+		margin: 1rem 0 1rem 60px;
+		@media only screen and (min-width: 1200px) {
+			margin: 5rem 0 2rem;
+			flex-direction: row;
+		}
+
+		.site-section-card {
+			display: flex;
+			flex-direction: row;
+			border-radius: 3px;
+			background-color: white;
+			padding: 1rem;
+			gap: 2rem;
+			@media only screen and (min-width: 1200px) {
+				flex-direction: column;
+				width: 25%;
+			}
+			.home-card-image {
+				position: relative;
+				aspect-ratio: 1 / 1;
+				height: auto;
+				align-self: center;
+				border-radius: 50%;
+				background-color: #0d3d6d;
+				width: 100px;
+				left: -70px;
+				margin-right: -70px;
+				@media only screen and (min-width: 1200px) {
+					top: -70px;
+					left: auto;
+					width: 230px;
+					margin-right: auto;
+					margin-bottom: -4rem;
+				}
+			}
+			.site-section-content {
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
+			}
+			h3 {
+				font-family: Inconsolata, monospace;
+				font-size: 24px;
+				color: #0d3d6d;
+				margin: 0 0 0.5rem 0;
+				@media only screen and (min-width: 1200px) {
+					margin-bottom: 0.5rem;
+				}
+			}
+			p {
+				padding: 0;
+				margin: 0;
+			}
+		}
+	}
+}
+
+.home-image {
+	background-image: url("/homepage-hero/splitrock-102025.jpg");
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+	width: auto;
+	min-height: 90vh;
+	margin: -10rem -1rem 0;
+	@media only screen and (min-width: 1200px) {
+		margin: -7rem -1rem 0;
+	}
+}
+
+.home-hero {
+	width: 100%;
+	height: auto;
+	border-radius: 3px;
+	margin-bottom: 3rem;
+}
+
+.home-who-am-i {
+	margin: -100px auto 0;
+	@media only screen and (min-width: 1200px) {
+		margin: -200px auto 0;
+		max-width: 1200px;
+	}
+}
+
+.home-posts {
+	display: flex;
+	flex-direction: column;
+	gap: 2rem;
+	margin: 2rem 0;
+	@media only screen and (min-width: 700px) {
+		flex-direction: row;
+		width: 100%;
+		max-width: 1200px;
+	}
+	.post-card {
+		flex: 1;
+	}
+}
+
+.home-hero-content {
+	display: flex;
+	margin-top: -290px;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 1rem;
+	text-align: center;
+	padding: 1rem 3rem;
+	max-width: 800px;
+	background-color: #0d3d6dc2;
+	backdrop-filter: blur(5px);
+	border-radius: 3px;
+	h1 {
+		font-family: Inconsolata, monospace;
+		color: white;
+		font-size: 42px;
+		margin-top: 0;
+		margin-bottom: -1rem;
+	}
+	p {
+		color: white;
+		font-size: 18px;
+	}
+}
+
+section {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 0.5rem;
+}
+
+.posts {
+	margin-bottom: 10rem;
+}
+
+.section-intro {
+	text-align: center;
+	max-width: 700px;
+	h2 {
+		font-family: Inconsolata, monospace;
+		color: #0d3d6d;
+		font-size: 42px;
+		margin-bottom: -1rem;
+	}
+	p {
+		color: #252525;
+		font-size: 18px;
+	}
+}
+
+.more-link {
+	font-family: Inconsolata, monospace;
+	font-weight: 700;
+	font-size: 18px;
+	color: #0d3d6d;
+	text-decoration-thickness: 0;
+	transition: all 0.1s ease-in-out;
+
+	&:hover {
+		color: coral;
+	}
 }
