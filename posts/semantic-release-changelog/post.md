@@ -31,120 +31,172 @@ The goal was to create a more meaningful release process with artifacts that cor
 
 ## Implementation
 
-### The `.releaserc.json` Configuration
+### The `release.config.js` Configuration
 
-The initial indicator to `semantic-release` of what all you want it to do as part of a release I was missing the config file.  There are a few options but given my reasonably simple needs I chose simple JSON.  While [the default plugins list](https://semantic-release.org/usage/configuration/#plugins) includes 4 of the 5 plugins below I wanted to tweak a couple settings on the existing ones in addition to adding the changelog plugin.  A quick list of plugins that I have enabled and why:
+The initial thing I was missing was the config file telling `semantic-release` what to do as part of a release. The most common format you'll see in docs and examples is `.releaserc.json` — a static JSON file. That works fine for CI, but falls apart as soon as you want to run a local dry run. Probably it is possible to make it work but a JS file was way more doable. 
 
-- **Commit Analyzer:** Required for really any useful `semantic-release` process this analyzes the commits since the last release. For my use case I configured it to use the [Conventional Commit's](https://conventional-changelog.js.org/) [Conventional Commits](https://conventional-changelog.js.org/presets/conventional-commits/) preset which matches the default.  I just tweaked the `refactor` commits to create a patch release rather than the default of `refactor` creating no release.
+The problem is that a local dry run has different requirements than a CI release: you don't have a `GITHUB_TOKEN`, you might be on a feature branch that isn't in the `branches` list, and you don't want plugins that write to the repo or publish to npm actually doing anything. With a static JSON config you have to work around all of that at the call site, passing CLI flags and environment variables to try to get things lined up.
 
-    ```json
+The cleaner solution I came across first [in this blog post](https://blog.elantha.com/semantic-release-local-dry-run) is to make the config file aware of how it's being invoked. `semantic-release` supports `release.config.js` as a config format, and since this project has `"type": "module"` in `package.json`, that means ESM. The file exports different configs based on whether `--dry-run` is in `process.argv` — local dry runs get a lightweight local-only config, CI gets the full plugin list.
+
+The `getLocalRepoUrl()` function is the key piece for local dry runs. By pointing `repositoryUrl` at the local `.git` directory, semantic-release reads from the local repo instead of hitting GitHub — no token required, no network call, no remote branch validation. `getCurrentBranch()` handles the branch problem automatically: whatever branch you're on locally is what gets used.
+
+While [the default plugins list](https://semantic-release.org/usage/configuration/#plugins) includes 4 of the 5 CI plugins below, I wanted to tweak a couple settings on the existing ones in addition to adding the changelog plugin. A quick list of plugins that I have enabled and why:
+
+- **Commit Analyzer:** Required for really any useful `semantic-release` process, this analyzes the commits since the last release. For my use case I configured it to use the [Conventional Commits](https://conventional-changelog.js.org/presets/conventional-commits/) preset which matches the default. I just tweaked the `refactor` commits to create a patch release rather than the default of `refactor` creating no release.
+
+    ```js
     [
-      "@semantic-release/commit-analyzer",
+      '@semantic-release/commit-analyzer',
       {
-        "preset": "conventionalcommits",
-        "releaseRules": [
-          { "type": "refactor", "release": "patch" }
-        ]
-      }
+        preset: 'conventionalcommits',
+        releaseRules: [{ type: 'refactor', release: 'patch' }],
+      },
     ]
     ```
 
-- **Release Notes Generator:** Another default plugin this converts those commits into structures by type as noted in [the package docs](https://github.com/semantic-release/release-notes-generator).  The particular preset that I'm using is the [conventionalcommits preset](https://github.com/conventional-changelog/conventional-changelog/tree/master/packages/conventional-changelog-conventionalcommits) which is an implementation of [the conventional commits](https://www.conventionalcommits.org/en/v1.0.0/) specification.  I really like this pattern but the preset has an unfortunate behavior of the `types` [replacing the default list entirely](https://conventional-changelog.js.org/presets/conventional-commits/options/#types) rather than merging in these settings as overrides.  So I included my full mapping to get that `refactor` pulled out instead of hidden (which is the default).
+- **Release Notes Generator:** Another default plugin, this converts those commits into structures by type as noted in [the package docs](https://github.com/semantic-release/release-notes-generator). The particular preset that I'm using is the [conventionalcommits preset](https://github.com/conventional-changelog/conventional-changelog/tree/master/packages/conventional-changelog-conventionalcommits) which is an implementation of [the conventional commits](https://www.conventionalcommits.org/en/v1.0.0/) specification. I really like this pattern but the preset has an unfortunate behavior of the `types` [replacing the default list entirely](https://conventional-changelog.js.org/presets/conventional-commits/options/#types) rather than merging in these settings as overrides. So I included my full mapping to get that `refactor` pulled out instead of hidden (which is the default).
 
-    ```json
+    ```js
     [
-      "@semantic-release/release-notes-generator",
+      '@semantic-release/release-notes-generator',
       {
-        "preset": "conventionalcommits",
-        "presetConfig": {
-          "types": [
-            { "type": "feat", "section": "Features" },
-            { "type": "fix", "section": "Bug Fixes" },
-            { "type": "perf", "section": "Performance Improvements" },
-            { "type": "revert", "section": "Reverts" },
-            { "type": "refactor", "section": "Code Refactoring" }
-          ]
-        }
-      }
-    ],
+        preset: 'conventionalcommits',
+        presetConfig: {
+          types: [
+            { type: 'feat', section: 'Features' },
+            { type: 'fix', section: 'Bug Fixes' },
+            { type: 'perf', section: 'Performance Improvements' },
+            { type: 'revert', section: 'Reverts' },
+            { type: 'refactor', section: 'Code Refactoring' },
+          ],
+        },
+      },
+    ]
     ```
 
-- **Changelog:** This is the one I actually needed to add for my particular change.  The default setting [from the package docs](https://github.com/semantic-release/changelog) are good enough for me so I just needed the plugin invoked.
+- **Changelog:** This is the one I actually needed to add for my particular change. The default settings [from the package docs](https://github.com/semantic-release/changelog) are good enough for me so I just needed the plugin invoked.
 
-    ```json
-    "@semantic-release/changelog",
+    ```js
+    '@semantic-release/changelog'
     ```
 
-- **NPM:** This is another default plugin I just need to keep in the list.  Since I have `private: true` in my `package.json` I can skip explicitly setting the `publish: false` here [as noted in their docs](https://github.com/semantic-release/npm).
+- **NPM:** This is another default plugin I just need to keep in the list. Since I have `private: true` in my `package.json` I can skip explicitly setting `npmPublish: false` here [as noted in their docs](https://github.com/semantic-release/npm).
 
-    ```json
-    "@semantic-release/npm",
+    ```js
+    '@semantic-release/npm'
     ```
 
-- **git**: Manages the `git` commit operation for writing artifacts of the release back to the repository.  Per [the package docs](https://github.com/semantic-release/git) I just need to tell it which files I want committed and the commit message template.
+- **git:** Manages the `git` commit operation for writing artifacts of the release back to the repository. Per [the package docs](https://github.com/semantic-release/git) I just need to tell it which files I want committed and the commit message template.
 
-    ```json
+    ```js
     [
-      "@semantic-release/git",
+      '@semantic-release/git',
       {
-        "assets": ["package.json", "pnpm-lock.yaml", "CHANGELOG.md"],
-        "message": "chore(release): ${nextRelease.version} \n\n${nextRelease.notes}"
-      }
-    ],
+        assets: ['package.json', 'pnpm-lock.yaml', 'CHANGELOG.md'],
+        message: 'chore(release): ${nextRelease.version}\n\n${nextRelease.notes}',
+      },
+    ]
     ```
 
 - **GitHub:** Wrapping it all up I use [the GitHub plugin](https://github.com/semantic-release/github) to create the GitHub Release.
 
-    ```json
-    "@semantic-release/github"
+    ```js
+    '@semantic-release/github'
     ```
 
-So then the full thing looks like this:
+So the full `release.config.js`:
 
-```json
-{
-  "branches": ["main"],
-  "repositoryUrl": "https://github.com/arsdehnel/rwsdk-jeopardy",
-  "plugins": [
-    [
-      "@semantic-release/commit-analyzer",
-      {
-        "preset": "conventionalcommits",
-        "releaseRules": [
-          { "type": "refactor", "release": "patch" }
-        ]
-      }
+```js
+import { execSync } from 'node:child_process';
+
+export default isDryRun() ? getDryRunConfig() : getCIConfig();
+
+function isDryRun() {
+  return process.argv.includes('--dry-run');
+}
+
+function getDryRunConfig() {
+  return {
+    repositoryUrl: getLocalRepoUrl(),
+    branches: [getCurrentBranch()],
+    plugins: [
+      [
+        '@semantic-release/commit-analyzer',
+        {
+          preset: 'conventionalcommits',
+          releaseRules: [{ type: 'refactor', release: 'patch' }],
+        },
+      ],
+      [
+        '@semantic-release/release-notes-generator',
+        {
+          preset: 'conventionalcommits',
+          presetConfig: {
+            types: [
+              { type: 'feat', section: 'Features' },
+              { type: 'fix', section: 'Bug Fixes' },
+              { type: 'perf', section: 'Performance Improvements' },
+              { type: 'revert', section: 'Reverts' },
+              { type: 'refactor', section: 'Code Refactoring' },
+            ],
+          },
+        },
+      ],
     ],
-    [
-      "@semantic-release/release-notes-generator",
-      {
-        "preset": "conventionalcommits",
-        "presetConfig": {
-          "types": [
-            { "type": "feat", "section": "Features" },
-            { "type": "fix", "section": "Bug Fixes" },
-            { "type": "perf", "section": "Performance Improvements" },
-            { "type": "revert", "section": "Reverts" },
-            { "type": "refactor", "section": "Code Refactoring" }
-          ]
-        }
-      }
+  };
+}
+
+function getCIConfig() {
+  return {
+    repositoryUrl: 'https://github.com/arsdehnel/rwsdk-jeopardy',
+    branches: ['main'],
+    plugins: [
+      [
+        '@semantic-release/commit-analyzer',
+        {
+          preset: 'conventionalcommits',
+          releaseRules: [{ type: 'refactor', release: 'patch' }],
+        },
+      ],
+      [
+        '@semantic-release/release-notes-generator',
+        {
+          preset: 'conventionalcommits',
+          presetConfig: {
+            types: [
+              { type: 'feat', section: 'Features' },
+              { type: 'fix', section: 'Bug Fixes' },
+              { type: 'perf', section: 'Performance Improvements' },
+              { type: 'revert', section: 'Reverts' },
+              { type: 'refactor', section: 'Code Refactoring' },
+            ],
+          },
+        },
+      ],
+      '@semantic-release/changelog',
+      '@semantic-release/npm',
+      [
+        '@semantic-release/git',
+        {
+          assets: ['package.json', 'pnpm-lock.yaml', 'CHANGELOG.md'],
+          message: 'chore(release): ${nextRelease.version}\n\n${nextRelease.notes}',
+        },
+      ],
+      '@semantic-release/github',
     ],
-    "@semantic-release/changelog",
-    "@semantic-release/npm",
-    [
-      "@semantic-release/git",
-      {
-        "assets": ["package.json", "pnpm-lock.yaml", "CHANGELOG.md"],
-        "message": "chore(release): ${nextRelease.version}\n\n${nextRelease.notes}"
-      }
-    ],
-    "@semantic-release/github"
-  ]
+  };
+}
+
+function getLocalRepoUrl() {
+  const topLevelDir = execSync('git rev-parse --show-toplevel').toString().trim();
+  return `file://${topLevelDir}/.git`;
+}
+
+function getCurrentBranch() {
+  return execSync('git rev-parse --abbrev-ref HEAD').toString().trim();
 }
 ```
-
-The key additions are `@semantic-release/changelog` (which writes `CHANGELOG.md`), and `@semantic-release/git` (which commits those changes back to the repo as part of the release).
 
 ### Semantic Release's Documentation Gap
 
@@ -174,9 +226,11 @@ pnpm dlx \
   --package=@semantic-release/npm@13 \
   --package=@semantic-release/git@11 \
   --package=@semantic-release/github@12 \
-  --package=conventional-changelog-conventionalcommits@10 \
+  --package=conventional-changelog-conventionalcommits@9 \
   semantic-release
 ```
+
+As you can imagine this leads to a bit of fragility in getting the right versions of all of those that play nicely with each other.  For example when putting this together one version incompatibility I ran into: `@semantic-release/release-notes-generator@14` depends on `conventional-changelog-writer@8`, but `conventional-changelog-conventionalcommits@10` added a hard requirement for `conventional-changelog-writer@9`. Using `@10` of the preset with `@14` of the generator produces a cryptic handlebars template error at runtime. The fix is to pin `conventional-changelog-conventionalcommits` to `@9`, which is compatible with `conventional-changelog-writer@8`. This will presumably resolve itself when `release-notes-generator` ships a version that pulls in writer@9, but for now the versions need to be matched manually.
 
 The docs [recommend pinning to major versions](https://semantic-release.org/usage/running/#notes) so you don't get surprise breaking changes from automatic updates. While that makes sense it means these version pins aren't in your `pnpm-lock.yaml`. A tool like Renovate won't automatically pick them up without extra configuration to scan scripts or other files for version references. That's a known limitation worth tracking.
 
@@ -198,7 +252,7 @@ pnpm dlx \
   --package=@semantic-release/npm@13 \
   --package=@semantic-release/git@11 \
   --package=@semantic-release/github@12 \
-  --package=conventional-changelog-conventionalcommits@10 \
+  --package=conventional-changelog-conventionalcommits@9 \
   semantic-release "$@"
 ```
 
@@ -279,14 +333,24 @@ The `HUSKY: 0` env var disables Husky hooks during the release commit. Without i
 
 It's a clunky pattern. The window where protection is disabled is short — just the duration of the semantic-release run — but it's still a window. Whether that tradeoff is acceptable depends on how much you care about that gap versus the operational complexity of the bypass actor approach.
 
-### The PR Dry Run
+### The Dry Run
 
-Every PR to `main` runs a dry run and writes the output to the GitHub Actions job summary. This makes the impact of each PR visible before merging — you can see whether the commits will produce a patch, minor, or major bump, and what the changelog entry will look like.
+The dry run serves two purposes: a local preview while working on a branch, and an automated preview on every PR to `main`.
+
+**Locally**, the `package.json` script is:
+
+```json
+"release:dry-run": "./scripts/semantic-release.sh --dry-run --no-ci"
+```
+
+The `--dry-run` flag skips all write operations — no tags, no commits, no GitHub release. The JS config detects `--dry-run` in `process.argv` and returns `getDryRunConfig()`, which points `repositoryUrl` at the local `.git` directory and sets `branches` to the current branch. This means no `GITHUB_TOKEN` is needed, no remote branch validation happens, and only the analyzer and notes generator run — the plugins that produce output without side effects.
+
+**In CI**, every PR to `main` runs the same script and writes the output to the GitHub Actions job summary, making the impact of each PR visible before merging:
 
 ```yaml
 - name: Release dry run
   run: |
-    ./scripts/semantic-release.sh --dry-run --no-ci 2>&1 | tee /tmp/release-dry-run.txt
+    pnpm release:dry-run 2>&1 | tee /tmp/release-dry-run.txt
     echo "## Release Dry Run" >> $GITHUB_STEP_SUMMARY
     echo '```' >> $GITHUB_STEP_SUMMARY
     sed 's/\x1b\[[0-9;]*m//g' /tmp/release-dry-run.txt >> $GITHUB_STEP_SUMMARY
@@ -295,14 +359,23 @@ Every PR to `main` runs a dry run and writes the output to the GitHub Actions jo
     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 ```
 
-Two flags are required here:
-
-- `--dry-run`: skips all write operations. No tags, no commits, no GitHub release. Just produces output.
-- `--no-ci`: bypasses semantic-release's branch validation. When GitHub Actions checks out a PR, the HEAD is a detached merge commit — not the `main` branch. Semantic-release would otherwise refuse to run because it doesn't recognize the current "branch" as a configured release branch. `--no-ci` disables that check.
+`--no-ci` is still needed here. It's not about branch validation — it tells semantic-release to skip the check that requires CI environment variables to be present. Without it, semantic-release refuses to run outside of a detected CI environment.
 
 The `sed` call strips ANSI color codes before writing to the summary, since the raw output includes terminal escape sequences that don't render in markdown.
 
 The output lands in the **Summary** tab of the Actions job, not as a PR comment. A comment would be more immediately visible in the PR review flow, but it requires write permissions and a bit more setup to avoid creating duplicate comments on every push to the PR branch. The summary is simpler and sufficient for now.
+
+#### The `ERELEASEBRANCHES` Gotcha
+
+If you run the dry run locally and see this error:
+
+```
+ERELEASEBRANCHES The release branches are invalid in the `branches` configuration.
+A minimum of 1 and a maximum of 3 release branches are required in the branches configuration.
+These branches must exist on the remote repository.
+```
+
+The error message says "must exist on the remote repository" but that's easy to miss. semantic-release [silently removes branches from the list](https://github.com/semantic-release/semantic-release/blob/8d905a56e80030c141a71a56c0c4cb870e90470a/lib/branches/expand.js) if they aren't found on the remote, and if the resulting list is empty, it throws this. It's not a config syntax error — it means the branch you're on hasn't been pushed to the remote yet. Push the branch and the error goes away.
 
 ---
 
