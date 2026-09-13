@@ -1,11 +1,11 @@
 ---
 title: Consulting 90 Day Check-In
-excerpt: >-
-  It has already been 90 days since I made the transition to my new job as a Principal Consultant at Improving.
+excerpt: It has already been 90 days since I made the transition to my new job as a Principal Consultant at Improving.
 thumbnail: improving-flat-blue-w-o-tagline.png
 date: '2025-11-19'
-categories: 
+categories:
   - career
+atUri: at://did:plc:6phduc5l74zerkticgmcjgyc/site.standard.document/3mvbugyboxl2v
 ---
 
 I can't believe it's already been 90 days!  I started at [Improving](https://www.improving.com/) as a Principal Consultant on August 11th and it's been a really wild ride since then.  Having spent nearly 21 years at [BI Worldwide](https://www.biworldwide.com/) as a FTE there are quite a few things to adjust to moving into consulting.  

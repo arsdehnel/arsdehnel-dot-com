@@ -39,3 +39,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+.sequoia-state.json
+# not using bun for this project but using it for linking to local sequoia cli
+bun.lock

@@ -1,11 +1,11 @@
 ---
 title: Javascript Development Tooling
-excerpt: >-
-  As I've been getting back into JS (and now TS) development I thought it would be good to share some of my tooling choices.  Everyone has their own take on these items and they are always changing but capturing them seems like a rite of passage.
+excerpt: As I've been getting back into JS (and now TS) development I thought it would be good to share some of my tooling choices.  Everyone has their own take on these items and they are always changing but capturing them seems like a rite of passage.
 thumbnail: toolbox.jpg
-date: "2026-04-07"
+date: '2026-04-07'
 categories:
   - development
+atUri: at://did:plc:6phduc5l74zerkticgmcjgyc/site.standard.document/3mvbugv6bda2y
 ---
 
 ## IDE

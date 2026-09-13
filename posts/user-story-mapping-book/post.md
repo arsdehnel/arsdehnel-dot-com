@@ -1,12 +1,12 @@
 ---
 title: User Story Mapping Book
-excerpt: >-
-  Wandering through the "available now" books on my eBook app for my library and came across this one.  Honestly had low-ish expectations entirely based on the age of the book but it's been a good refresher and focus-bringers.
+excerpt: Wandering through the "available now" books on my eBook app for my library and came across this one.  Honestly had low-ish expectations entirely based on the age of the book but it's been a good refresher and focus-bringers.
 thumbnail: book.png
 date: '2025-05-27'
-categories: 
+categories:
   - development
   - book
+atUri: at://did:plc:6phduc5l74zerkticgmcjgyc/site.standard.document/3mvbugz4yyd2v
 ---
 
 **Disclaimer: this book review is still in-progress and thus the analysis may seem to end abrubptly.**
