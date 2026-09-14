@@ -1,11 +1,11 @@
 ---
 title: Semantic Release Changelog Config
-excerpt: >-
-  Had to get Semantic Release setup to go from just git tags to a proper changelog with artifacts.  Given the nuance of the process it seemed good to document and share.
+excerpt: Had to get Semantic Release setup to go from just git tags to a proper changelog with artifacts.  Given the nuance of the process it seemed good to document and share.
 thumbnail: hero.DXMsy2Hq_Z1CxQaX.webp
-date: "2026-09-08"
+date: '2026-09-08'
 categories:
   - development
+atUri: at://did:plc:6phduc5l74zerkticgmcjgyc/site.standard.document/3mvbugtirlu2z
 ---
 
 # Getting Semantic Release to Actually Do the Useful Stuff

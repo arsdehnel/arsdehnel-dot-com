@@ -1,12 +1,12 @@
 ---
 title: Camping Car Storage
-excerpt: >-
-  We do a big road trip with tent camping every year and it was time to build something custom.
+excerpt: We do a big road trip with tent camping every year and it was time to build something custom.
 thumbnail: thumbnail.jpg
 date: '2025-05-25'
-categories: 
+categories:
   - wood
   - camping
+atUri: at://did:plc:6phduc5l74zerkticgmcjgyc/site.standard.document/3mvbuh3xcjl26
 ---
 
 For essentially as long as we've had our Outback I've thought about building something that fits nicely into the back to make our camping setup more organized and just how we need it.  We've had a very similar setup for that entire time that is comprised for four things:

@@ -1,11 +1,11 @@
 ---
 title: Dining Table Refinish
-excerpt: >-
-  A long overdue project to take our generations-old dining room table and prepare it for decades more use.
+excerpt: A long overdue project to take our generations-old dining room table and prepare it for decades more use.
 thumbnail: thumbnail.jpg
 date: '2025-05-21'
-categories: 
+categories:
   - wood
+atUri: at://did:plc:6phduc5l74zerkticgmcjgyc/site.standard.document/3mvbuh6ew3p2e
 ---
 
 Our dining table is the same one that my grandparents had at their house when I was growing up (and quite a few years before I was born).  It's been a great table and expands from a 42" circle all the way to 82" after adding the leaves.  However it is now something like 60 years old and had definitely started to show its age.  On top of dings and dents the finish had started to get tacky and things would stick to it.  

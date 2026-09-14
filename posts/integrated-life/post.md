@@ -1,11 +1,11 @@
 ---
 title: Integrated Life & Limited Agency
-excerpt: >-
-  Sometimes life connects dots you didn't even know existed. A company meeting about 'integrated life' and a Christian historian's thoughts on 'limited agency' shouldn't have anything to do with each other. But they changed how I am thinking about work, control, and what it means to live realistically.
+excerpt: Sometimes life connects dots you didn't even know existed. A company meeting about 'integrated life' and a Christian historian's thoughts on 'limited agency' shouldn't have anything to do with each other. But they changed how I am thinking about work, control, and what it means to live realistically.
 date: '2026-01-01'
 thumbnail: thumbnail.jpg
-categories: 
+categories:
   - self-care
+atUri: at://did:plc:6phduc5l74zerkticgmcjgyc/site.standard.document/3mvbugx7m5d2v
 ---
 
 In November I had a company meeting back that talked about the concept of an "integrated life".  I had some deeper internal processing than I expected coming out of that meeting that started the wheels churning on this post.  Then last week my mom shared a post from Kate Bowler about celebrating "limited agency".  This is my reflection on those two ideas, how they have merged together in my mind, and how I'm working on incorporating them into my life.

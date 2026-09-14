@@ -1,11 +1,11 @@
 ---
 title: Cloudflare Workers AI Model Selection
-excerpt: >-
-  I'm not an AI enthusiast by any means but feeling the need to be able to speak intelligently about the whole situation.  Picking a model for my exploration of Cloudflare Workers AI was just one of the aspects of this whole AI thing that gives me anxiety.
+excerpt: I'm not an AI enthusiast by any means but feeling the need to be able to speak intelligently about the whole situation.  Picking a model for my exploration of Cloudflare Workers AI was just one of the aspects of this whole AI thing that gives me anxiety.
 thumbnail: cf-logo.png
-date: "2026-07-25"
+date: '2026-07-25'
 categories:
   - development
+atUri: at://did:plc:6phduc5l74zerkticgmcjgyc/site.standard.document/3mvbugublrd25
 ---
 
 ## Situation

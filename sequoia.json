@@ -1,0 +1,16 @@
+{
+	"$schema": "https://tangled.org/stevedylan.dev/sequoia/raw/main/sequoia.schema.json",
+	"siteUrl": "https://arsdehnel.com",
+	"contentDir": "./posts",
+	"imagesDir": "./posts",
+	"outputDir": "./out",
+	"publicationUri": "at://did:plc:6phduc5l74zerkticgmcjgyc/site.standard.publication/3mv6jk5ui5k2p",
+	"frontmatter": {
+		"description": "excerpt",
+		"publishDate": "date",
+		"coverImage": "thumbnail",
+		"tags": "categories"
+	},
+	"removeIndexFromSlug": "post",
+	"publishContent": true
+}
