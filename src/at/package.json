@@ -1,0 +1,15 @@
+{
+	"type": "module",
+	"scripts": {
+		"prebuild:bluesky": "tsx ./scripts/latest-bluesky-posts.ts"
+	},
+	"dependencies": {
+		"@atproto/lex": "^0.3.11",
+		"@atproto/syntax": "^0.7.6"
+	},
+	"devDependencies": {
+		"@types/node": "^26.5.1",
+		"tsx": "^4.21.0",
+		"typescript": "5.9.3"
+	}
+}

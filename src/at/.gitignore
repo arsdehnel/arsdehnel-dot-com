@@ -1,0 +1,5 @@
+node_modules
+
+# bluesky generation
+lexicons*
+src/at/lexicons*
