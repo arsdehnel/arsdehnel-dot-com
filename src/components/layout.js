@@ -1,7 +1,7 @@
-import classnames from "classnames";
-import Link from "next/link";
-import { useRouter } from "next/router";
-import { AiFillGithub, AiFillGitlab, AiFillLinkedin } from "react-icons/ai";
+import classnames from 'classnames';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+import { FaBluesky, FaGithub, FaGitlab, FaLinkedin } from 'react-icons/fa6';
 
 export default function Layout({ children, mainClass }) {
 	const router = useRouter();
@@ -11,8 +11,8 @@ export default function Layout({ children, mainClass }) {
 				<Link
 					href="/posts"
 					className={classnames({
-						active: router.pathname.startsWith("/posts"),
-						"secondary-link": true,
+						active: router.pathname.startsWith('/posts'),
+						'secondary-link': true,
 					})}
 					id="secondary-link"
 				>
@@ -21,8 +21,8 @@ export default function Layout({ children, mainClass }) {
 				<Link
 					href="/"
 					className={classnames({
-						active: router.pathname === "/",
-						"home-link": true,
+						active: router.pathname === '/',
+						'home-link': true,
 					})}
 				>
 					Adam Dehnel
@@ -30,8 +30,8 @@ export default function Layout({ children, mainClass }) {
 				<Link
 					href="/about"
 					className={classnames({
-						active: router.pathname === "/about",
-						"secondary-link": true,
+						active: router.pathname === '/about',
+						'secondary-link': true,
 					})}
 				>
 					About
@@ -42,13 +42,16 @@ export default function Layout({ children, mainClass }) {
 			</main>
 			<footer>
 				<a href="https://github.com/arsdehnel">
-					<AiFillGithub />
+					<FaGithub />
 				</a>
 				<a href="https://www.linkedin.com/in/adamdehnel/">
-					<AiFillLinkedin />
+					<FaLinkedin />
 				</a>
 				<a href="https://gitlab.com/arsdehnel">
-					<AiFillGitlab />
+					<FaGitlab />
+				</a>
+				<a href="https://bsky.app/profile/arsdehnel.com">
+					<FaBluesky />
 				</a>
 			</footer>
 		</div>
