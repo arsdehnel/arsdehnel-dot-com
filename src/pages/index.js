@@ -41,7 +41,7 @@ export default function Home({ latestPosts, aboutSections, latestBlueskyPosts })
 				</a>
 			</section>
 
-			<section className="bluesky-posts">
+			<section className="bluesky">
 				<div className="section-intro">
 					<h2>Latest Bluesky Posts</h2>
 					<p>
@@ -50,7 +50,9 @@ export default function Home({ latestPosts, aboutSections, latestBlueskyPosts })
 						ideas in a more casual way than a blog post.
 					</p>
 				</div>
-				<BlueskyListing posts={latestBlueskyPosts} />
+				<div className="bluesky-posts">
+					<BlueskyListing posts={latestBlueskyPosts} />
+				</div>
 				<a className="more-link" href="https://bsky.app/profile/arsdehnel.com" target="_blank" rel="noopener noreferrer">
 					Read All Bluesky Posts
 				</a>

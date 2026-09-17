@@ -1,21 +1,14 @@
 .bluesky-posts {
-    margin: 0 auto;
-    width: 600px;
-    .bluesky-post{
-        background: white;
-        border-radius: .25rem;
-        padding: 0 1rem;
-        margin: 1rem 0 0;
-        font-size: 0.9rem;
-        width: 100%;
-        position: relative;
-        .bluesky-post-content {
-            width: 100%;
-        }
-        a {
-            position: absolute;
-            right: .25rem;
-            bottom: .25rem;
-        }
-    }
+	display: flex;
+	flex-direction: column;
+	gap: 2rem;
+	margin: 2rem 0;
+	@media only screen and (min-width: 700px) {
+		flex-direction: row;
+		width: 100%;
+		max-width: 1200px;
+	}
+	.post-card {
+		flex: 1;
+	}
 }
