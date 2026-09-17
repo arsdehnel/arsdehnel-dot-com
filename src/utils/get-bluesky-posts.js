@@ -1,6 +1,7 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import matter from 'gray-matter';
+import markdownToHtml from './markdown-to-html.js';
 
 const blueskyDir = path.join(process.cwd(), 'bluesky-posts');
 
@@ -22,7 +23,7 @@ export default async function getLatestBlueskyPosts() {
 			return {
 				filename: dirEntry,
 				...data,
-				content,
+				content: await markdownToHtml(content),
 			};
 		}),
 	);

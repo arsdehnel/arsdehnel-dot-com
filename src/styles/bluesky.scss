@@ -2,8 +2,20 @@
     margin: 0 auto;
     width: 600px;
     .bluesky-post{
-        border: 1px solid #999;
-        padding: 1rem;
+        background: white;
+        border-radius: .25rem;
+        padding: 0 1rem;
+        margin: 1rem 0 0;
         font-size: 0.9rem;
+        width: 100%;
+        position: relative;
+        .bluesky-post-content {
+            width: 100%;
+        }
+        a {
+            position: absolute;
+            right: .25rem;
+            bottom: .25rem;
+        }
     }
 }

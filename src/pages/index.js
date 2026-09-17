@@ -51,7 +51,7 @@ export default function Home({ latestPosts, aboutSections, latestBlueskyPosts })
 					</p>
 				</div>
 				<BlueskyListing posts={latestBlueskyPosts} />
-				<a className="more-link" href="/bluesky-posts">
+				<a className="more-link" href="https://bsky.app/profile/arsdehnel.com" target="_blank" rel="noopener noreferrer">
 					Read All Bluesky Posts
 				</a>
 			</section>
