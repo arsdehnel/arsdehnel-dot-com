@@ -7,6 +7,7 @@
 	display: flex;
 	flex-direction: column;
 	max-width: 500px;
+	position: relative;
 
 	img {
 		width: 100%;
@@ -22,23 +23,22 @@
 		transition: 0.1s ease-in-out;
 	}
 
-	.post-date {
+	.card-date {
 		font-family: Inconsolata, monospace;
 		color: #474747;
 		text-transform: uppercase;
 		font-weight: 200;
 	}
 
-	.post-excerpt {
+	.card-content {
 		flex: 1;
 		color: #252525;
 	}
 
-	h4 {
-		font-family: Inconsolata, monospace;
-		color: #474747;
-		text-transform: uppercase;
-		font-weight: 200;
+	.card-link {
+		position: absolute;
+		right: .25rem;
+		bottom: .25rem;
 	}
 
 	&:hover {
