@@ -31,4 +31,9 @@
         border-left: .25rem solid forestgreen;
         background: rgba( 34, 139, 34, .1);
     }
+	pre {
+		background: rgba(0,0,0,.1);
+		box-shadow: 0 0 2px 2px gray;
+		padding: .5rem;
+	}
 }
