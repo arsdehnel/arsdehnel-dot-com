@@ -2,6 +2,7 @@ import classnames from 'classnames';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { FaBluesky, FaGithub, FaGitlab, FaLinkedin } from 'react-icons/fa6';
+import { SiTangled } from 'react-icons/si';
 
 export default function Layout({ children, mainClass }) {
 	const router = useRouter();
@@ -41,17 +42,20 @@ export default function Layout({ children, mainClass }) {
 				<div className="content-wrapper">{children}</div>
 			</main>
 			<footer>
-				<a href="https://github.com/arsdehnel">
+				<a href="https://github.com/arsdehnel" title="GitHub">
 					<FaGithub />
 				</a>
-				<a href="https://www.linkedin.com/in/adamdehnel/">
+				<a href="https://www.linkedin.com/in/adamdehnel/" title="LinkedIn">
 					<FaLinkedin />
 				</a>
-				<a href="https://gitlab.com/arsdehnel">
+				<a href="https://gitlab.com/arsdehnel" title="GitLab">
 					<FaGitlab />
 				</a>
-				<a href="https://bsky.app/profile/arsdehnel.com">
+				<a href="https://bsky.app/profile/arsdehnel.com" title="BlueSky">
 					<FaBluesky />
+				</a>
+				<a href="https://tangled.org/arsdehnel.com/" title="Tangled">
+					<SiTangled />
 				</a>
 			</footer>
 		</div>
