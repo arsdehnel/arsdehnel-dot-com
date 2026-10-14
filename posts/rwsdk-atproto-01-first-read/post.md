@@ -5,7 +5,7 @@ thumbnail: thumbnail.png
 date: '2026-10-14'
 categories:
   - development
-  - at-proto
+  - at-protocol
   - redwoodsdk
 ---
 
