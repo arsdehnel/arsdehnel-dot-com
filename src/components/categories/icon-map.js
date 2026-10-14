@@ -4,17 +4,20 @@ import { GrCloudComputer, GrUserWorker } from 'react-icons/gr';
 import { IoAtSharp } from 'react-icons/io5';
 import { LuBookOpenText, LuCodeXml, LuTentTree } from 'react-icons/lu';
 import { MdChildCare } from 'react-icons/md';
-import RwsdkIcon from '@/components/icons/rwsdk';
+import RwsdkIcon from '../icons/rwsdk.js';
+import categoryKeys from './category-keys.js';
 
-export default {
+const icons = {
+	'at-protocol': IoAtSharp,
 	book: LuBookOpenText,
 	camping: LuTentTree,
 	career: GrUserWorker,
 	'cloud tech': GrCloudComputer,
 	development: LuCodeXml,
+	podcast: FaPodcast,
 	redwoodsdk: RwsdkIcon,
-	'at-protocol': IoAtSharp,
 	'self-care': MdChildCare,
 	wood: GiWoodBeam,
-	podcast: FaPodcast,
 };
+
+export default Object.fromEntries(categoryKeys.map((k) => [k, icons[k]]));
