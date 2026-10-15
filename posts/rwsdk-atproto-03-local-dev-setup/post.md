@@ -1,5 +1,5 @@
 ---
-title: "Local Development with Docker Compose"
+title: "RWSDK + ATP: Local Dev Setup"
 excerpt: Every test hit against bsky.social is a problem waiting to happen — rate limits, audit trails, and no control over the data. This post sets up a local AT Protocol devnet so none of that matters.
 thumbnail: thumbnail.png
 date: '2026-10-14T20:00:00Z'

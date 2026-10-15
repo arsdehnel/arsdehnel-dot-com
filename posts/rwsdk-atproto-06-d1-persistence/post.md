@@ -1,5 +1,5 @@
 ---
-title: "Persistence with D1 and Drizzle"
+title: "RWSDK + ATP: D1 Persistence"
 excerpt: "Every worker restart wipes the in-memory status store. This post adds Cloudflare D1 and Drizzle ORM so indexed webhook data survives restarts — no separate database to run, no cloud setup required for local dev."
 thumbnail: thumbnail.png
 date: '2026-10-15T14:00:00Z'
