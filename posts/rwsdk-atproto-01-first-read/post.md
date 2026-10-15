@@ -7,6 +7,7 @@ categories:
   - development
   - at-protocol
   - redwoodsdk
+  - cloudflare
 ---
 
 I've been nerding out on the [AT Protocol](https://atproto.com/) recently mostly around learning what it is, how it works, and why it is awesome.  When it came time to try my hand at _building_ on the protocol, I found things a little rockier than I'd hoped.  While many aspects of the protocol are the same as any traditional web app there are some key differences and it was hard to figure out how to make the mental shift. This is the first post in a series walking through my own experience of taking a framework I'm familiar with and getting something usable built on the protocol.  

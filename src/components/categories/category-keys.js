@@ -4,6 +4,7 @@ export default [
 	'camping',
 	'career',
 	'cloud tech',
+	'cloudflare',
 	'development',
 	'podcast',
 	'redwoodsdk',
