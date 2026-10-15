@@ -14,7 +14,13 @@ export default function PostCard({ slug, title, date, excerpt, coverImage, conte
 				</a>
 			)}
 			<div className="card-content">{excerpt ? <p>{excerpt}</p> : content}</div>
-			<div className="card-date">{date}</div>
+			{date && (
+				<div className="card-date">
+					{new Intl.DateTimeFormat('en-US', { month: '2-digit', year: '2-digit', day: '2-digit' }).format(
+						new Date(date),
+					)}
+				</div>
+			)}
 			{href && (
 				<a href={href} className="card-link" target="_blank" rel="noopener noreferrer">
 					View on Bluesky

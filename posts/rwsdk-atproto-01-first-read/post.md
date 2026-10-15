@@ -2,7 +2,7 @@
 title: "Your First AT Protocol Read"
 excerpt: AT Protocol records are publicly readable over plain HTTP — no account, no auth, no magic. A single fetch call returns real data from the live network.
 thumbnail: thumbnail.png
-date: '2026-10-14'
+date: '2026-10-14T09:00:00Z'
 categories:
   - development
   - at-protocol
