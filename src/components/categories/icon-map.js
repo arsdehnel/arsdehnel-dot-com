@@ -4,6 +4,7 @@ import { GrCloudComputer, GrUserWorker } from 'react-icons/gr';
 import { IoAtSharp } from 'react-icons/io5';
 import { LuBookOpenText, LuCodeXml, LuTentTree } from 'react-icons/lu';
 import { MdChildCare } from 'react-icons/md';
+import { SiCloudflareworkers } from 'react-icons/si';
 import RwsdkIcon from '../icons/rwsdk.js';
 import categoryKeys from './category-keys.js';
 
@@ -12,6 +13,7 @@ const icons = {
 	book: LuBookOpenText,
 	camping: LuTentTree,
 	career: GrUserWorker,
+	cloudflare: SiCloudflareworkers,
 	'cloud tech': GrCloudComputer,
 	development: LuCodeXml,
 	podcast: FaPodcast,
@@ -20,4 +22,4 @@ const icons = {
 	wood: GiWoodBeam,
 };
 
-export default Object.fromEntries(categoryKeys.map((k) => [k, icons[k]]));
+export default Object.fromEntries(categoryKeys.map(k => [k, icons[k]]));

@@ -7,6 +7,7 @@ categories:
   - development
   - at-protocol
   - redwoodsdk
+  - cloudflare
 ---
 
 [Post 2](https://arsdehnel.com/posts/rwsdk-atproto-02-oauth) got OAuth working against a real Bluesky account. Every time you clicked "Sign in" during that development cycle, your Worker resolved your handle against `bsky.social`, initiated a Pushed Authorization Request against it, and exchanged tokens with it. That's fine for a quick proof of concept, but it's not a sustainable way to develop. Rate limits are real. Every test creates audit trail entries on production infrastructure you don't control. And when something breaks, you can't inspect or restart the thing you're talking to.

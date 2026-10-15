@@ -7,6 +7,7 @@ categories:
   - development
   - at-protocol
   - redwoodsdk
+  - cloudflare
 ---
 
 [Post 1](https://arsdehnel.com/posts/rwsdk-atproto-01-first-read) showed that AT Protocol data is publicly readable with a plain fetch. That gets you pretty far for read-only apps, but to write records, read private data, or act on behalf of a user, you need OAuth. This is Post 2 of 8, and it's where the interesting complications start.
