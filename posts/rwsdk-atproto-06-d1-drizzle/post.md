@@ -185,11 +185,9 @@ export async function get(): Promise<Response> {
 
 The snapshot is captured before the stream opens and closed over in `start()`. New updates still arrive via the webhook → SSE push path.
 
-## What's still missing
+## What's next
 
-At this point the database stores whoever has sent a webhook — which in a local devnet is whoever has signed in and picked a status. The feed shows those users, not everyone on the network.
-
-That's intentional. The data model is right; the indexing scope is narrow. Post 7 connects the app to the broader firehose to build a real cross-user feed — which is where the app stops being a demo and starts being an AppView.
+The data model is already multi-user — the schema has no user filter, and the upsert keyed on DID means every user who sets a status gets their own row. Post 7 makes that visible: one structural change moves the status board outside the auth gate so anyone can read it without logging in. That's what completes the AppView pattern.
 
 ## Setup
 
