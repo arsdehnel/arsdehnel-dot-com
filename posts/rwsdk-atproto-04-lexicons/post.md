@@ -2,7 +2,7 @@
 title: "Lexicons and Writing to Your PDS"
 excerpt: Lexicons are how AT Protocol knows what a record means. This post defines one, generates typed TypeScript from it, and uses it to write a record to the local PDS — then reads it back publicly without touching authentication.
 thumbnail: thumbnail.png
-date: '2026-10-15T20:00:00Z'
+date: '2026-10-15T03:00:00Z'
 categories:
   - development
   - at-protocol
