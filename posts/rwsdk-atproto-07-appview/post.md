@@ -1,5 +1,5 @@
 ---
-title: "Building a Feed — You're an AppView Now"
+title: "RWSDK + ATP: AppView"
 excerpt: "The data model from post 6 already handles multiple users. The missing piece was making the status board visible without a login — one structural change that turns your app into a real AppView."
 thumbnail: thumbnail.png
 date: '2026-10-15T18:00:00Z'

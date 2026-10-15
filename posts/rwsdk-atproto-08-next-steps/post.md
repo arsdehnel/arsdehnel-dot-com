@@ -1,5 +1,5 @@
 ---
-title: "Where to Go From Here"
+title: "RWSDK + ATP: Next Steps"
 excerpt: "The series ends here but the app has gaps worth knowing about before shipping. Here's what to fix for production, how to connect to the real atmosphere, and where to keep reading."
 thumbnail: thumbnail.png
 date: '2026-10-15T21:00:00Z'
