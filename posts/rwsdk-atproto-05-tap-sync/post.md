@@ -1,5 +1,5 @@
 ---
-title: "Reacting to Changes with Tap"
+title: "RWSDK + ATP: Tap Sync"
 excerpt: 'Reading data back from your own PDS after writing it is the anti-pattern. This post introduces the right model: Tap subscribes to the AT Protocol firehose and delivers record changes to your app as webhooks, then SSE pushes them to the browser.'
 thumbnail: thumbnail.png
 date: '2026-10-15T11:00:00Z'
