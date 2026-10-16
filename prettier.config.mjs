@@ -1,8 +1,8 @@
 export default {
-	plugins: ["prettier-plugin-packagejson"],
+	plugins: ['prettier-plugin-packagejson'],
 	overrides: [
 		{
-			files: ["*.less", "*.css"],
+			files: ['*.scss', '*.css'],
 			options: {
 				printWidth: 130,
 				tabWidth: 4,
@@ -10,7 +10,7 @@ export default {
 			},
 		},
 		{
-			files: "package.json",
+			files: 'package.json',
 			options: {
 				tabWidth: 4,
 				useTabs: true,

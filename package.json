@@ -9,13 +9,11 @@
 		"lint": "next lint",
 		"prep-posts": "node src/sync-post-images.js",
 		"prepare": "husky",
+		"staged:lint": "lint-staged --allow-empty",
 		"start": "next start"
 	},
-	"lint-staged": {
-		"*.{ts,tsx}": "biome check --write",
-		"*.{css,less}": "prettier --write"
-	},
 	"dependencies": {
+		"@rehype-pretty/transformers": "npm:@jsr/rehype-pretty__transformers@^0.13.4",
 		"classnames": "^2.5.1",
 		"glob": "^11.0.2",
 		"gray-matter": "^4.0.3",
@@ -23,9 +21,13 @@
 		"react": "^19.0.0",
 		"react-dom": "^19.0.0",
 		"react-icons": "^5.7.0",
+		"rehype-pretty-code": "^0.14.5",
+		"rehype-stringify": "^10.0.1",
 		"remark": "^15.0.1",
 		"remark-html": "^16.0.1",
-		"sass": "^1.87.0"
+		"remark-rehype": "^11.1.2",
+		"sass": "^1.87.0",
+		"shiki": "^4.5.0"
 	},
 	"devDependencies": {
 		"@aws-sdk/client-bedrock-runtime": "^3.812.0",
