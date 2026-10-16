@@ -73,10 +73,69 @@
     border-left: 0.25rem solid forestgreen;
     background: rgba(34, 139, 34, 0.1);
   }
+  [data-rehype-pretty-code-figure] {
+    position: relative;
+    margin-bottom: 1rem;
+  }
+
   pre {
     background: rgba(0, 0, 0, 0.1);
     box-shadow: 0 0 2px 2px gray;
     padding: 0.5rem;
+    overflow-x: auto;
+
+    .rehype-pretty-copy {
+      position: absolute;
+      top: 0.5rem;
+      right: 0.5rem;
+      padding: 0.25rem 0.35rem;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid coral;
+      border-radius: 4px;
+      cursor: pointer;
+      color: rgba(255, 255, 255, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition:
+        opacity 0.15s,
+        color 0.15s,
+        background 0.15s;
+
+      .ready,
+      .success {
+        width: 18px;
+        height: 18px;
+        background-size: contain;
+        background-position: center;
+      }
+
+      .success {
+        display: none;
+      }
+
+      &.rehype-pretty-copied {
+        color: #3fb950;
+
+        .ready {
+          display: none;
+        }
+
+        .success {
+          display: flex;
+        }
+      }
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.15);
+        color: rgba(255, 255, 255, 0.9);
+      }
+    }
+
+    &:hover .rehype-pretty-copy {
+      opacity: 1;
+    }
   }
 }
 

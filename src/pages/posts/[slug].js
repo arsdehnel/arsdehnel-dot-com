@@ -1,11 +1,17 @@
+import { registerCopyButton } from '@rehype-pretty/transformers';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useEffect } from 'react';
 import { FaAngleLeft, FaAngleRight } from 'react-icons/fa6';
 import Categories from '@/components/categories/categories';
 import getAllPosts from '@/utils/get-all-posts';
 import parsePost from '@/utils/parse-post';
 
 export default function Post({ title, categories, content, coverImage, coverImageAltText, date, prevPost, nextPost }) {
+	useEffect(() => {
+		registerCopyButton();
+	}, []);
+
 	return (
 		<>
 			<div className="breadcrumbs">
