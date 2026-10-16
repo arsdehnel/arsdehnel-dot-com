@@ -9,11 +9,8 @@
 		"lint": "next lint",
 		"prep-posts": "node src/sync-post-images.js",
 		"prepare": "husky",
+		"staged:lint": "lint-staged --allow-empty",
 		"start": "next start"
-	},
-	"lint-staged": {
-		"*.{ts,tsx}": "biome check --write",
-		"*.{css,less}": "prettier --write"
 	},
 	"dependencies": {
 		"classnames": "^2.5.1",
