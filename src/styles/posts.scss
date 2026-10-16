@@ -22,6 +22,45 @@
     flex-direction: column;
   }
 }
+.post-header {
+  display: flex;
+  flex-direction: column;
+  margin: 2rem 0 4rem 0;
+  padding: 1rem 0;
+  border-bottom: 2px solid #ddd;
+  gap: 1rem;
+  @media screen and (min-width: 800px) {
+    flex-direction: row;
+  }
+  .post-meta {
+    display: flex;
+    flex: 1 0 60%;
+    img {
+      box-shadow: 0px 3px 10px #bebebe;
+    }
+    .post-meta-inner {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      padding: 0 2rem 0 1rem;
+      h1 {
+        margin: 0.5rem;
+        flex: 1;
+        @media screen and (min-width: 800px) {
+          font-size: 3rem;
+        }
+      }
+    }
+    .post-meta-date {
+      text-align: right;
+      color: grey;
+      font-style: italic;
+    }
+  }
+  .categories {
+    flex-direction: column;
+  }
+}
 
 .post-content {
   img {

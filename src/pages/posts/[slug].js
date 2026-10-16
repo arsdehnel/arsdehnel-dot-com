@@ -1,17 +1,33 @@
+import Image from 'next/image';
 import Link from 'next/link';
 import { FaAngleLeft, FaAngleRight } from 'react-icons/fa6';
 import Categories from '@/components/categories/categories';
 import getAllPosts from '@/utils/get-all-posts';
 import parsePost from '@/utils/parse-post';
 
-export default function Post({ title, categories, content, prevPost, nextPost }) {
+export default function Post({ title, categories, content, coverImage, coverImageAltText, date, prevPost, nextPost }) {
 	return (
 		<>
 			<div className="breadcrumbs">
 				<Link href="/posts">&lt; Posts</Link>
 			</div>
-			<h1>{title}</h1>
-			<Categories categories={categories} />
+			<header className="post-header">
+				<div className="post-meta">
+					<Image src={`/${coverImage}`} alt={coverImageAltText} height={150} width={150} />
+					<div className="post-meta-inner">
+						<h1>{title}</h1>
+						{date && (
+							<div className="post-meta-date">
+								{new Intl.DateTimeFormat('en-US', { month: '2-digit', year: '2-digit', day: '2-digit' }).format(
+									new Date(date),
+								)}
+							</div>
+						)}
+					</div>
+				</div>
+				<Categories categories={categories} />
+			</header>
+
 			<article
 				className="post-content"
 				// biome-ignore lint: yeah it's hacky but we need it
