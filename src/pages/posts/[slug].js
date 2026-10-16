@@ -1,4 +1,3 @@
-import { registerCopyButton } from '@rehype-pretty/transformers';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect } from 'react';
@@ -9,7 +8,17 @@ import parsePost from '@/utils/parse-post';
 
 export default function Post({ title, categories, content, coverImage, coverImageAltText, date, prevPost, nextPost }) {
 	useEffect(() => {
-		registerCopyButton();
+		const buttons = document.querySelectorAll('button[data-name="rehype-pretty-copy-button"]');
+		buttons.forEach(btn => {
+			btn.addEventListener('click', async () => {
+				const pre = btn.closest('pre');
+				const code = pre?.querySelector('code')?.innerText ?? pre?.innerText ?? '';
+				const duration = Number(btn.getAttribute('data-feedback-duration')) || 2000;
+				await navigator.clipboard.writeText(code);
+				btn.classList.add('rehype-pretty-copied');
+				setTimeout(() => btn.classList.remove('rehype-pretty-copied'), duration);
+			});
+		});
 	}, []);
 
 	return (
