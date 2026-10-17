@@ -45,11 +45,12 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      - name: custom CI checks
-        id: custom-ci-checks
+      - name: CI Checks
+        id: ci-checks
         shell: bash
         run: |
           node src/ci/categories-check.js
+          pnpm alt-text:check
           
       - name: test build
         id: test-build
