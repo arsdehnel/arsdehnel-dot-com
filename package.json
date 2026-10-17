@@ -3,6 +3,8 @@
 	"version": "0.1.0",
 	"private": true,
 	"scripts": {
+		"alt-text:check": "node src/alt-text-check.js",
+		"alt-text:generate": "node src/alt-text-generation.js",
 		"biome:fix": "biome check --write .",
 		"build": "next build",
 		"dev": "next dev",
@@ -30,7 +32,7 @@
 		"shiki": "^4.5.0"
 	},
 	"devDependencies": {
-		"@aws-sdk/client-bedrock-runtime": "^3.812.0",
+		"@anthropic-ai/sdk": "^0.135.0",
 		"@biomejs/biome": "2.4.11",
 		"@commitlint/cli": "^20.5.0",
 		"@commitlint/config-conventional": "^20.5.0",

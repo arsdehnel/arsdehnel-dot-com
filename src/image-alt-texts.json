@@ -1,7 +1,11 @@
 {
+	"posts/aws-bedrock-exploration/icon.png": "Amazon Bedrock logo with a brain circuit icon on a dark blue hexagonal background.",
 	"posts/camping-car-storage/drawers-prototype.jpg": "The back of an SUV with a Coleman cooler and two crates in the trunk.",
 	"posts/camping-car-storage/initial-prototype.jpg": "A black SUV's trunk is open, showing a cooler and two wooden crates inside.",
 	"posts/camping-car-storage/realish-drawers.jpg": "The back of an SUV with a Coleman cooler and various camping supplies on display.",
+	"posts/camping-car-storage/thumbnail.jpg": "Custom wooden storage system with a Coleman cooler built into the back of an SUV.",
+	"posts/cloudflare-ai-model-selection/cf-logo.png": "Cloudflare logo: an orange gradient hexagonal shape.",
+	"posts/consulting-one-month/improving-flat-blue-w-o-tagline.png": "Improving company logo in blue with a starburst accent mark.",
 	"posts/dining-table-refinish/apron-not-stripped.jpg": "Two curved wooden pieces rest on a workbench beside a sander, indicating ongoing woodworking.",
 	"posts/dining-table-refinish/complete-and-reinstalled.jpg": "An oval wooden dining table with three white chairs pushed in around it.",
 	"posts/dining-table-refinish/finish-applied.jpg": "A disassembled wooden table with three removable leaves in front of a blue car.",
@@ -13,5 +17,20 @@
 	"posts/dining-table-refinish/temporary-table.jpg": "An oval plywood tabletop on sawhorses sits in a messy workshop with various supplies around it.",
 	"posts/dining-table-refinish/thumbnail.jpg": "A round wood table with three chairs is placed in a messy dining room.",
 	"posts/dining-table-refinish/underside-half-stripped.jpg": "A round wooden table with metal brackets and hardware is disassembled on a wooden pallet.",
-	"posts/dining-table-refinish/underside-no-hardware.jpg": "Two halves of a wooden table top sit on sawhorses in a garage or workshop."
+	"posts/dining-table-refinish/underside-no-hardware.jpg": "Two halves of a wooden table top sit on sawhorses in a garage or workshop.",
+	"posts/git-setup-for-ics/thumbnail.png": "Diagram showing GitHub, GitLab, and Gitea logos connected by git branch lines to a rainbow-colored git icon.",
+	"posts/integrated-life/thumbnail.jpg": "Sepia-toned photo of a child standing on rocks beside a rushing mountain stream.",
+	"posts/john-dickerson-wild-card-episode/thumbnail.png": "John Dickerson smiling at a microphone with Wild Card podcast branding on a blue background.",
+	"posts/js-dev-tooling/toolbox.jpg": "Open toolbox with logos for JavaScript tools including React, Vite, GitHub, and others floating above it.",
+	"posts/pnpm-bun-local-link-setup/bun-and-pnpm.png": "Bun mascot (dumpling) and pnpm logo side by side with a plus sign between them.",
+	"posts/rwsdk-atproto-01-first-read/thumbnail.png": "Post #1 thumbnail: 'First Read' with RedwoodSDK and AT Protocol logos.",
+	"posts/rwsdk-atproto-02-atproto-oauth/thumbnail.png": "Post #2 thumbnail: 'AT Proto OAuth' with RedwoodSDK and AT Protocol logos.",
+	"posts/rwsdk-atproto-03-local-dev-setup/thumbnail.png": "Post #3 thumbnail: 'Local Dev Setup' with RedwoodSDK and AT Protocol logos.",
+	"posts/rwsdk-atproto-04-atproto-writes/thumbnail.png": "Post #4 thumbnail: 'AT Proto Writes' with RedwoodSDK and AT Protocol logos.",
+	"posts/rwsdk-atproto-05-tap-sync/thumbnail.png": "Post #5 thumbnail: 'Tap Sync' with RedwoodSDK and AT Protocol logos.",
+	"posts/rwsdk-atproto-06-d1-persistence/thumbnail.png": "Post #6 thumbnail: 'D1 Persistence' with RedwoodSDK and AT Protocol logos.",
+	"posts/rwsdk-atproto-07-appview/thumbnail.png": "Post #7 thumbnail: 'AppView' with RedwoodSDK and AT Protocol logos.",
+	"posts/rwsdk-atproto-08-next-steps/thumbnail.png": "Post #8 thumbnail: 'Next Steps' with RedwoodSDK and AT Protocol logos.",
+	"posts/semantic-release-changelog/hero.DXMsy2Hq_Z1CxQaX.webp": "Metallic hexagonal badge with a turbine blade design in silver and black.",
+	"posts/user-story-mapping-book/book.png": "O'Reilly 'User Story Mapping' book cover by Jeff Patton, featuring a bird illustration."
 }

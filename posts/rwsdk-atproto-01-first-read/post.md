@@ -97,4 +97,6 @@ Visuals always help.  This is roughly the flow and architecture of what we have 
 
 This approach is nothing you'd do for a full app in production.  The public read part is fine but hardcoding to a specific handle without error handling or anything would be ill-advised.  Later posts will address this (albeit indirectly) to get things closer to a production-ready application architecture.
 
+## Up Next
+
 Check out the [`post/01-first-read`](https://github.com/arsdehnel/rwsdk-atproto-starter/tree/post/01-first-read) branch to see the full code. [Post 2](./rwsdk-atproto-02-atproto-oauth) is where things get more interesting — AT Protocol OAuth against a real Bluesky account.
