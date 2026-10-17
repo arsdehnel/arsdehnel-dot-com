@@ -97,7 +97,7 @@ You'll see 401 responses in the Worker logs during the OAuth flow. These are not
 
 The starter kit changes are too numerous to list here but [this PR](https://github.com/arsdehnel/rwsdk-atproto-starter/pull/9) shows the changes from Step 1 to Step 2.  To skip that the [post/02-atproto-auth](https://github.com/arsdehnel/rwsdk-atproto-starter/tree/post/02-atproto-oauth) branch has the completed OAuth2 implementation: the DO class, the OAuth client setup, four route handlers (`/oauth/login`, `/oauth/callback`, `/oauth/logout`, `/client-metadata.json`), and the session middleware in `worker.tsx`. 
 
-## Current Flow Diagram
+## Current flow diagram
 
 This attempts to show what we've got now.  The actual PDS fetch of Bluesky posts has been simplified as the diagram of that was covered in [the last post](./rwsdk-atproto-01-first-read).  This also glosses over the behind the scenes OAuth details as [Auth0 covers that better than I would](https://auth0.com/docs/get-started/authentication-and-authorization-flow/authorization-code-flow/authorization-code-flow-with-par).  
 
@@ -105,14 +105,12 @@ One thing that we didn't really cover in the other parts of this post is that th
 
 ![App Flow](./app-flow.png)
 
-## Production-Ready Reality Check
+## Production-ready reality check
 
 Unlike Post 1 this is starting to get into some production-ready code.  The DO class here certainly could be used in production and solves production problems that aren't likely to be a problem (or could be solved more simply) in local development.  The production setup for the auth key would be necessary but that's a pretty normal deploy-time operation and just needed the first time you deploy this code. 
 
-As mentioned above the in-memory maps for the auth token storage are not at all production ready.  We'll solve that problem in Post 4, we kept that fix out of this post to keep this focused on just the auth flow itself.  
+As mentioned above the in-memory maps for the auth token storage are not at all production ready.  We'll solve that problem in [Post 4](./rwsdk-atproto-04-atproto-writes), we kept that fix out of this post to keep this focused on just the auth flow itself.  
 
 ## Up Next
-
-Post 3 is the local devnet: Docker Compose, a local PDS, and the remaining gotchas that don't apply when you're hitting real `bsky.social`.
 
 Check out the [`post/02-atproto-oauth`](https://github.com/arsdehnel/rwsdk-atproto-starter/tree/post/02-atproto-oauth) branch to see the full code and [the Step 2 Additions PR](https://github.com/arsdehnel/rwsdk-atproto-starter/pull/9) for what all we changed here. [Post 3](./rwsdk-atproto-03-local-dev-setup) takes a pause on feature development to get us setup with a full local environment so we can stop hitting production and using production logins.
