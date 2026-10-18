@@ -91,7 +91,7 @@ No client-side loading state, no effect hooks so the data is in the HTML before 
 
 Visuals always help.  This is roughly the flow and architecture of what we have at this point.
 
-![App Flow](./app-flow.png)
+![](./app-flow.png "Sequence diagram of current application flow")
 
 ## Production-Ready Reality Check
 

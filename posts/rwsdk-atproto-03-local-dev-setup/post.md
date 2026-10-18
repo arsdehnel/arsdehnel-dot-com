@@ -26,7 +26,7 @@ Three services matter for this post:
 
 **maildev** is an SMTP sink. OpenMeet already includes this in their setup and it's a hard requirement because the PDS tries to send a welcome email on every account creation, even locally inside a Docker network. Without a running SMTP server account creation fails entirely. maildev accepts everything and exposes a web UI at port 1081 if you ever want to see what got sent.
 
-![Docker Compose-based Setup](./docker-compose.png)
+![](./docker-compose.png "Simple diagram of Docker Compose-based setup")
 
 ## Some PDS env vars to note
 
@@ -121,7 +121,7 @@ The [`post/03-local-dev-setup`](https://github.com/arsdehnel/rwsdk-atproto-start
 
 The actual flow here doesn't change much from Post 2: all we really changed was moving all the public services into a docker compose network.  The Bluesky and PDS capabilities were folded into just our local PDS and our local PLC replaced the public one.
 
-![App Flow](./app-flow.png)
+![](./app-flow.png "Sequence diagram of current application flow")
 
 ## Up Next
 

@@ -1,17 +1,15 @@
-import fs from "node:fs/promises";
-import path from "node:path";
-import matter from "gray-matter";
-import imgAltTexts from "../image-alt-texts.json" with { type: "json" };
-import markdownToHtml from "./markdown-to-html.js";
+import fs from 'node:fs/promises';
+import path from 'node:path';
+import matter from 'gray-matter';
+import imgAltTexts from '../image-alt-texts.json' with { type: 'json' };
+import markdownToHtml from './markdown-to-html.js';
 
-const postsDirectory = path.join(process.cwd(), "posts");
-const imgParseRegex = new RegExp(
-	/!\[(?<altText>.*)\]\s*\((?<filename>.*?)(?="|\))(?<title>".*")?\)/g,
-);
+const postsDirectory = path.join(process.cwd(), 'posts');
+const imgParseRegex = new RegExp(/!\[(?<altText>.*)\]\s*\((?<filename>.*?)(?="|\))(?<title>".*")?\s*\)/g);
 
 export default async function parsePost(slug) {
-	const postPath = path.join(postsDirectory, slug, "post.md");
-	const pathChunks = postPath.split("/").slice(-2, -1);
+	const postPath = path.join(postsDirectory, slug, 'post.md');
+	const pathChunks = postPath.split('/').slice(-2, -1);
 	const slugPartial = pathChunks[0];
 	let fileExists = true;
 	try {
@@ -23,7 +21,7 @@ export default async function parsePost(slug) {
 	if (!fileExists) {
 		return;
 	}
-	const fileContents = await fs.readFile(postPath, "utf8");
+	const fileContents = await fs.readFile(postPath, 'utf8');
 	const { data, content } = matter(fileContents);
 
 	const imageRefs = content.matchAll(imgParseRegex);
@@ -32,12 +30,8 @@ export default async function parsePost(slug) {
 	let postContent = content;
 	for (const imageRef of imageRefs) {
 		let [originalRef, altText, srcFilename, title] = imageRef;
-		srcFilename = srcFilename.trim();
-		const updTitle = title
-			? title.charAt(0) === '"'
-				? title.substring(1, title.length - 2)
-				: title
-			: "";
+		srcFilename = srcFilename.trim().replace(/^\.\//, '');
+		const updTitle = title ? (title.charAt(0) === '"' ? title.substring(1, title.length - 2) : title) : '';
 		const imgPath = `posts/${slugPartial}/${srcFilename}`;
 		const publishAltText = altText ? altText : imgAltTexts[imgPath];
 		images.push({
@@ -59,9 +53,9 @@ export default async function parsePost(slug) {
 			url: `posts/${slugPartial}/${data.thumbnail}`,
 		};
 		images.push({
-			altText: imgAltTexts[coverImgPath] || "",
+			altText: imgAltTexts[coverImgPath] || '',
 			filename: data.thumbnail,
-			title: "Thumbnail",
+			title: 'Thumbnail',
 		});
 	}
 

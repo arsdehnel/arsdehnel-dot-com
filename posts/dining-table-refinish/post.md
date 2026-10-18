@@ -10,7 +10,7 @@ atUri: at://did:plc:6phduc5l74zerkticgmcjgyc/site.standard.document/3mvbuh6ew3p2
 
 Our dining table is the same one that my grandparents had at their house when I was growing up (and quite a few years before I was born).  It's been a great table and expands from a 42" circle all the way to 82" after adding the leaves.  However it is now something like 60 years old and had definitely started to show its age.  On top of dings and dents the finish had started to get tacky and things would stick to it.  
 
-![](old-finish-with-cookies.jpg)
+![](old-finish-with-cookies.jpg "The before pic with a last batch of cookies on it")
 
 ## Temporary Table
 
@@ -22,12 +22,12 @@ While I hoped the stripping and refinishing process was going to be pretty quick
 
 Started with just pulling it all apart taking off the apron and hardware.
 
-![](underside-half-stripped.jpg)
-![](underside-no-hardware.jpg)
+![](underside-half-stripped.jpg "Underside of the table after partially being stripped")
+![](underside-no-hardware.jpg "Underside of the table after all hardware removed")
 
 The apron had some very dated decorative trim on it that had accumulated a lot of grime over the years and also had started cracking off.  Rather than trying to patch it and strip it I decided to just remove it entirely.  Cleans the lines up a bit and simplified the refinishing process quite a bit.  
 
-![](apron-not-stripped.jpg)
+![](apron-not-stripped.jpg "Apron off the table but not yet stripped of finish")
 
 There were a few spots (no pictures, sorry) where the apron cracked that I just had to patch with woodfiller.  I could've re-veneered it but that seemed like overkill and wouldn't have matched anyway.  
 
@@ -35,20 +35,20 @@ There were a few spots (no pictures, sorry) where the apron cracked that I just 
 
 Once I had it all broken down, the apron details removed, and cracks patched it was time for getting rid of that old finish.  I used a bunch of [Citristrip](https://citristrip.com/) as the first couple rounds of removing all that finish and grime.  Once that was scraped off I got going on sanding using 60, 120, and 220 grit as things progressed.  The color change is pretty dramatic!
 
-![](legs-one-stripped.jpg)
+![](legs-one-stripped.jpg "One leg stripped for comparison to others")
 
 As things progressed I also used my [Rockler Circle Cutting Jig](https://www.rockler.com/rockler-circle-cutting-jig) to remove the dated [ogee profile](https://en.wikipedia.org/wiki/Ogee) on the ends and just ripped it off with a circular saw for the leaves.  Then it was just sanding, sanding, sanding!
 
-![](midway-progress.jpg)
-![](sanding-complete.jpg)
+![](midway-progress.jpg "Midway through sanding")
+![](sanding-complete.jpg "Sanding finished up, pieces separated")
 
 ## Finished Up
 
 After the sanding was finally done it was time for finishing it up.  After some color and finish testing trials I landed on [Water-based Varathane Polyurethane](https://varathanestain.com/varathane-water-based-polyurethane/).  Offered a nice easy application process and kept the table from ending up too yellow.
 
-![](finish-applied.jpg)
+![](finish-applied.jpg "Finish applied and drying")
 
 Once that was all applied, sanded, and dried it was time to get it put back into the kitchen!  Looks pretty great I think although now I want to redo the floors as it kind of blends in a bit too much.  Oh well, that's for another day!
 
-![](finished-top-view.jpg)
-![](complete-and-reinstalled.jpg)
+![](finished-top-view.jpg "Installed back in the kitchen")
+![](complete-and-reinstalled.jpg "Another angle of the installed finished product" )
