@@ -2,7 +2,7 @@
 title: "RWSDK + ATP: AT Proto OAuth"
 excerpt: AT Protocol OAuth is not a standard passport.js drop-in. Here's what makes it different, the Cloudflare Workers-specific hurdles, and what it takes to get a real Bluesky login working end to end.
 thumbnail: thumbnail.png
-date: '2026-10-14T13:30:00Z'
+date: '2026-10-18T05:30:00Z'
 categories:
   - development
   - at-protocol
