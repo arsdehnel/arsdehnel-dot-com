@@ -2,7 +2,7 @@
 title: "RWSDK + ATP: AT Proto OAuth"
 excerpt: AT Protocol OAuth is not a standard passport.js drop-in. Here's what makes it different, the Cloudflare Workers-specific hurdles, and what it takes to get a real Bluesky login working end to end.
 thumbnail: thumbnail.png
-date: '2026-10-14T13:30:00Z'
+date: '2026-10-18T05:30:00Z'
 categories:
   - development
   - at-protocol
@@ -103,7 +103,7 @@ This attempts to show what we've got now.  The actual PDS fetch of Bluesky posts
 
 One thing that we didn't really cover in the other parts of this post is that the PDS no longer has to be on Bluesky's hosting. This setup should work against any Atmosphere Spec-compliant PDS for both the auth flow and the posts lookup.  The one possible variation would be if the `locahost` special treatment is carried through to the PDS but that would be something to know about for debugging possible issues in using a non-Bluesky PDS during development.
 
-![App Flow](./app-flow.png)
+![](./app-flow.png "Sequence diagram of current application flow")
 
 ## Production-ready reality check
 

@@ -50,6 +50,7 @@ jobs:
         shell: bash
         run: |
           node src/ci/categories-check.js
+          pnpm images:check
           pnpm alt-text:check
           
       - name: test build

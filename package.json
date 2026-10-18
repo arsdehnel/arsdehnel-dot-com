@@ -8,6 +8,7 @@
 		"biome:fix": "biome check --write .",
 		"build": "next build",
 		"dev": "next dev",
+		"images:check": "node src/ci/images-check.js",
 		"lint": "next lint",
 		"prep-posts": "node src/sync-post-images.js",
 		"prepare": "husky",

@@ -22,13 +22,13 @@ While some custom-made storage isn't going to solve for #1 (or #4) it could make
 
 While I've been big on _software prototypes_ for my whole career the idea of _woodworking prototypes_ is still pretty new for me.  It started when we were configuring the bathroom I was going to put into the basement and I needed a to-scale toilet, vanity, and shower.  For this one it was just to get a sense for how to work around the liner that protects the floor of the back area as well as give more clear visual cues for how this might all start to go for sizing and the angle of the seatback.
 
-![](initial-prototype.jpg)
+![](initial-prototype.jpg "Prototype of initial concept")
 
 ## Drawers Prototype
 
 Next step was to break that down a bit into something representing the individual "cabinets" and the drawers that our stuff would go into.  This helped to further shape the mental model of how this would all fit and gave me something tangible to see for what all we could fit into this space and how it would work together.
 
-![](drawers-prototype.jpg)
+![](drawers-prototype.jpg "Just the drawers prototype")
 
 The most important thing this identified for me was that the cooler couldn't sit in the middle.  None of these drawers were going to be large enough to fit the pots and pans (which are the largest single thing to store).  So any real implementaiton would need to include a larger drawer on one side or the other to fit those.  This would also make it so the drawers on that side are also large enough for the plates and bowls.  
 
@@ -38,7 +38,7 @@ Building off that I felt like I had a decent idea of how this could all work and
 
 This was the first iteration that got revealed to the family (most importantly Trephaena) and the reviews were pretty positive.  The cooler drawer is pretty sweet and the overall idea is great.  One drawer was being annoying to get to latch in place and the left drawers are pretty tight but otherwise it was definitely a success. 
 
-![](realish-drawers.jpg)
+![](realish-drawers.jpg "Drawers that are a bit more real")
 
 ## Work-in-Progress
 
