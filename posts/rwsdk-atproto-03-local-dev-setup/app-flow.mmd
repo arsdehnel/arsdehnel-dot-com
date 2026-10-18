@@ -1,0 +1,19 @@
+sequenceDiagram
+    autonumber
+    actor User
+    participant rwsdk as RWSDK Starter Kit
+    participant pds as Local PDS
+    participant plc as Local PLC
+
+    User->>rwsdk: Submit Handle
+    rwsdk->>pds: Resolve Handle
+    pds->>rwsdk: Return DID
+    rwsdk->>plc: Resolve DID
+    plc->>rwsdk: Return PDS service endpoint
+    rwsdk->>pds: Initialize OAuth PAR
+    rwsdk->>User: Redirect to Login / Approval
+    User->>pds: Auth request processed
+    pds-->>User: Redirect to callback URL
+    User->>rwsdk: Callback with auth code
+    rwsdk->>pds: Exchange auth code for session token
+    rwsdk->>User: Redirects user to post-login homepage
