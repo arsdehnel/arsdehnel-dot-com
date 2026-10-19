@@ -214,11 +214,13 @@ The response shows what the record actually looks like on the wire:
 
 The `uri` is an [AT URI (`at://`) scheme](https://atproto.com/specs/at-uri-scheme), the [DID](https://atproto.com/specs/did) as the authority, the [NSID](https://atproto.com/specs/nsid) as the collection, the [rkey](https://atproto.com/specs/record-key) as the final segment. The [`cid`](https://atproto.com/specs/data-model#link-and-cid-formats) is a content-addressed hash of the record value, used for compare-and-swap operations. The `$type` field identifies the lexicon.
 
-## The anti-pattern to notice
+## The direct PDS read
 
-The app reads the status back from the same PDS it just wrote to. This works, and it's fine for a demo. But it's not how the AT Protocol ecosystem is designed to work.
+The app reads the status back from the same PDS it just wrote to. This works, and it's fine for a demo — it'll even hold up at small scale in production. But as your app grows there are more idiomatic patterns worth knowing about.
 
-In the real atmosphere, you wouldn't ask the PDS for your data after writing it. You'd either just use your own data after getting confirmation from the PDS of a successful save or you'd read it from [Relays](https://atproto.com/guides/the-at-stack#relays) that manage the firehose of events across the Atmoshphere.  Your write will come back through these but there would be a delay, we'll talk more about that in [Post 5](./rwsdk-atproto-05-tap-sync).  The PDS is the source of truth, don't get me wrong, but this operation is a little awkward and isn't the best way to scale your app or the Atmosphere.
+In the real atmosphere, once you have confirmation from the PDS that a write succeeded, you already have the data — you don't need to ask for it back. And for reading data from other users, the right path is through [Relays](https://atproto.com/guides/the-at-stack#relays) that manage the firehose of events across the Atmosphere rather than polling each user's PDS directly. Your write will come back through these but there would be a delay — more on that in [Post 5](./rwsdk-atproto-05-tap-sync).
+
+There's also a more fundamental reason to care about the relay: AT Protocol is an open ecosystem. Other apps can write records using the same lexicons, and those writes will never flow through your app at all. If you're only watching for writes that originate in your own UI, you're missing everything that happens outside it. The firehose is how you see the full picture.
 
 ## The companion code
 
@@ -234,4 +236,4 @@ Removing the details of the docker setup (even though they still exist) from the
 
 Alright that ended up to be a lot.  Take a look at [`post/04-atproto-writes`](https://github.com/arsdehnel/rwsdk-atproto-starter/tree/post/04-atproto-writes) branch to see the fully working version at this point.  The changes for this step are in [this PR](https://github.com/arsdehnel/rwsdk-atproto-starter/pull/11) if you're curious about that sort of thing.
 
-Continuing our feature build [Post 5](./rwsdk-atproto-05-tap-sync) works through solutions for the anti-pattern mentioned in this post and how [ATP AppViews](https://atproto.com/guides/the-at-stack#app-views) approach this problem space.
+Continuing our feature build [Post 5](./rwsdk-atproto-05-tap-sync) looks at the two patterns for handling reads in AT Protocol apps, when you'd reach for each, and wires up the relay side using Tap.
