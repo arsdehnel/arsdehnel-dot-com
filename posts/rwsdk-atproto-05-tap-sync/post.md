@@ -2,7 +2,7 @@
 title: "RWSDK + ATP: Tap Sync"
 excerpt: "Reading data back from your own PDS after writing it is not a great pattern. This post works through options for better models and illustrates the ATP's data flow approach."
 thumbnail: thumbnail.png
-date: '2026-10-15T11:00:00Z'
+date: '2026-10-19T18:00:00Z'
 categories:
   - development
   - at-protocol
@@ -153,7 +153,7 @@ export async function post({ request }: RequestInfo): Promise<Response> {
 
 ## In-memory state and SSE
 
-In this initial bulid of the app the statuses are stored in a module-level Map stored in memory. We'll use server-side events within `workerd` to push these changes out to connected clients/browsers. 
+In this initial build of the app the statuses are stored in a module-level Map stored in memory. We'll use [Server-Sent Events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events) (SSE) within `workerd` to push these changes out to connected clients/browsers. SSE is a browser-native API for receiving a stream of updates over a single HTTP connection — lighter than WebSockets for this one-way push use case.
 
 ```typescript
 export const statusStore = new Map<string, StatusEntry>();
@@ -208,7 +208,7 @@ The fix is one line in `wrangler.jsonc`:
 
 ## The client component
 
-A `"use client"` component opens an `EventSource` connection and updates state on each event:
+A `"use client"` component opens an [`EventSource`](https://developer.mozilla.org/en-US/docs/Web/API/EventSource) connection and updates state on each event:
 
 ```typescript
 "use client";

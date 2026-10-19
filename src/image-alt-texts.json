@@ -37,6 +37,7 @@
 	"posts/rwsdk-atproto-05-tap-sync/optimistic-update-flow.png": "Sequence diagram: browser picks status, app writes to PDS, on 200 OK app upserts local store and returns updated UI to browser.",
 	"posts/rwsdk-atproto-05-tap-sync/relay-flow.png": "Sequence diagram: write to PDS emits firehose event; Tap delivers webhook to app, which upserts store and pushes via SSE.",
 	"posts/rwsdk-atproto-05-tap-sync/thumbnail.png": "Post #5 thumbnail: 'Tap Sync' with RedwoodSDK and AT Protocol logos.",
+	"posts/rwsdk-atproto-06-d1-persistence/app-architecture.png": "App architecture: RWSDK App on host connected to Wrangler KV stores and D1, plus Docker Compose network with PDS, PLC, Firehose, Relay, and Tap.",
 	"posts/rwsdk-atproto-06-d1-persistence/thumbnail.png": "Post #6 thumbnail: 'D1 Persistence' with RedwoodSDK and AT Protocol logos.",
 	"posts/rwsdk-atproto-07-appview/thumbnail.png": "Post #7 thumbnail: 'AppView' with RedwoodSDK and AT Protocol logos.",
 	"posts/rwsdk-atproto-08-next-steps/thumbnail.png": "Post #8 thumbnail: 'Next Steps' with RedwoodSDK and AT Protocol logos.",
