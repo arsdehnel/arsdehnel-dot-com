@@ -187,7 +187,7 @@ The snapshot is captured before the stream opens and closed over in `start()`. N
 
 ## What's next
 
-The data model is already multi-user — the schema has no user filter, and the upsert keyed on DID means every user who sets a status gets their own row. Post 7 makes that visible: one structural change moves the status board outside the auth gate so anyone can read it without logging in. That's what completes the AppView pattern.
+The data model is already multi-user — the schema has no user filter, and the upsert keyed on DID means every user who sets a status gets their own row. Post 7 completes both halves of the read pattern introduced in Post 5: it adds the optimistic update path so your own writes land in D1 immediately without waiting for the relay, and it moves the status board outside the auth gate so anyone can read it without logging in. That's what makes this a real AppView.
 
 ## Setup
 
