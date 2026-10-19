@@ -10,7 +10,7 @@ categories:
   - cloudflare
 ---
 
-[Post 3](https://arsdehnel.com/posts/rwsdk-atproto-03-devnet) set up a local AT Protocol development environment so nothing has to touch Bluesky or anything on the ATmosphere during development. Building on that we start getting into actual feature development. As a part of that we need to write some data which means we define a lexicon, generate TypeScript from it, and write an actual record to the local PDS. In doing this we'll hit the OAuth token problem we mentioned in Post2 so we'll solve that while we're adding our Status Emoji feature, too.
+[Post 3](./rwsdk-atproto-03-devnet) set up a local AT Protocol development environment so nothing has to touch Bluesky or anything on the ATmosphere during development. Building on that we start getting into actual feature development. As a part of that we need to write some data which means we define a lexicon, generate TypeScript from it, and write an actual record to the local PDS. In doing this we'll hit the OAuth token problem we mentioned in Post2 so we'll solve that while we're adding our Status Emoji feature, too.
 
 ## What a lexicon is
 
