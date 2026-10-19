@@ -1,6 +1,6 @@
 ---
 title: "RWSDK + ATP: AppView"
-excerpt: "The data model from post 6 already handles multiple users. The missing piece was making the status board visible without a login — one structural change that turns your app into a real AppView."
+excerpt: "Post 5 introduced two read patterns — optimistic update for your own writes, relay for everyone else's. This post wires them both up, opens the status board to the public, and completes the AppView."
 thumbnail: thumbnail.png
 date: '2026-10-15T18:00:00Z'
 categories:
@@ -10,17 +10,39 @@ categories:
   - cloudflare
 ---
 
-The change in this post is smaller than post 6 promised. That post ended with:
+[Post 5](https://arsdehnel.com/posts/rwsdk-atproto-05-tap-sync) introduced two complementary patterns for reads in AT Protocol apps: an optimistic update for your own writes (fast, no relay delay), and the relay/firehose path for everyone else's writes (the full picture, including external apps). Post 5 built the relay side. This post adds the optimistic update and opens the status board to unauthenticated visitors.
 
-> Post 7 connects the app to the broader firehose to build a real cross-user feed.
+## Optimistic update for your own writes
 
-The D1 schema from post 6 already has no user filter. The webhook handler upserts by DID — every user who writes a status record gets their own row. The multi-user indexing was already there. The missing piece was one structural decision in `home.tsx`: the status board was inside the auth conditional, invisible to anyone who wasn't signed in.
+When you write a record to the PDS and it succeeds, you already have the data — you sent it. The relay will deliver it back eventually, but there's no reason to wait. The fix is to write into D1 immediately after the PDS confirms the write:
 
-Moving it out is the entire code change for this post.
+```typescript
+const res = await lexClient.put(
+  statusSchema,
+  { status: emoji, createdAt: new Date().toISOString() as DatetimeString },
+  { rkey: "self" }
+);
 
-## What changed
+// We already have the data — don't wait for the relay
+await db
+  .insert(statuses)
+  .values({ did, handle, status: emoji, updatedAt: new Date().toISOString() })
+  .onConflictDoUpdate({
+    target: statuses.did,
+    set: { status: emoji, updatedAt: new Date().toISOString() },
+  });
 
-The `StatusFeed` component was rendered inside `{did ? ... : ...}` — the logged-in branch. Logged-out visitors saw a placeholder that said "Sign in above to see your recent posts." Moving the section outside that conditional makes the board public:
+const allStatuses = await db.select().from(statuses);
+pushToSseClients(allStatuses);
+```
+
+The Tap webhook will still arrive for this write — the relay doesn't know you already indexed it. That's fine: the upsert is idempotent, so the second write is a no-op. Both paths converge to the same D1 row.
+
+The benefit is immediate: pick a status and the feed updates instantly. The relay path kicks in for other users' writes and for any external app writing `xyz.statusphere.status` records that never touched your UI.
+
+## Opening the status board
+
+The `StatusFeed` component was rendered inside `{did ? ... : ...}` — only visible when signed in. Moving it outside that conditional makes the board public:
 
 ```tsx
 // before: board only visible when logged in
@@ -49,28 +71,19 @@ The D1 query hasn't changed. There's no WHERE clause — it always returned all 
 
 ## The three-window demo
 
-1. Normal window: sign in as `alice.devnet.test` / `alice-devnet-pass`, set a status
-2. Incognito window: sign in as `bob.devnet.test` / `bob-devnet-pass`, set a different status
+1. Normal window: sign in as `alice.devnet.test` / `alice-devnet-pass`, set a status — notice the feed updates instantly
+2. Incognito window: sign in as `bob.devnet.test` / `bob-devnet-pass`, set a different status — alice's window updates via SSE
 3. Open any window without logging in — the status board shows both
 
-That third window is the point. The board isn't gated on session state. Anyone who loads the page sees the full index.
+The instant update in window 1 is the optimistic path. The cross-window update is the relay path. The third window being readable at all is the public board.
 
 ## Status board, not feed
 
-The D1 schema stores one row per DID, updated in place:
-
-```typescript
-await db
-  .insert(statuses)
-  .values({ did, handle, status, updatedAt })
-  .onConflictDoUpdate({ target: statuses.did, set: { ... } });
-```
-
-This isn't a feed in the chronological sense — it's a snapshot of the latest status per user. "Feed" implies a stream of events; what this renders is a leaderboard of current states. If you wanted a true feed you'd append rows instead of upsert and query by recency. The upsert model is right for this use case — you care about who has what status now, not the history.
+The D1 schema stores one row per DID, updated in place. This isn't a feed in the chronological sense — it's a snapshot of the latest status per user. "Feed" implies a stream of events; what this renders is a leaderboard of current states. If you wanted a true feed you'd append rows instead of upsert and query by recency. The upsert model is right for this use case — you care about who has what status now, not the history.
 
 ## You're an AppView
 
-This is the pattern AT Protocol calls an AppView, and there's nothing special about it:
+This is the pattern AT Protocol calls an AppView:
 
 1. Subscribe to the firehose (Tap handles this, subscribing to the PDS relay)
 2. Filter for the record types you care about (`xyz.statusphere.status`)
@@ -79,19 +92,28 @@ This is the pattern AT Protocol calls an AppView, and there's nothing special ab
 
 Bluesky's `app.bsky.app` does exactly this — subscribes to the global Relay, indexes posts, likes, follows, and profiles from every PDS on the network, and serves them through its own API. The only difference is scale.
 
-The full data path:
+The full data path, with both read patterns in place:
 
 ```
-User picks status
-  → PDS writes xyz.statusphere.status record
-  → Tap sees it on the firehose
-  → Tap POSTs to /webhooks/tap
-  → Worker upserts into D1
+User picks status in your app
+  → PDS confirms the write
+  → Optimistic update: Worker writes to D1 immediately
   → SSE pushes updated board to all connected browsers
-  → Anyone watching sees the change
+
+Meanwhile on the relay side:
+  → PDS emits firehose event
+  → Tap delivers POST /webhooks/tap
+  → Worker upserts into D1 (idempotent — same row, same data)
+  → SSE push (no visible change, already up to date)
+
+Other user or external app writes a status
+  → Relay path only (optimistic path isn't available — not your write)
+  → Tap delivers POST /webhooks/tap
+  → Worker upserts into D1
+  → SSE pushes updated board
 ```
 
-You built each step in this chain one post at a time. This post is the one where the full picture connects.
+You built each step in this chain one post at a time. This is where the full picture connects.
 
 ## Setup
 
