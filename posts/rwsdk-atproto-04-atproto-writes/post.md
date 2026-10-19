@@ -1,8 +1,8 @@
 ---
 title: "RWSDK + ATP: AT Proto Writes"
-excerpt: Lexicons are how AT Protocol knows what a record means. This post defines one, generates typed TypeScript from it, and uses it to write a record to the local PDS — then reads it back publicly without touching authentication.
+excerpt: In order to perform writes (and predictable reads) on the ATP you'll need to use Lexicons.  They are the schema and definition of data types on the protocol. This post defines one, generates typed TypeScript from it, and uses it to write a record to the local PDS.
 thumbnail: thumbnail.png
-date: '2026-10-15T03:00:00Z'
+date: '2026-10-19T15:00:00Z'
 categories:
   - development
   - at-protocol
@@ -10,11 +10,11 @@ categories:
   - cloudflare
 ---
 
-[Post 3](https://arsdehnel.com/posts/rwsdk-atproto-03-devnet) set up a local AT Protocol devnet so nothing has to touch Bluesky or anything on the ATmosphere during development. Post 4 uses it: we define a lexicon, generate TypeScript from it, and write an actual record to the local PDS. We also hit a real infrastructure problem with OAuth session storage, which turns out to be worth solving now.
+[Post 3](https://arsdehnel.com/posts/rwsdk-atproto-03-devnet) set up a local AT Protocol development environment so nothing has to touch Bluesky or anything on the ATmosphere during development. Building on that we start getting into actual feature development. As a part of that we need to write some data which means we define a lexicon, generate TypeScript from it, and write an actual record to the local PDS. In doing this we'll hit the OAuth token problem we mentioned in Post2 so we'll solve that while we're adding our Status Emoji feature, too.
 
 ## What a lexicon is
 
-Every record type in AT Protocol is defined by a lexicon — a JSON schema identified by an NSID (Namespace Identifier). NSIDs follow a reverse-DNS convention: `xyz.statusphere.status` means the `status` record type under the `statusphere` namespace, owned by whoever controls `xyz`. The NSID doubles as the collection name when records are stored in a repo.
+Every record type in AT Protocol is defined by a [lexicon](https://atproto.com/guides/lexicon): a JSON schema identified by [an NSID (Namespace Identifier)](https://atproto.com/specs/nsid). NSIDs follow a reverse-DNS convention: `xyz.statusphere.status` means the `status` record type under the `statusphere` namespace, owned by whoever controls `statusphere.xyz` (proven by a DNS TXT record). The NSID doubles as the [collection](https://atproto.com/guides/glossary#collection) name when records are stored in a [repo](https://atproto.com/specs/repository).
 
 The `xyz.statusphere.status` lexicon comes from Bluesky's [Statusphere tutorial](https://atproto.com/tutorials/statusphere). It defines a simple record: one emoji status and a timestamp.
 
@@ -39,18 +39,20 @@ The `xyz.statusphere.status` lexicon comes from Bluesky's [Statusphere tutorial]
 }
 ```
 
-The `key: "tid"` field means records in this collection are identified by a TID (timestamp-based ID). We'll override that in a moment to make it behave as a singleton.
+The `key: "tid"` field means records in this collection are identified by a [TID (timestamp-based ID)](https://atproto.com/specs/tid). We'll override that in a moment to make it behave as a singleton.
 
 ## Installing and generating
 
-The `@atproto/lex` package ships a CLI with two commands:
+**Note:** For this part we're largely just re-explaining [the Statusphere Tutorial](https://atproto.com/guides/statusphere-tutorial#part-1-lexicons) from atproto.com.  
+
+The [`@atproto/lex` package](https://www.npmjs.com/package/@atproto/lex) ships a CLI with two commands:
 
 ```sh
 lex install xyz.statusphere.status   # fetches the lexicon JSON from the network
 lex build                            # generates TypeScript from the fetched JSON
 ```
 
-`lex install` fetches the lexicon from where it lives in the AT Protocol network — in this case, a record published by the Statusphere tutorial authors — and pins its CID in `lexicons.json`:
+`lex install` fetches the lexicon from where it lives in the AT Protocol network. In this case that is a record published by the Statusphere tutorial authors.  The results are written to `lexicons.json` as sort of a "lexicons lock file":
 
 ```json
 {
@@ -65,7 +67,20 @@ lex build                            # generates TypeScript from the fetched JSO
 }
 ```
 
-`lexicons.json` is committed. The JSON files fetched into `lexicons/` and the TypeScript generated into `src/lexicons/` are both gitignored. They're reproducible build artifacts, not source. Both directories go in `.gitignore`, and both steps get added to `dev:init` so a fresh clone is one command away:
+## Quick peek behind the scenes
+
+You can skip this section if you want, but since the AT Protocol is new to me I dug into what all is happening here.  Needless to say it's a little more than just downloading some JSON!
+
+![](./lex-install-flow.png "Sequence diagram of lex install command operations")
+
+**Key Points**
+- Step 2 reverses the NSID's authority segment (xyz.statusphere → statusphere.xyz) to build the DNS query _lexicon.statusphere.xyz; Step 3 returns the DID that owns that authority
+- Step 4 uses the same PLC resolution for these lexicon records as the OAuth resolution flow did in Post 2 showing this is how the ATP works, not just for OAuth
+- Step 6 actually fetches the lexicon but importantly we have the mans to cryptographically verify the PDS is returning the appropriate document and the `lex` CLI non-optionally does this for us
+
+## Handling the results
+
+Back to our local repo the produced `lexicons.json` should get committed as it tracks the version your code is developed against and where to find the lexicons for future builds and contributors. In addition to this file the actual JSON files that hold the schemas are fetched into `lexicons/` and should be gitignored. Following that `install` command run `lex build` to generate the TypeScript definitions for those schemas into `src/lexicons/` and gitignore those as well. They're both reproducible build artifacts, not source. It's your call on if you want to add a script to `package.json` for them but we decided to include it and even add them to the `dev:init` script rwsdk calls so a fresh clone is one command away:
 
 ```jsonc
 "dev:init": "pnpm lex:install && pnpm lex:generate && rw-scripts dev-init",
@@ -90,13 +105,13 @@ const main = l.record<'tid', Main>(
 )
 ```
 
-This `main` object is the schema — a runtime value that the `@atproto/lex` `Client` class uses for typed reads and writes. `status.ts` re-exports it as the default export, which is what gets imported in application code.
+This `main` object is the schema that the `@atproto/lex` `Client` class uses for typed reads and writes. `status.ts` re-exports it as the default export, which is what gets imported in application code.
 
 ## Writing a record
 
 The `@atproto/lex` `Client` wraps an OAuth session and provides high-level methods for record operations: `create`, `put`, `get`, `list`, `delete`. Each takes a schema object as its first argument, which is how it knows the NSID, key type, and shape of the record.
 
-For `xyz.statusphere.status` we want a singleton — one record per user, updated in place rather than appended. AT Protocol has no PATCH operation; `put` replaces the record wholesale. The singleton behavior comes from using a fixed `rkey` of `"self"`:
+For `xyz.statusphere.status` we want a singleton per user (one record updated in place rather than appended). AT Protocol has no PATCH operation; `put` replaces the record wholesale. The singleton behavior comes from using a fixed [`rkey`](https://atproto.com/specs/record-key) of [`"self"`](https://atproto.com/specs/record-key#record-key-type-literal-value) which is a known and common value, not just a constant string picked for this particular use case:
 
 ```typescript
 import { Client, type DatetimeString } from "@atproto/lex";
@@ -112,29 +127,27 @@ const res = await lexClient.put(
 );
 ```
 
-Any future `put` with the same `rkey` replaces the previous record. The `lexicon: "tid"` key type still applies for new records created without an explicit rkey — we're just overriding it for this one.
+Any future `put` with the same `rkey` replaces the previous record. The [`lexicon: "tid"`](https://atproto.com/specs/tid) key type still applies for new records created without an explicit rkey we're just overriding it for this one.
 
-The lower-level API (`createRecord`, `putRecord`, etc.) returns the full `XrpcResponse` object with the body under `.body`. The high-level methods — `put`, `get`, etc. — return the body directly, which is what you want in most cases.
+The lower-level API (`createRecord`, `putRecord`, etc.) returns the full `XrpcResponse` object with the body under `.body`. The high-level methods (`put`, `get`, etc.) return the body directly, which is probably what you want in most cases.
 
 ## OAuth scope for writes
 
-Post 3 used a scope of `"atproto"` which grants full repo access. For writes, a more specific scope can be requested:
+Post 3 used a scope of `"atproto"` which grants full repo access. For writes, a more specific scope should be requested so the user can feel more comfortable with the permissions request they'll need to approve (and because it's good practice to ask for only what you need).
 
 ```typescript
 export const SCOPE = "atproto repo:xyz.statusphere.status";
 ```
 
-The `repo:xyz.statusphere.status` scope explicitly requests write access to that collection. The PDS enforces this when the record is created — the access token must carry the scope that covers the collection being written to.
-
-Changing the scope means existing sessions are no longer valid for the new scope. Users need to log out and re-authenticate.
+The `repo:xyz.statusphere.status` scope explicitly requests write access to that collection. The PDS enforces this when the record is created; the access token must carry the scope that covers the collection being written to. Changing the scope means existing sessions are no longer valid for the new scope. Users need to log out and re-authenticate.
 
 ## The OAuth session storage problem
 
-There's an infrastructure problem that's been deferred since Post 2 and that now actually breaks things: `NodeOAuthClient` needs a `stateStore` and `sessionStore` to persist OAuth state and tokens. The previous implementation used in-memory Maps on `globalThis`. This works within a single worker process session but falls apart the moment the worker restarts — which happens constantly during development when files change.
+There's an lingering problem that's been deferred since Post 2 and that now actually breaks things: `NodeOAuthClient` needs a `stateStore` and `sessionStore` to persist OAuth state and tokens. The previous implementation used in-memory Maps on `globalThis`. This works within a single worker process session but falls apart the moment the worker restarts which happens constantly during development when files change.
 
 The symptom: the `UserSession` Durable Object (which stores the HTTP session cookie → DID mapping) survives worker restarts because it's backed by SQLite. So the user still appears logged in. But the OAuth tokens stored in the in-memory Map are gone, so `client.restore(did)` throws "The session was deleted by another process" when the app tries to write a record.
 
-The fix is two Cloudflare KV namespaces:
+The fix is two Cloudflare KV namespaces each with their own semantics and lifecycles.
 
 ```jsonc
 "kv_namespaces": [
@@ -143,7 +156,8 @@ The fix is two Cloudflare KV namespaces:
 ]
 ```
 
-Two namespaces rather than one with key prefixes because they have meaningfully different lifecycles. State entries are ephemeral — OAuth flow state only needs to survive the seconds between the authorization redirect and the callback. Session entries are durable — they need to survive restarts and (in production) isolate evictions.
+- State entries are ephemeral: OAuth flow state only needs to survive the seconds between the authorization redirect and the callback
+- Session entries are durable: they need to survive restarts and (in production) isolate evictions
 
 ```typescript
 stateStore: {
@@ -170,17 +184,17 @@ sessionStore: {
 },
 ```
 
-One remaining gap worth naming: in production, the `stateStore` is still not safe across multiple Worker isolates. The authorization redirect and OAuth callback are likely to land on different isolates, and KV reads are eventually consistent rather than strongly consistent. For a single-instance dev setup this is fine; for production the fix is either a Durable Object or accepting that some login attempts will fail and require a retry. Post 8 covers making this production-ready.
+One remaining gap worth naming: in production, the `stateStore` is still not safe across multiple Worker isolates. The authorization redirect and OAuth callback are likely to land on different isolates, and KV reads are eventually consistent rather than strongly consistent. For a single-instance dev setup this is fine; for production the fix is either a Durable Object or accepting that some login attempts will fail and require a retry. [Post 8](./rwsdk-atprot-08-next-steps) covers making this production-ready.
 
 ## Reading back publicly
 
-After writing, the app reads the status collection back from the PDS to display the raw record. This is where something worth understanding shows up: `com.atproto.repo.listRecords` is a public endpoint. No OAuth required.
+After writing, the app reads the status collection back from the PDS to display the raw record. This is the same sort of thing we did in [Post 1](./rwsdk-atproto-01-first-read) but now tied to our own app's data.  You can still just open this in your browser without OAuth or anything and see the record:
 
 ```
 GET http://localhost:3000/xrpc/com.atproto.repo.listRecords?repo={did}&collection=xyz.statusphere.status
 ```
 
-You can open that URL in a browser, or run it with curl, and see the same JSON the app displays. The write required authentication; the read doesn't. This is the AT Protocol data model: your repo is publicly readable by anyone, writes require OAuth authorization from you.
+The write required authentication; the read doesn't. This is the AT Protocol data model: your repo is publicly readable by anyone, writes require OAuth authorization from you.
 
 The response shows what the record actually looks like on the wire:
 
@@ -198,24 +212,26 @@ The response shows what the record actually looks like on the wire:
 }
 ```
 
-The `uri` is an AT URI — `at://` scheme, the DID as the authority, the NSID as the collection, the rkey as the final segment. The `cid` is a content-addressed hash of the record value, used for compare-and-swap operations. The `$type` field identifies the lexicon.
+The `uri` is an [AT URI (`at://`) scheme](https://atproto.com/specs/at-uri-scheme), the [DID](https://atproto.com/specs/did) as the authority, the [NSID](https://atproto.com/specs/nsid) as the collection, the [rkey](https://atproto.com/specs/record-key) as the final segment. The [`cid`](https://atproto.com/specs/data-model#link-and-cid-formats) is a content-addressed hash of the record value, used for compare-and-swap operations. The `$type` field identifies the lexicon.
 
 ## The anti-pattern to notice
 
 The app reads the status back from the same PDS it just wrote to. This works, and it's fine for a demo. But it's not how the AT Protocol ecosystem is designed to work.
 
-In the real atmosphere, you wouldn't ask the PDS for your data after writing it. You'd ask an AppView — a service that has already indexed the relevant records from across the network and can serve them efficiently. The PDS is the source of truth for writes; AppViews are the right place to read from.
+In the real atmosphere, you wouldn't ask the PDS for your data after writing it. You'd either just use your own data after getting confirmation from the PDS of a successful save or you'd read it from [Relays](https://atproto.com/guides/the-at-stack#relays) that manage the firehose of events across the Atmoshphere.  Your write will come back through these but there would be a delay, we'll talk more about that in [Post 5](./rwsdk-atproto-05-tap-sync).  The PDS is the source of truth, don't get me wrong, but this operation is a little awkward and isn't the best way to scale your app or the Atmosphere.
 
-Post 5 covers this: Tap and Jetstream let you react to record changes as they propagate through the network, which is the pattern that replaces polling your own PDS for data you already wrote.
+## The companion code
 
-## Setup
+The [`post/04-atproto-writes`](https://github.com/arsdehnel/rwsdk-atproto-starter/tree/post/04-atproto-writes) branch has the working code for this step ready to rock. To specifically look at the changes we made here in Step 4 compared to the end result of Step 3, take a look at [this PR](https://github.com/arsdehnel/rwsdk-atproto-starter/pull/11).
 
-```sh
-git checkout post/04-lexicons
-pnpm install
-pnpm docker:up
-pnpm dev:init
-pnpm dev
-```
+## Current architecture diagram
 
-Log in with `alice.devnet.test` / `alice-devnet-pass` at `http://127.0.0.1:5173`. Pick an emoji — the raw PDS record appears below the picker immediately after the write, without a page reload.
+Removing the details of the docker setup (even though they still exist) from the diagram makes this one pretty simple.  We'll show the Wrangler-managed KV stores here since they were added in this step to solve the token management problem.  This is all still local to our machine since Wrangler is running these for us via miniflare. 
+
+![](./app-architecture.png "App architecture diagram for our current build")
+
+## Up Next
+
+Alright that ended up to be a lot.  Take a look at [`post/04-atproto-writes`](https://github.com/arsdehnel/rwsdk-atproto-starter/tree/post/04-atproto-writes) branch to see the fully working version at this point.  The changes for this step are in [this PR](https://github.com/arsdehnel/rwsdk-atproto-starter/pull/11) if you're curious about that sort of thing.
+
+Continuing our feature build [Post 5](./rwsdk-atproto-05-tap-sync) works through solutions for the anti-pattern mentioned in this post and how [ATP AppViews](https://atproto.com/guides/the-at-stack#app-views) approach this problem space.

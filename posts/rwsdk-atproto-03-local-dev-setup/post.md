@@ -2,7 +2,7 @@
 title: "RWSDK + ATP: Local Dev Setup"
 excerpt: "Developing an app while running against production resources and publishing development records into the public space isn't the best way to go about things.  This post sets up a local AT Protocol dev environment with docker compose so you can iterate freely and more quickly."
 thumbnail: thumbnail.png
-date: '2026-10-14T20:00:00Z'
+date: '2026-10-18T20:00:00Z'
 categories:
   - development
   - at-protocol
@@ -115,7 +115,7 @@ After logging in, the app fetches `com.atproto.repo.describeRepo` from the local
 
 ## The companion code
 
-The [`post/03-local-dev-setup`](https://github.com/arsdehnel/rwsdk-atproto-starter/tree/post/02-atproto-oauth) branch has the end result of all of this (the full Docker Compose setup, init script, and OAuth client changes). To specifically look at the changes we made here in Step 3 compared to the end result of Step 2 [this PR](https://github.com/arsdehnel/rwsdk-atproto-starter/pull/10) shows that nicely.
+The [`post/03-local-dev-setup`](https://github.com/arsdehnel/rwsdk-atproto-starter/tree/post/03-local-dev-setup) branch has the end result of all of this (the full Docker Compose setup, init script, and OAuth client changes). To specifically look at the changes we made here in Step 3 compared to the end result of Step 2 [this PR](https://github.com/arsdehnel/rwsdk-atproto-starter/pull/10) shows that nicely.
 
 ## Current flow diagram
 

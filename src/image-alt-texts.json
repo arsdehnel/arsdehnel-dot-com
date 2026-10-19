@@ -30,6 +30,8 @@
 	"posts/rwsdk-atproto-03-local-dev-setup/app-flow.png": "Sequence diagram of AT Protocol OAuth flow using local PDS and PLC services instead of production Bluesky infrastructure.",
 	"posts/rwsdk-atproto-03-local-dev-setup/docker-compose.png": "Docker Compose network diagram with RWSDK App on host connecting to PDS, PLC, Postgres, Init Script, and maildev containers.",
 	"posts/rwsdk-atproto-03-local-dev-setup/thumbnail.png": "Post #3 thumbnail: 'Local Dev Setup' with RedwoodSDK and AT Protocol logos.",
+	"posts/rwsdk-atproto-04-atproto-writes/app-architecture.png": "App architecture diagram: RWSDK App and Wrangler KV on host connecting to PDS and PLC containers in Docker Compose network.",
+	"posts/rwsdk-atproto-04-atproto-writes/lex-install-flow.png": "Sequence diagram of lex install: DNS TXT lookup, PLC DID resolution, PDS record fetch, and local commit proof verification.",
 	"posts/rwsdk-atproto-04-atproto-writes/thumbnail.png": "Post #4 thumbnail: 'AT Proto Writes' with RedwoodSDK and AT Protocol logos.",
 	"posts/rwsdk-atproto-05-tap-sync/thumbnail.png": "Post #5 thumbnail: 'Tap Sync' with RedwoodSDK and AT Protocol logos.",
 	"posts/rwsdk-atproto-06-d1-persistence/thumbnail.png": "Post #6 thumbnail: 'D1 Persistence' with RedwoodSDK and AT Protocol logos.",
