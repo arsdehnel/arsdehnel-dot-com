@@ -12,11 +12,11 @@ categories:
 
 [Post 1](./rwsdk-atproto-01-first-read) showed that [AT Protocol](https://atproto.com/) data is publicly readable with a plain fetch. That's a neat little initial hook but doesn't get you very far if you're looking to build an actual app for the [Atmosphere](https://atproto.com/guides/glossary#atmosphere). To write records, read private data, or act on behalf of a user, you need OAuth. This is Post 2 of 8, and it's where the more interesting problem solving and development effort starts.
 
-AT Protocol uses standard OAuth 2.0 under the hood, but pairing that with RWSDK there are a handful of rough edges due to it running inside [Cloudflare's `workerd` runtime](https://github.com/cloudflare/workerd) instead of Node.js. This post documents those edges and the decisions behind how I chose to work around them.  
+AT Protocol uses OAuth 2.1 under the hood, not just standard OAuth 2.0 stuff. The pairing of the less trodden paths of that with RWSDK results in a handful of rough edges due to it running inside [Cloudflare's `workerd` runtime](https://github.com/cloudflare/workerd) instead of Node.js. This post documents those edges and the decisions behind how I chose to work around them.  
 
 ## The flow
 
-At a high level the exchange looks like this, pretty much standard [Auth Code Flow with PAR](https://auth0.com/docs/get-started/authentication-and-authorization-flow/authorization-code-flow/authorization-code-flow-with-par) since Bluesky supports PAR.
+At a high level the exchange looks like this showing that OAuth 2.1 [Auth Code Flow with PAR](https://auth0.com/docs/get-started/authentication-and-authorization-flow/authorization-code-flow/authorization-code-flow-with-par) since [AT PRoto requires PAR support for PDSs](https://atproto.com/specs/oauth).
 
 1. User submits their Bluesky handle. The Worker resolves it to a PDS, initiates a Pushed Authorization Request (PAR), and returns a redirect URL.
 2. The browser redirects to `bsky.social`'s authorization page (or whatever auth server and page is indicated by the PDS for the input handle).
@@ -42,13 +42,15 @@ The fix is `defineDurableSession` from `rwsdk/auth` ([rwsdk docs](https://docs.r
 
 `defineDurableSession` wraps that binding into a `sessionStore` with `load`, `save`, and `remove` that handle cookie signing automatically. In dev the signing key falls back to a built-in value — set `AUTH_SECRET_KEY` as a Worker secret before deploying.
 
+We could've considered [Cloudflare Workers KV](https://developers.cloudflare.com/kv/) for session-related storage and it probably could work.  Our main reason for picking DOs for this is simply because RWSDK ships with the DO-based session code.  
+
 ## The OAuth client
 
 The client comes from [`@atproto/oauth-client-node`](https://www.npmjs.com/package/@atproto/oauth-client-node). Two options matter for `workerd`:
 
 **`handleResolver` as a string URL.** The obvious choice is `AtprotoHandleResolverNode`, but it wraps every fetch with `safeFetchWrap`, which pulls in Node.js's `undici`. `undici` isn't available in `workerd`. Passing a plain string URL instead makes the client use a different resolver that calls `globalThis.fetch` — available everywhere.
 
-**`buildAtprotoLoopbackClientMetadata`.** This sets `client_id` to `http://localhost/`, a special value [that `bsky.social` recognizes for local development](https://atproto.com/specs/oauth#clients). No app registration, no hosted metadata endpoint required.
+**`buildAtprotoLoopbackClientMetadata`.** This sets `client_id` to `http://localhost/`, a special value [that `bsky.social` and all AT Proto PDSs recognize for local development](https://atproto.com/specs/oauth#clients). No app registration, no hosted metadata endpoint required.
 
 ```typescript
 const client = new NodeOAuthClient({
@@ -62,17 +64,17 @@ const client = new NodeOAuthClient({
 });
 ```
 
-The `stateStore` and `sessionStore` on the client are worth distinguishing from the DO session we just set up. The DO session answers "which user is this request from?" — it stores `{ did }` and is keyed by a signed session ID cookie. The OAuth client's stores answer "what authenticated access do we have for this DID?" — they hold the actual tokens and [DPoP](https://atproto.com/specs/oauth#demonstrating-proof-of-possession-d-po-p) key material, keyed by [DID](https://atproto.com/specs/did). They serve different purposes and use different keys, so they can't share the same DO instance.
+The `stateStore` and `sessionStore` on the client are worth distinguishing from the DO session we just set up. The DO session answers "which user is this request from?" — it stores `{ did }` and is keyed by a signed session ID cookie. The OAuth client's stores answer "what authenticated access do we have for this DID?" — they hold the actual tokens and [DPoP](https://atproto.com/specs/oauth#demonstrating-proof-of-possession-d-po-p) key material, keyed by [DID](https://atproto.com/specs/did). They serve different purposes and use different keys, so while they _could_ share a DO they follow different lifecycles and separating them makes things more clear.
 
 For this post both client stores are in-memory Maps on `globalThis`. That means tokens are lost if the Worker restarts — a real limitation in production. It doesn't matter yet because we only fetch public records here, but it will matter in [Post 4](./rwsdk-atproto-04-atproto-writes) when we need to make authenticated writes. At that point the OAuth token store will need its own durable backing, keyed by DID.
 
-One detail: use `http://127.0.0.1:5173`, not `http://localhost:5173`. After approving access, the authorization server redirects to the exact redirect URI you registered. If the app is open at `localhost`, the callback lands on a different origin and the session won't be established.
+One detail: use `http://127.0.0.1:5173`, not `http://localhost:5173`. After approving access, the authorization server redirects to the exact redirect URI you registered. If the app is open at `localhost`, the callback lands on a different origin and the session won't be established. Not only that but [using 127.0.0.1 follows AT Proto expected behavior](https://atproto.com/specs/oauth#localhost-client-development).
 
 ## Workerd-specific gotchas
 
 ### `redirect: "error"` rejection
 
-Cloudflare Workers rejects `redirect: "error"` in fetch options (this isn't documented yet but [the source C++ clearly throws](https://github.com/cloudflare/workerd/blob/main/src/workerd/api/http.c++#L483) and [there is a PR to address it in the CF docs](https://github.com/cloudflare/cloudflare-docs/pull/33362)). The `@atproto` packages use this option pervasively as a safety net on outbound requests so rather than implementing the whole package ourselves the fix used here is a small Vite plugin that rewrites all occurrences at build time:
+Cloudflare Workers rejects `redirect: "error"` in fetch options (this isn't documented yet but [the source C++ clearly throws](https://github.com/cloudflare/workerd/blob/01bb2e6deca73934885507d25ba105a0dfe202e6/src/workerd/api/http.c%2B%2B#L483) and [there is a PR to address it in the CF docs](https://github.com/cloudflare/cloudflare-docs/pull/33362)). The `@atproto` packages use this option pervasively as a safety net on outbound requests so rather than implementing the whole package ourselves the fix used here is a small Vite plugin that rewrites all occurrences at build time:
 
 ```typescript
 function patchAtprotoRedirectError(): Plugin {
@@ -95,13 +97,13 @@ You'll see 401 responses in the Worker logs during the OAuth flow. These are not
 
 ## The companion code
 
-The starter kit changes are too numerous to list here but [this PR](https://github.com/arsdehnel/rwsdk-atproto-starter/pull/9) shows the changes from Step 1 to Step 2.  To skip that the [post/02-atproto-auth](https://github.com/arsdehnel/rwsdk-atproto-starter/tree/post/02-atproto-oauth) branch has the completed OAuth2 implementation: the DO class, the OAuth client setup, four route handlers (`/oauth/login`, `/oauth/callback`, `/oauth/logout`, `/client-metadata.json`), and the session middleware in `worker.tsx`. 
+The starter kit changes are too numerous to list here but [this PR](https://github.com/arsdehnel/rwsdk-atproto-starter/pull/9) shows the changes from Step 1 to Step 2.  To skip that the [post/02-atproto-oauth](https://github.com/arsdehnel/rwsdk-atproto-starter/tree/post/02-atproto-oauth) branch has the completed OAuth2 implementation: the DO class, the OAuth client setup, four route handlers (`/oauth/login`, `/oauth/callback`, `/oauth/logout`, `/client-metadata.json`), and the session middleware in `worker.tsx`. 
 
 ## Current flow diagram
 
 This attempts to show what we've got now.  The actual PDS fetch of Bluesky posts has been simplified as the diagram of that was covered in [the last post](./rwsdk-atproto-01-first-read).  This also glosses over the behind the scenes OAuth details as [Auth0 covers that better than I would](https://auth0.com/docs/get-started/authentication-and-authorization-flow/authorization-code-flow/authorization-code-flow-with-par).  
 
-One thing that we didn't really cover in the other parts of this post is that the PDS no longer has to be on Bluesky's hosting. This setup should work against any Atmosphere Spec-compliant PDS for both the auth flow and the posts lookup.  The one possible variation would be if the `locahost` special treatment is carried through to the PDS but that would be something to know about for debugging possible issues in using a non-Bluesky PDS during development.
+One thing that we didn't really cover in the other parts of this post is that the PDS no longer has to be on Bluesky's hosting. This setup should work against any spec-compliant AT Proto PDS for both the auth flow and the posts lookup.  The one possible variation would be if the `localhost` special treatment is carried through to the PDS but that would be something to know about for debugging possible issues in using a non-Bluesky PDS during development.
 
 ![](./app-flow.png "Sequence diagram of current application flow")
 
