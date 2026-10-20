@@ -74,7 +74,7 @@ A few things worth understanding here:
 
 ## The companion code
 
-The starter kit puts the fetch directly in the page component, which runs server-side on the Worker:
+The starter kit puts the fetch directly in the page component, which runs [server-side on the Worker](https://docs.rwsdk.com/core/react-server-components).  
 
 ```typescript
 export async function Home(_: RequestInfo) {
@@ -85,7 +85,12 @@ export async function Home(_: RequestInfo) {
 }
 ```
 
-No client-side loading state, no effect hooks so the data is in the HTML before it hits the browser. `BlueskyFeed` is a `"use client"` component that renders the JSON, which is also where its scoped CSS lives. The page itself is a server component with no style dependencies of its own.
+No client-side loading state, no effect hooks so the data is in the HTML before it hits the browser. `BlueskyFeed` is a `"use client"` component that renders the JSON, which is also where its scoped CSS lives. The page itself is a server component with no style dependencies of its own. 
+
+For more details on these React Service Components mechanics here are some docs starting points:
+
+- [RWSDK Server Components](https://docs.rwsdk.com/core/react-server-components)
+- [How RSC Works](https://www.plasmic.app/blog/how-react-server-components-work)
 
 ## Current Flow Diagram
 
