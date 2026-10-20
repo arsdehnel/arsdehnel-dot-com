@@ -27,7 +27,7 @@ Two terms you'll need for this post with further reading links if you want to go
 - **PDS (Personal Data Server):** this is where your ATP records actually live. Bluesky operates one at `bsky.social`. When you sign up for Bluesky, your posts, follows, and likes are stored as records on a PDS. The important thing here is that these records are publicly accessible over HTTP — no auth required to read them. 
     - [atproto.com definition](https://atproto.com/guides/the-at-stack#pds)
 
-- **XRPC:**  the RPC protocol ATP uses to talk to a PDS. It's just HTTP. Endpoints follow the pattern `https://<pds>/xrpc/<nsid>` where the [NSID](https://atproto.com/specs/nsid) is a reverse-domain identifier for the method, like `com.atproto.repo.listRecords`. If you've ever worked with a REST API this will feel familiar as it is just a specific implementation of the same concepts.
+- **XRPC:** the RPC protocol ATP uses to talk to a PDS. It's just HTTP. Endpoints follow the pattern `https://<pds>/xrpc/<nsid>` where the [NSID](https://atproto.com/specs/nsid) is a reverse-domain identifier for the method, like `com.atproto.repo.listRecords`. If you've ever worked with a REST API this will feel familiar as it is just a specific implementation of the same concepts.
     - [atproto.com spec](https://atproto.com/specs/xrpc)
 
 ## The fetch
