@@ -10,7 +10,7 @@ categories:
   - cloudflare
 ---
 
-[Post 2](./rwsdk-atproto-02-oauth) got OAuth working against a real Bluesky account. Every time you clicked "Sign in" during that development cycle, your Worker resolved your handle against `bsky.social`, initiated a Pushed Authorization Request against it, and exchanged tokens with it. That's fine for a quick proof of concept, but it's not a sustainable way to develop. Not only are production rate limits real and every test created audit trail entries on production infrastructure but are you start to build your own app logic shouldn't be building that against production.  You wouldn't do it for traditional web apps and you shouldn't do it for Atmoshpere apps.
+[Post 2](./rwsdk-atproto-02-atproto-oauth) got OAuth working against a real Bluesky account. Every time you clicked "Sign in" during that development cycle, your Worker resolved your handle against `bsky.social`, initiated a Pushed Authorization Request against it, and exchanged tokens with it. That's fine for a quick proof of concept, but it's not a sustainable way to develop. Not only are production rate limits real and every test creates audit trail entries on production infrastructure but as you start to build your own app logic you shouldn't be building that against production.  You wouldn't do it for traditional web apps and you shouldn't do it for Atmosphere apps.
 
 Post 3 fixes that. By the end you'll have a local AT Protocol stack running in Docker: a PDS, a DID registry, an SMTP sink.  With that the OAuth login will work against it without touching any production infrastructure. 
 
@@ -84,7 +84,7 @@ The way to handle that is a fetch wrapper that rewrites the canonical URL to the
 
 ## The init script
 
-The Docker Compose stack includes a one-shot Alpine container that runs after the PDS is healthy. OpenMeet ships `scripts/init.sh` that does this (creates an invite code via the admin API, seeds two test accounts, and writes credentials to `data/accounts.env`). We used that as the starting point and adapted it for our setup mostly as a result of hitting some errors and having the script swallow the results.  
+The Docker Compose stack includes a one-shot Alpine container that runs after the PDS is healthy. OpenMeet ships `scripts/init.sh` that does this (creates an invite code via the admin API, seeds three test accounts, and writes credentials to `data/accounts.env`). We used that as the starting point and adapted it for our setup mostly as a result of hitting some errors and having the script swallow the results.  
 
 The OpenMeet script uses `curl -sf` (the `-f` flag causes curl to exit non-zero on HTTP error responses) combined with `set -eu` at the top of the script which means any failed account creation silently kills the whole script. The invite code would get created, account creation would fail, and the only evidence would be that `data/accounts.env` only contained the invite code line. Switching to `-s` and handling the error outside of the curl command (via the response body) made that work a little more nicely for debugging.
 
@@ -103,7 +103,7 @@ After logging in, the app fetches `com.atproto.repo.describeRepo` from the local
 
 ```json
 {
-  "services": [{
+  "service": [{
     "id": "#atproto_pds",
     "type": "AtprotoPersonalDataServer",
     "serviceEndpoint": "http://localhost:3000"
