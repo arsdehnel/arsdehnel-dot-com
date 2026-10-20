@@ -70,7 +70,7 @@ A few things worth understanding here:
     - [atproto.com spec reference](https://atproto.com/specs/data-model#link-and-cid-formats)
 
 - **`$type`:** every record has a `$type` field that matches the collection it lives in. `app.bsky.feed.post` is a Bluesky post. Later in the series we'll use lexicons to work with these types in a more structured way, but for now it's just a string in the JSON.
-    - [atproto.com spec reference](https://atproto.com/specs/data-model#blob-type)
+    - [atproto.com guide reference](https://atproto.com/guides/lexicon#record-types)
 
 ## The companion code
 
