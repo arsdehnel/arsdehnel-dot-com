@@ -35,9 +35,8 @@ Two terms you'll need for this post with further reading links if you want to go
 Since the data is actually truly public here is all the code we need to read some ATP records from a known PDS:
 
 ```typescript
-const response = await fetch(
-  "https://bsky.social/xrpc/com.atproto.repo.listRecords?repo=bsky.app&collection=app.bsky.feed.post&limit=3"
-);
+const BSKY_ENDPOINT = "https://bsky.social/xrpc/com.atproto.repo.listRecords?repo=bsky.app&collection=app.bsky.feed.post&limit=3"
+const response = await fetch(BSKY_ENDPOINT);
 const data = await response.json();
 ```
 
@@ -78,10 +77,10 @@ The starter kit puts the fetch directly in the page component, which runs [serve
 
 ```typescript
 export async function Home(_: RequestInfo) {
-  const response = await fetch(ENDPOINT);
+  const response = await fetch(BSKY_ENDPOINT);
   const records = await response.json();
 
-  return <BlueskyFeed endpoint={ENDPOINT} records={records} />;
+  return <BlueskyFeed endpoint={BSKY_ENDPOINT} records={records} />;
 }
 ```
 
