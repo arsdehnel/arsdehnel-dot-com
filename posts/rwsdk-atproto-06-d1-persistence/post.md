@@ -20,7 +20,7 @@ export const statusStore = new Map<string, StatusEntry>();
 
 This post is that fix.
 
-The payoff is modest and honest: user picks a status, something else causes the worker to restart (file save locally, memory- or request-based eviction in production, etc) but that status is still there. While modest and honest it's a solid step towardsa production ready app and gets us setup for Post 7, where the feed becomes a cross-user index across everyone on the network.
+The payoff is modest and honest: user picks a status, something else causes the worker to restart (file save locally, memory- or request-based eviction in production, etc) but that status is still there. While modest and honest it's a solid step towards a production ready app and gets us setup for Post 7, where the feed becomes a cross-user index across everyone on the network.
 
 ## Why module-level state doesn't survive restarts
 
@@ -141,7 +141,7 @@ await db
 await db.delete(statuses).where(eq(statuses.did, event.did));
 ```
 
-After the write, a `db.select()` fetches the current full list to push to server-side events (SSE) clients same as before, just sourced from D1 instead of the Map:
+After the write, a `db.select()` fetches the current full list to push to server-sent events (SSE) clients same as before, just sourced from D1 instead of the Map:
 
 ```typescript
 const allStatuses = await db.select().from(statuses);
@@ -181,7 +181,7 @@ export async function get(): Promise<Response> {
       );
     },
     cancel() {
-      sseClients.delete(ctrl);
+      sseClients.delete(controller);
     },
   });
 
