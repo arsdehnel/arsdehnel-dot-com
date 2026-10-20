@@ -38,7 +38,9 @@ pushToSseClients(allStatuses);
 
 The Tap webhook will still arrive for this write since the relay doesn't know you already indexed it. That's fine: the upsert is idempotent, so the second write is a no-op. Both paths converge to the same D1 row.
 
-The benefit is immediate: pick a status and the feed updates instantly. The relay path kicks in for other users' writes and for any external app writing `xyz.statusphere.status` records that never touched your UI.
+The benefit is immediate: pick a status and the feed updates without waiting for the relay. The relay path kicks in for other users' writes and for any external app writing `xyz.statusphere.status` records that never touched your UI.
+
+One honest note on local dev behavior: in a deployed Cloudflare Workers environment the SSE push delivers directly to connected browsers. Locally, the Vite dev proxy appears to buffer Worker streaming responses rather than forwarding them flush-on-write, so updates arrive when the browser's `EventSource` reconnects instead of via direct push. The SSE endpoint sets `retry: 100` to keep that reconnect fast enough to be imperceptible in practice. Deployed behavior — direct push, no reconnect — is the intended pattern and will be confirmed in a future update once this has run against a live environment.
 
 ## Opening the status board
 
@@ -76,7 +78,9 @@ The D1 query hasn't changed. There's no WHERE clause in the previous versions so
 3. In a terminal: run `pnpm write-status` to write Carol's status directly to the PDS, bypassing the local app entirely. Alice's and Bob's windows update after a brief delay as the events flow through the relay, tap, and webhook processes
 4. Open any window without logging in and the status board shows all three
 
-Steps 1 and 2 both take the optimistic path we can have for writes done through our app: the app writes to D1 immediately after the PDS confirms, then SSE pushes to all connected windows. Step 3 is the relay path: the write goes straight to carol's PDS without touching the local app, Tap picks it up from the firehose, delivers the webhook, and only then does D1 update and SSE fire. The brief delay between steps 2 and 3 is the relay in action. Step 4 confirms the public board is populated purely from D1, no auth required. While the few seconds of delay are awkward for this local-first demo it's a pretty small delay for most real-world users.
+Steps 1 and 2 both take the optimistic path: the app writes to D1 immediately after the PDS confirms, then SSE notifies all connected windows. Step 3 is the relay path: the write goes straight to Carol's PDS without touching the local app, Tap picks it up from the firehose, delivers the webhook, and only then does D1 update and SSE fire. Step 4 confirms the public board is populated purely from D1, no auth required.
+
+In local dev, steps 2 and 3 will feel roughly the same speed — the local Docker network is fast enough that relay overhead is negligible, and the SSE retry workaround (described above) puts a floor on how fast either path can update the UI anyway. The meaningful difference between the two paths — optimistic is immediate, relay adds network latency — will be observable in a deployed environment where the relay runs on real infrastructure.
 
 ## Status board, not feed
 
