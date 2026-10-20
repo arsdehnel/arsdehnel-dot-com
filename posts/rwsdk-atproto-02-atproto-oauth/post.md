@@ -10,7 +10,7 @@ categories:
   - cloudflare
 ---
 
-[Post 1](https://arsdehnel.com/posts/rwsdk-atproto-01-first-read) showed that [AT Protocol](https://atproto.com/) data is publicly readable with a plain fetch. That's a neat little initial hook but doesn't get you very far if you're looking to build an actual app for the [Atmosphere](https://atproto.com/guides/glossary#atmosphere). To write records, read private data, or act on behalf of a user, you need OAuth. This is Post 2 of 8, and it's where the more interesting problem solving and development effort starts.
+[Post 1](./rwsdk-atproto-01-first-read) showed that [AT Protocol](https://atproto.com/) data is publicly readable with a plain fetch. That's a neat little initial hook but doesn't get you very far if you're looking to build an actual app for the [Atmosphere](https://atproto.com/guides/glossary#atmosphere). To write records, read private data, or act on behalf of a user, you need OAuth. This is Post 2 of 8, and it's where the more interesting problem solving and development effort starts.
 
 AT Protocol uses standard OAuth 2.0 under the hood, but pairing that with RWSDK there are a handful of rough edges due to it running inside [Cloudflare's `workerd` runtime](https://github.com/cloudflare/workerd) instead of Node.js. This post documents those edges and the decisions behind how I chose to work around them.  
 

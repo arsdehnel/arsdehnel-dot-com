@@ -10,7 +10,7 @@ categories:
   - cloudflare
 ---
 
-[Post 2](https://arsdehnel.com/posts/rwsdk-atproto-02-oauth) got OAuth working against a real Bluesky account. Every time you clicked "Sign in" during that development cycle, your Worker resolved your handle against `bsky.social`, initiated a Pushed Authorization Request against it, and exchanged tokens with it. That's fine for a quick proof of concept, but it's not a sustainable way to develop. Not only are production rate limits real and every test created audit trail entries on production infrastructure but are you start to build your own app logic shouldn't be building that against production.  You wouldn't do it for traditional web apps and you shouldn't do it for Atmoshpere apps.
+[Post 2](./rwsdk-atproto-02-oauth) got OAuth working against a real Bluesky account. Every time you clicked "Sign in" during that development cycle, your Worker resolved your handle against `bsky.social`, initiated a Pushed Authorization Request against it, and exchanged tokens with it. That's fine for a quick proof of concept, but it's not a sustainable way to develop. Not only are production rate limits real and every test created audit trail entries on production infrastructure but are you start to build your own app logic shouldn't be building that against production.  You wouldn't do it for traditional web apps and you shouldn't do it for Atmoshpere apps.
 
 Post 3 fixes that. By the end you'll have a local AT Protocol stack running in Docker: a PDS, a DID registry, an SMTP sink.  With that the OAuth login will work against it without touching any production infrastructure. 
 

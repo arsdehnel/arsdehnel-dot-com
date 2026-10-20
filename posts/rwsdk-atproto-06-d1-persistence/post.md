@@ -10,7 +10,7 @@ categories:
   - cloudflare
 ---
 
-[Post 5](https://arsdehnel.com/posts/rwsdk-atproto-05-tap-sync) set up Tap to deliver webhook events and an SSE connection to push them live to the browser. At the end of that post the in-memory status store has a comment on it:
+[Post 5](./rwsdk-atproto-05-tap-sync) set up Tap to deliver webhook events and an SSE connection to push them live to the browser. At the end of that post the in-memory status store has a comment on it:
 
 ```typescript
 // Module-level per-isolate state.

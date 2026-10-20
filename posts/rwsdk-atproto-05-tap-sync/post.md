@@ -10,7 +10,7 @@ categories:
   - cloudflare
 ---
 
-[Post 4](https://arsdehnel.com/posts/rwsdk-atproto-04-lexicons) ended with the app reading a status record back from the PDS immediately after writing it. That works at small scale, but it misses a lot of what makes AT Protocol interesting. This post walks through the two idiomatic patterns for reads in ATP apps and implements the one that serves this series' flow more nicely (the relay side).
+[Post 4](./rwsdk-atproto-04-lexicons) ended with the app reading a status record back from the PDS immediately after writing it. That works at small scale, but it misses a lot of what makes AT Protocol interesting. This post walks through the two idiomatic patterns for reads in ATP apps and implements the one that serves this series' flow more nicely (the relay side).
 
 ## Two patterns for reads in AT Protocol
 
