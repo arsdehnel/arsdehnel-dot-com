@@ -10,13 +10,13 @@ categories:
   - cloudflare
 ---
 
-[Post 4](./rwsdk-atproto-04-lexicons) ended with the app reading a status record back from the PDS immediately after writing it. That works at small scale, but it misses a lot of what makes AT Protocol interesting. This post walks through the two idiomatic patterns for reads in ATP apps and implements the one that serves this series' flow more nicely (the relay side).
+[Post 4](./rwsdk-atproto-04-atproto-writes) ended with the app reading a status record back from the PDS immediately after writing it. That works at small scale, but it misses a lot of what makes AT Protocol interesting. This post walks through the two idiomatic patterns for reads in ATP apps and implements the one that serves this series' flow more nicely (the relay side).
 
 ## Two patterns for reads in AT Protocol
 
 There's no single right answer — there are two complementary patterns, and most apps use both.
 
-**Optimistic update** — when you write a record and the PDS confirms it, you already have the data. Update your local store immediately from what you sent rather than waiting for anything to come back from the network.
+**Optimistic update** when you write a record and the PDS confirms it, you already have the data. Update your local store immediately from what you sent rather than waiting for anything to come back from the network. The term `optimistic update` could be confusing to user here for developers used to updating a UI before the DB has the data.  This is a slightly different aspect of the architecture we're considering to be optimistically updating but the concept is the same.  The ultimate "source of truth" in the ATP is the Relay/Firehose so we're _optimistically_ using our local D1 database instead of waiting for the loop back.
 
 ![](./optimistic-update-flow.png "Sequence diagram of the optimistic update pattern")
 
@@ -72,18 +72,18 @@ A few things worth explaining:
 
 - **`TAP_COLLECTION_FILTERS`:** Tap only delivers events for this collection. Everything else on the firehose is silently and conveniently dropped before the webhook fires.  Given that this is a local network for events it probably isn't necessary but it's a good pattern to establish regardless.
 
-- **`extra_hosts: ["localhost:host-gateway"]`:** this one is gnarly. When a user's DID is registered on the local PDS, their DID document records the PDS address as `http://localhost:3000`  because `PDS_HOSTNAME: localhost` is there and that is what makes OAuth work from the browser. When Tap later tries to resync a repo, it resolves the DID document and finds `localhost:3000`. Inside the Tap container, `localhost` is the container itself, not the host. `host-gateway` maps `localhost` to the host machine, where the PDS is exposed on port 3000. Without this, every resync attempt logs a connection refused error.
+- **`extra_hosts: ["localhost:host-gateway"]`:** this one is gnarly and is similar to what we managed to sidestep in [Post 3](https://arsdehnel.com/posts/rwsdk-atproto-03-local-dev-setup) in the networking between the Worker and PDS. Here we're working on the PDS response being resolvable inside a docker compose network where localhost doesn't resolve like it does in a "normal" network.  When a user's DID is registered on the local PDS, their DID document records the PDS address as `http://localhost:3000`  because `PDS_HOSTNAME: localhost` is there and that is what makes OAuth work from the browser. When Tap later tries to resync a repo, it resolves the DID document and finds `localhost:3000`. Inside the Tap container, `localhost` is the container itself, not the host. `host-gateway` maps `localhost` to the host machine, where the PDS is exposed on port 3000. Without this, every resync attempt logs a connection refused error.
 
 - **`TAP_DISABLE_ACKS: "true"`:** in development, fire-and-forget delivery is fine. Acks are for production reliability.
 
-- **`TAP_SIGNAL_COLLECTION`** the [Statusphere tutorial](https://atproto.com/guides/statusphere-tutorial) uses `--signal-collection` to tell Tap to automatically discover any repo on the network that has records in a given collection. That's a useful production feature for indexing the full network.It doesn't work against the local PDS. The discovery mechanism makes an authenticated API call to enumerate repos by collection, and the local PDS returns a 401 because the Tap service has no PDS credentials. The result is a continuous stream of error logs and no actual discovery. For a local devnet with known users, explicit registration is simpler and more correct anyway: tell Tap exactly which repo to watch when a user logs in.
+- **`TAP_SIGNAL_COLLECTION`** the [Statusphere tutorial](https://atproto.com/guides/statusphere-tutorial) uses `--signal-collection` to tell Tap to automatically discover any repo on the network that has records in a given collection. That's a useful production feature for indexing the full network. It doesn't work against the local PDS. The discovery mechanism makes an authenticated API call to enumerate repos by collection, and the local PDS returns a 401 because the Tap service has no PDS credentials. The result is a continuous stream of error logs and no actual discovery. For a local devnet with known users, explicit registration is simpler and more correct anyway: tell Tap exactly which repo to watch when a user logs in.
 
-- **Vite Networking in Docker:** Tap's webhook POST arrives at the Vite dev server with `Host: host.docker.internal:5173`. Vite 5+ blocks requests whose `Host` header doesn't match its bound address, returning a 403 before the Worker code runs. The fix is one line in `vite.config.mts`:
+- **Vite Networking in Docker:** Tap's webhook POST arrives at the Vite dev server with `Host: host.docker.internal:5173`. Vite only responds to `localhost` and `*.localhost` domains [by default](https://vite.dev/config/server-options#server-allowedhosts). Adding the docker host to the `allowedHosts` lets requests through to the worker dev server, the fix is one line in `vite.config.mts`:
 
     ```typescript
     server: {
       host: "127.0.0.1",
-    allowedHosts: ["host.docker.internal"], // <-- this one is the new line to add
+      allowedHosts: ["host.docker.internal"], // <-- this one is the new line to add
     },
     ```
 
@@ -114,7 +114,7 @@ export async function get({ request, response }: RequestInfo) {
 }
 ```
 
-`ATPROTO_TAP_URL: "http://localhost:2480"` goes in `wrangler.jsonc`. The call is wrapped in try/catch because Tap isn't running in production deployments — the feed simply won't update live, which is the correct graceful degradation.  Although there are several places the code in this blog series needs tweaks before going to prod.  More on that later. 
+`ATPROTO_TAP_URL: "http://localhost:2480"` goes in `wrangler.jsonc`. The call is wrapped in try/catch because this deployment doesn't have a Tap deployment included and this will allow the code to be shipped to a production app as the feed simply won't update live, which is the correct graceful degradation.  Although there are several places the code in this blog series needs tweaks before going to prod.  More on those items in [Post 8](./rwsdk-atproto-08-next-steps).
 
 ## The webhook endpoint
 

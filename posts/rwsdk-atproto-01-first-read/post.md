@@ -27,7 +27,7 @@ Two terms you'll need for this post with further reading links if you want to go
 - **PDS (Personal Data Server):** this is where your ATP records actually live. Bluesky operates one at `bsky.social`. When you sign up for Bluesky, your posts, follows, and likes are stored as records on a PDS. The important thing here is that these records are publicly accessible over HTTP — no auth required to read them. 
     - [atproto.com definition](https://atproto.com/guides/the-at-stack#pds)
 
-- **XRPC:**  the RPC protocol ATP uses to talk to a PDS. It's just HTTP. Endpoints follow the pattern `https://<pds>/xrpc/<nsid>` where the [NSID](https://atproto.com/specs/nsid) is a reverse-domain identifier for the method, like `com.atproto.repo.listRecords`. If you've ever worked with a REST API this will feel familiar as it is just a specific implementation of the same concepts.
+- **XRPC:** the RPC protocol ATP uses to talk to a PDS. It's just HTTP. Endpoints follow the pattern `https://<pds>/xrpc/<nsid>` where the [NSID](https://atproto.com/specs/nsid) is a reverse-domain identifier for the method, like `com.atproto.repo.listRecords`. If you've ever worked with a REST API this will feel familiar as it is just a specific implementation of the same concepts.
     - [atproto.com spec](https://atproto.com/specs/xrpc)
 
 ## The fetch
@@ -35,9 +35,8 @@ Two terms you'll need for this post with further reading links if you want to go
 Since the data is actually truly public here is all the code we need to read some ATP records from a known PDS:
 
 ```typescript
-const response = await fetch(
-  "https://bsky.social/xrpc/com.atproto.repo.listRecords?repo=bsky.app&collection=app.bsky.feed.post&limit=3"
-);
+const BSKY_ENDPOINT = "https://bsky.social/xrpc/com.atproto.repo.listRecords?repo=bsky.app&collection=app.bsky.feed.post&limit=3"
+const response = await fetch(BSKY_ENDPOINT);
 const data = await response.json();
 ```
 
@@ -70,22 +69,27 @@ A few things worth understanding here:
     - [atproto.com spec reference](https://atproto.com/specs/data-model#link-and-cid-formats)
 
 - **`$type`:** every record has a `$type` field that matches the collection it lives in. `app.bsky.feed.post` is a Bluesky post. Later in the series we'll use lexicons to work with these types in a more structured way, but for now it's just a string in the JSON.
-    - [atproto.com spec reference](https://atproto.com/specs/data-model#blob-type)
+    - [atproto.com guide reference](https://atproto.com/guides/lexicon#record-types)
 
 ## The companion code
 
-The starter kit puts the fetch directly in the page component, which runs server-side on the Worker:
+The starter kit puts the fetch directly in the page component, which runs [server-side on the Worker](https://docs.rwsdk.com/core/react-server-components).  
 
 ```typescript
 export async function Home(_: RequestInfo) {
-  const response = await fetch(ENDPOINT);
+  const response = await fetch(BSKY_ENDPOINT);
   const records = await response.json();
 
-  return <BlueskyFeed endpoint={ENDPOINT} records={records} />;
+  return <BlueskyFeed endpoint={BSKY_ENDPOINT} records={records} />;
 }
 ```
 
-No client-side loading state, no effect hooks so the data is in the HTML before it hits the browser. `BlueskyFeed` is a `"use client"` component that renders the JSON, which is also where its scoped CSS lives. The page itself is a server component with no style dependencies of its own.
+No client-side loading state, no effect hooks so the data is in the HTML before it hits the browser. `BlueskyFeed` is a `"use client"` component that renders the JSON, which is also where its scoped CSS lives. The page itself is a server component with no style dependencies of its own. 
+
+For more details on these React Service Components mechanics here are some docs starting points:
+
+- [RWSDK Server Components](https://docs.rwsdk.com/core/react-server-components)
+- [How RSC Works](https://www.plasmic.app/blog/how-react-server-components-work)
 
 ## Current Flow Diagram
 

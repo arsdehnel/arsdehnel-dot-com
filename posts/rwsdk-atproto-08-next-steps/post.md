@@ -10,15 +10,15 @@ categories:
   - cloudflare
 ---
 
-[Post 7](./rwsdk-atproto-07-appview) closed finished up the development tasks: you have a working AppView that indexes records from multiple users and serves a public feed. This post covers what to know before taking it further: two production gaps in the current code, how to connect to the real Bluesky network, and where to go for deeper reading.
+[Post 7](./rwsdk-atproto-07-appview) finished up the development tasks: you have a working AppView that indexes records from multiple users and serves a public feed. This post covers what to know before taking it further: two production gaps in the current code, how to connect to the real Bluesky network, and where to go for deeper reading.
 
 ## Production gaps
 
 ### Tap can't run on a Cloudflare Worker
 
-In development, Tap runs as a local process alongside the Worker. The Worker just receives webhooks just fine here and in production. But Tap can't be run alongside a Worker like this in production.
+In development, Tap runs in the local docker compose network alongside the Worker. The Worker just receives webhooks just fine here and in production. But Tap can't be run alongside a Worker like this in production.
 
-For the Cloudflare-aware reading the straightforward-sounding fix might be to flip the Tap setup to and outgoing websocket instead of an incoming webhook and move it into a Durable Object. Durable Objects support WebSocket connections with hibernation, which sounds like it fits. The catch is direction: DO hibernation only works for *incoming* connections, where the DO is the server. Tap is a WebSocket *client*: it initiates an outgoing connection to the AT Protocol firehose relay. A DO holding an outgoing WebSocket connection cannot hibernate. It either stays alive continuously (burning compute) or the connection breaks when the DO sleeps.
+For the Cloudflare-aware reader the straightforward-sounding fix might be to flip the Tap setup to an outgoing websocket instead of an incoming webhook and move it into a Durable Object. Durable Objects support WebSocket connections with hibernation, which sounds like it fits. The catch is direction: DO hibernation only works for *incoming* connections, where the DO is the server. Tap is a WebSocket *client*: it initiates an outgoing connection to the AT Protocol firehose relay. A DO holding an outgoing WebSocket connection cannot hibernate. It either stays alive continuously (burning compute) or the connection breaks when the DO sleeps.
 
 There are a few options I'll be exploring in the near future as I look to build a real app using this starter kit and Cloudflare Worker pattern.
 - **Long-lived Host:** Perhaps the most clear path here would be to run Tap on a long-lived host (a small VPS, Fly.io, Railway, or similar). Nothing in the Worker code changes. The Worker just needs Tap's webhook URL in production instead of `localhost`. The separation you set up in development is the correct production architecture; it just needs Tap deployed somewhere appropriate.

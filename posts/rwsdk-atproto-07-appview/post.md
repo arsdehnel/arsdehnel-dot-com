@@ -95,7 +95,7 @@ This is the pattern AT Protocol calls an AppView:
 3. Index them into your own database (D1, upserted by DID)
 4. Serve your own query interface (the public status board)
 
-Bluesky's `app.bsky.app` does exactly this: subscribes to the global Relay, indexes posts, likes, follows, and profiles from every PDS on the network, and serves them through its own API. The only substantial difference is scale (admittedly it's an incredibly large difference in scale).
+Bluesky's AppView does exactly this: subscribes to the global Relay, indexes posts, likes, follows, and profiles from every PDS on the network, and serves them through its own API. The only substantial difference is scale (admittedly it's an incredibly large difference in scale).
 
 The full data path, with both read patterns in place.
 

@@ -10,13 +10,13 @@ categories:
   - cloudflare
 ---
 
-[Post 3](./rwsdk-atproto-03-devnet) set up a local AT Protocol development environment so nothing has to touch Bluesky or anything on the ATmosphere during development. Building on that we start getting into actual feature development. As a part of that we need to write some data which means we define a lexicon, generate TypeScript from it, and write an actual record to the local PDS. In doing this we'll hit the OAuth token problem we mentioned in Post2 so we'll solve that while we're adding our Status Emoji feature, too.
+[Post 3](./rwsdk-atproto-03-local-dev-setup) set up a local AT Protocol development environment so nothing has to touch Bluesky or anything on the ATmosphere during development. Building on that we start getting into actual feature development. As a part of that we need to write some data which means we define a lexicon, generate TypeScript from it, and write an actual record to the local PDS. In doing this we'll hit the OAuth token problem we mentioned in [Post 2](./rwsdk-atproto-02-atproto-oauth) so we'll solve that while we're adding our Status Emoji feature, too.
 
 ## What a lexicon is
 
 Every record type in AT Protocol is defined by a [lexicon](https://atproto.com/guides/lexicon): a JSON schema identified by [an NSID (Namespace Identifier)](https://atproto.com/specs/nsid). NSIDs follow a reverse-DNS convention: `xyz.statusphere.status` means the `status` record type under the `statusphere` namespace, owned by whoever controls `statusphere.xyz` (proven by a DNS TXT record). The NSID doubles as the [collection](https://atproto.com/guides/glossary#collection) name when records are stored in a [repo](https://atproto.com/specs/repository).
 
-The `xyz.statusphere.status` lexicon comes from Bluesky's [Statusphere tutorial](https://atproto.com/tutorials/statusphere). It defines a simple record: one emoji status and a timestamp.
+The `xyz.statusphere.status` lexicon comes from Bluesky's [Statusphere tutorial](https://atproto.com/guides/statusphere-tutorial). It defines a simple record: one emoji status and a timestamp.
 
 ```json
 {
@@ -76,7 +76,7 @@ You can skip this section if you want, but since the AT Protocol is new to me I 
 **Key Points**
 - Step 2 reverses the NSID's authority segment (xyz.statusphere → statusphere.xyz) to build the DNS query _lexicon.statusphere.xyz; Step 3 returns the DID that owns that authority
 - Step 4 uses the same PLC resolution for these lexicon records as the OAuth resolution flow did in Post 2 showing this is how the ATP works, not just for OAuth
-- Step 6 actually fetches the lexicon but importantly we have the mans to cryptographically verify the PDS is returning the appropriate document and the `lex` CLI non-optionally does this for us
+- Step 6 actually fetches the lexicon but importantly we have the means to cryptographically verify the PDS is returning the appropriate document and the `lex` CLI non-optionally does this for us
 
 ## Handling the results
 
@@ -89,6 +89,8 @@ Back to our local repo the produced `lexicons.json` should get committed as it t
 ```
 
 The `--ci` flag on `lex install` pins behavior to the CIDs in `lexicons.json` rather than re-resolving — same idea as `npm ci` vs `npm install`.
+
+**Note:** If you're in an air-gapped setup this will fail as these commands make calls to the internet.  Perhaps commit these files in that case or figure out another path.
 
 ## What gets generated
 
@@ -133,7 +135,7 @@ The lower-level API (`createRecord`, `putRecord`, etc.) returns the full `XrpcRe
 
 ## OAuth scope for writes
 
-Post 3 used a scope of `"atproto"` which grants full repo access. For writes, a more specific scope should be requested so the user can feel more comfortable with the permissions request they'll need to approve (and because it's good practice to ask for only what you need).
+Post 2 and 3 use a scope of `"atproto"` which grants full repo access. For writes, a more specific scope should be requested so the user can feel more comfortable with the permissions request they'll need to approve (and because it's good practice to ask for only what you need).
 
 ```typescript
 export const SCOPE = "atproto repo:xyz.statusphere.status";
@@ -143,7 +145,7 @@ The `repo:xyz.statusphere.status` scope explicitly requests write access to that
 
 ## The OAuth session storage problem
 
-There's an lingering problem that's been deferred since Post 2 and that now actually breaks things: `NodeOAuthClient` needs a `stateStore` and `sessionStore` to persist OAuth state and tokens. The previous implementation used in-memory Maps on `globalThis`. This works within a single worker process session but falls apart the moment the worker restarts which happens constantly during development when files change.
+There's a lingering problem that's been deferred since Post 2 and that now actually breaks things: `NodeOAuthClient` needs a `stateStore` and `sessionStore` to persist OAuth state and tokens. The previous implementation used in-memory Maps on `globalThis`. This works within a single worker process session but falls apart the moment the worker restarts which happens constantly during development when files change.
 
 The symptom: the `UserSession` Durable Object (which stores the HTTP session cookie → DID mapping) survives worker restarts because it's backed by SQLite. So the user still appears logged in. But the OAuth tokens stored in the in-memory Map are gone, so `client.restore(did)` throws "The session was deleted by another process" when the app tries to write a record.
 
@@ -184,7 +186,7 @@ sessionStore: {
 },
 ```
 
-One remaining gap worth naming: in production, the `stateStore` is still not safe across multiple Worker isolates. The authorization redirect and OAuth callback are likely to land on different isolates, and KV reads are eventually consistent rather than strongly consistent. For a single-instance dev setup this is fine; for production the fix is either a Durable Object or accepting that some login attempts will fail and require a retry. [Post 8](./rwsdk-atprot-08-next-steps) covers making this production-ready.
+One remaining gap worth naming: in production, the `stateStore` is still not safe across multiple Worker isolates. The authorization redirect and OAuth callback are likely to land on different isolates, and KV reads are eventually consistent rather than strongly consistent. For a single-instance dev setup this is fine; for production the fix is either a Durable Object or accepting that some login attempts will fail and require a retry. [Post 8](./rwsdk-atproto-08-next-steps) covers making this production-ready.
 
 ## Reading back publicly
 
