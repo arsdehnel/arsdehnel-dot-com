@@ -23,20 +23,11 @@ const res = await lexClient.put(
   { rkey: "self" }
 );
 
-// We already have the data so we don't need to wait for the relay
-await db
-  .insert(statuses)
-  .values({ did, handle, status: emoji, updatedAt: new Date().toISOString() })
-  .onConflictDoUpdate({
-    target: statuses.did,
-    set: { status: emoji, updatedAt: new Date().toISOString() },
-  });
-
-const allStatuses = await db.select().from(statuses);
-pushToSseClients(allStatuses);
+// Write immediately — don't wait for the Tap relay.
+await upsertStatus({ did, status, rev: res.commit?.rev ?? null });
 ```
 
-The Tap webhook will still arrive for this write since the relay doesn't know you already indexed it. That's fine: the upsert is idempotent, so the second write is a no-op. Both paths converge to the same D1 row.
+The Tap webhook will still arrive for this write, but the upsert uses the commit `rev` (a [timestamp-based ID](https://atproto.com/specs/tid) the PDS assigns to every write) to make it genuinely idempotent: if the stored `rev` is already the same or newer, the webhook skips both the write and the SSE push. This also prevents a delayed webhook for an older write from accidentally overwriting a more recent value.
 
 The benefit is immediate: pick a status and the feed updates without waiting for the relay. The relay path kicks in for other users' writes and for any external app writing `xyz.statusphere.status` records that never touched your UI.
 
@@ -111,8 +102,7 @@ User picks status in your app
 Meanwhile on the relay side:
   → PDS emits firehose event
   → Tap delivers POST /webhooks/tap
-  → Worker upserts into D1 (idempotent; same row, same data)
-  → SSE push (no visible change, already up to date)
+  → Worker checks rev; skips write and SSE if already up to date
 
 Other user or external app writes a status
   → Relay path only (optimistic path isn't available since it is not your write)
