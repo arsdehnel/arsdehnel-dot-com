@@ -17,10 +17,9 @@ categories:
 When you write a record to the PDS and it succeeds, you don't need to read it right back because clearly you already have the data for it. The relay will deliver it back eventually, but there's no reason to wait. The approach for a better user experience is to write into D1 immediately after the PDS confirms success:
 
 ```typescript
-const res = await lexClient.put(
+const res = await lexClient.create(
   statusSchema,
-  { status: emoji, createdAt: new Date().toISOString() as DatetimeString },
-  { rkey: "self" }
+  { status: emoji, createdAt: new Date().toISOString() as DatetimeString }
 );
 
 // Write immediately — don't wait for the Tap relay.
