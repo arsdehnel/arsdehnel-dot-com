@@ -97,7 +97,7 @@ Visuals always help.  This is roughly the flow and architecture of what we have 
 
 ![](./app-flow.png "Sequence diagram of current application flow")
 
-## Production-Ready Reality Check
+## Reminder: this is an initial demo
 
 This approach is nothing you'd do for a full app in production.  The public read part is fine but hardcoding to a specific handle without error handling or anything would be ill-advised.  Later posts will address this (albeit indirectly) to get things closer to a production-ready application architecture.
 
