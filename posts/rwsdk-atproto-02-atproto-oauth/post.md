@@ -107,9 +107,9 @@ One thing that we didn't really cover in the other parts of this post is that th
 
 ![](./app-flow.png "Sequence diagram of current application flow")
 
-## Production-ready reality check
+## Inching towards production-ready solutions
 
-Unlike Post 1 this is starting to get into some production-ready code.  The DO class here certainly could be used in production and solves production problems that aren't likely to be a problem (or could be solved more simply) in local development.  The production setup for the auth key would be necessary but that's a pretty normal deploy-time operation and just needed the first time you deploy this code. 
+Unlike Post 1 this is starting to get into some production-ready code.  The DO class here certainly could be used in production and solves production problems that aren't likely to be a problem (or could be solved more simply) in local development.  The production setup for the auth key secret would be necessary but that's a pretty normal deploy-time operation and just needed the first time you deploy this code. 
 
 As mentioned above the in-memory maps for the auth token storage are not at all production ready.  We'll solve that problem in [Post 4](./rwsdk-atproto-04-atproto-writes), we kept that fix out of this post to keep this focused on just the auth flow itself.  
 

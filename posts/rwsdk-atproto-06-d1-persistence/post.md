@@ -24,9 +24,7 @@ The payoff is modest and honest: user picks a status, something else causes the 
 
 ## Why module-level state doesn't survive restarts
 
-In a Cloudflare Worker, module-level variables are initialized once per isolate. In development, that means once per `pnpm dev` session. When the dev server restarts (ie every file save in dev server mode) a new isolate starts with fresh module state. The Map is empty.
-
-In production the situation is worse: Cloudflare runs many isolates across many machines, and any given request can land on any of them. A Map set by one request is invisible to every other isolate.
+In a Cloudflare Worker, module-level variables are initialized once per isolate. When running `pnpm dev` that means they are wiped every time you save a file or manually restart the process. In production the situation isn't any better: Cloudflare runs many isolates across many machines, and any given request can land on any of them. A Map set by one request is invisible to every other isolate.
 
 The fix is to stop treating module-level memory as a data store and use an actual database instead.
 
@@ -167,7 +165,7 @@ The destructuring `const [currentEntry] = ...` is idiomatic Drizzle for a single
 
 ## The SSE endpoint: async before the stream
 
-The SSE setup from [Post 5](./rwsdk-atproto-05-tap-sync) needs one adjustment for D1. The handler sends the current snapshot immediately when a client connects, but previously it read from the synchronous Map inside `ReadableStream.start()`. D1 queries are async, and `start()` doesn't support `await`, so the fetch has to happen before the stream is constructed:
+The SSE setup from [Post 5](./rwsdk-atproto-05-tap-sync) needs one adjustment for D1. The handler sends the current snapshot immediately when a client connects, but previously it read from the synchronous Map inside `ReadableStream.start()`. D1 queries are async, and while `start()` does have Promise support having the stream be a Promise feels harder to follow than just having the query done first before we define the stream.
 
 ```typescript
 export async function get(): Promise<Response> {
@@ -191,9 +189,9 @@ export async function get(): Promise<Response> {
 
 The snapshot is captured before the stream opens and closed over in `start()`. New updates still arrive via the webhook → SSE push path.
 
-## Production-Ready Reality Check
+## Another step towards production readiness
 
-By this point in the series we're looking pretty good on production readiness. There are always more considerations and scaling patterns to think about like additional error handling, observability, analytics, and cost management but there shouldn't be any glaring problems with this being beta-release ready.  With that being said don't take my word for this being entirely ready to run!  Take a look at your own setup, run some more tests and fine-tune to your comfort level.
+This was a big step towards our app being production-ready but certainly not the last. There are always more considerations and scaling patterns to think about like additional error handling, observability, analytics, and cost management but this gives you a solution to reliable and scalable data storage.  With that being said don't take my word for this being entirely ready to run!  Take a look at your own setup, run some more tests and fine-tune to your comfort level.
 
 ## What's next
 
