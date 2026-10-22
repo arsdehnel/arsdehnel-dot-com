@@ -23,7 +23,7 @@ For the Cloudflare-aware reader the straightforward-sounding fix might be to fli
 There are a few options I'll be exploring in the near future as I look to build a real app using this starter kit and Cloudflare Worker pattern.
 - **Long-lived Host:** Perhaps the most clear path here would be to run Tap on a long-lived host (a small VPS, Fly.io, Railway, or similar). Nothing in the Worker code changes. The Worker just needs Tap's webhook URL in production instead of `localhost`. The separation you set up in development is the correct production architecture; it just needs Tap deployed somewhere appropriate.
 - **Run in DO anyway:** Even though the DO pattern has some problems the cost (at least for a small scale app) might actually be in Cloudflare's favor and doing the longer-running DO keeps things in Cloudflare and isn't as cost prohibitive as it might sound.
-- **Accept some lag:** Given my current state of affairs and how likely I am to have the next viral app I could see using a cron or scheduled worker to keep my AppView up-to-date.  Since I'd expect _most_ (if not all) of my content to come through my app this should really be fine for a while.  The `Tap` requirement is definitely something to get added but it's less of a blocker for my particular use case, budget, and app performance expectations.
+- **Accept some lag:** Run a cron/scheduled Worker process every 1 or 5 minutes that checks the firehose for new events related to Lexicons in use in our app.  Given my current state of affairs and how likely I am to have the next viral app I could see using a cron or scheduled worker to keep my AppView up-to-date.  Since I'd expect _most_ (if not all) of my content to come through my app this should really be fine for a while.  The `Tap` requirement is definitely something to get added but it's less of a blocker for my particular use case, budget, and app performance expectations. 
 
 I'm working through my own preferred approach for this and will have a follow-up post when it's sorted.
 
@@ -35,7 +35,7 @@ In practice this window is sub-second for most regions. It's a rare failure, and
 
 **Accept the rare failure.** For most apps this is the right call. Login is retryable, the window for this race condition is small, and adding complexity to solve an occasional edge case isn't always worth it.
 
-**Retry in the callback.** If the `stateStore.get()` returns nothing, wait briefly and try again. A couple of retries with exponential backoff — 500ms, then 1.5s — would cover nearly all propagation lag without any meaningful impact on the user experience. No new bindings required, and it's entirely self-contained in the callback handler.
+**Retry in the callback.** If the `stateStore.get()` returns nothing, wait briefly and try again. A couple of retries with exponential backoff — 500ms, then 1.5s — would cover a decent amount of propagation lag without any meaningful impact on the user experience. No new bindings required, and it's entirely self-contained in the callback handler. Cloudflare KV docs do say [this could take up to 60 seconds](https://developers.cloudflare.com/kv/concepts/how-kv-works/#consistency) so certainly a couple seconds of retry isn't going to cover that.  However most callbacks are going to be within the same PoP which greatly reduces the lag experienced.  Moving this to a Durable Object could solve for this as DOs guarantee consistency. The mechanics of using a DO are a little more involved so we went with KV here. 
 
 **Use a Durable Object for `stateStore`.** DOs provide strong consistency. A single DO instance handles all state reads and writes, so there's no propagation window. This adds a binding and a small amount of boilerplate, but it's the cleanest option if you genuinely need zero-failure-rate login for a high-traffic app.
 
@@ -51,10 +51,23 @@ The AT Protocol [lexicon spec](https://atproto.com/specs/lexicon) covers the for
 
 ## Further reading
 
+### AT Protocol
+
 - **[AT Protocol docs](https://atproto.com/docs):** the spec, guides, and tutorials from the protocol team
 - **[Statusphere tutorial](https://atproto.com/guides/statusphere-tutorial):** the official AT Protocol tutorial this series builds on; worth reading alongside the series for the protocol team's framing
 - **[AT Protocol streaming data guide](https://atproto.com/guides/streaming-data):** the protocol team's overview of the firehose and Jetstream; good framing for understanding the subscription model
 - **[Feed generator starter kit](https://github.com/bluesky-social/feed-generator):** the official reference implementation for a feed generator (Node.js, not Workers); useful for seeing how the standard approach splits the firehose subscriber from the feed server
 - **[Tap](https://www.npmjs.com/package/@atproto/tap):** the firehose subscription tool used throughout this series
 - **[Jetstream](https://github.com/bluesky-social/jetstream):** a lighter-weight alternative to the full firehose relay; useful if you only need a subset of record types and want reduced message volume
+
+### RedwoodSDK
+
 - **[RedwoodSDK docs](https://docs.rwsdk.com/):** framework docs, deployment, and more
+- **[SyntaxFM Podcast Episode on RWSDK](https://syntax.fm/show/902/fullstack-cloudflare-with-react-and-vite-redwood-sdk):** good intro and explanation of how it came to be and why you should use it
+
+### Cloudflare
+
+- **[Workers](https://www.cloudflare.com/products/workers/):** serverless global edge functions; the primary runtime concept for running apps on Cloudflare
+- **[Durable Objects](https://developers.cloudflare.com/durable-objects/):** a "special kind of worker" that behaves in interestingly different ways and allows a long-lived storage and compute combination worth understanding
+- **[D1](https://developers.cloudflare.com/d1/):** is a serverless SQLite-ish database built for Cloudflare's global network
+- **[KV](https://developers.cloudflare.com/kv/):** is a simple but effective key-value store integrated into Cloudflare's platform
