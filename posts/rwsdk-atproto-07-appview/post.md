@@ -75,7 +75,7 @@ The D1 query hasn't changed. There's no WHERE clause in the previous versions so
 
 1. Normal window: sign in as `alice.devnet.test` / `alice-devnet-pass`, set a status and notice the feed updates instantly
 2. Incognito window: sign in as `bob.devnet.test` / `bob-devnet-pass`, set a different status and both Bob's and Alice's windows update instantly
-3. In a terminal: run `pnpm write-status` to write Carol's status directly to the PDS, bypassing the local app entirely. Alice's and Bob's windows update after a brief delay as the events flow through the relay, tap, and webhook processes
+3. In a terminal: run `pnpm write-status` to write Carol's status directly to the PDS, bypassing the local app entirely. Alice's and Bob's windows update after a brief delay as the events flow through the relay, tap, and webhook processes. **Note:** this script also ensures that Carol has been authenticated to her PDS and then adds her PDS to the Tap's repositories to send out via webhook.  Without that second part the Tap webhooks would not include Carol's status updates.
 4. Open any window without logging in and the status board shows all three
 
 Steps 1 and 2 both take the optimistic path: the app writes to D1 immediately after the PDS confirms, then SSE notifies all connected windows. Step 3 is the relay path: the write goes straight to Carol's PDS without touching the local app, Tap picks it up from the firehose, delivers the webhook, and only then does D1 update and SSE fire. Step 4 confirms the public board is populated purely from D1, no auth required.
