@@ -74,7 +74,9 @@ One detail: use `http://127.0.0.1:5173`, not `http://localhost:5173`. After appr
 
 ### `redirect: "error"` rejection
 
-Cloudflare Workers rejects `redirect: "error"` in fetch options (this isn't documented yet but [the source C++ clearly throws](https://github.com/cloudflare/workerd/blob/01bb2e6deca73934885507d25ba105a0dfe202e6/src/workerd/api/http.c%2B%2B#L483) and [there is a PR to address it in the CF docs](https://github.com/cloudflare/cloudflare-docs/pull/33362)). The `@atproto` packages use this option pervasively as a safety net on outbound requests so rather than implementing the whole package ourselves the fix used here is a small Vite plugin that rewrites all occurrences at build time:
+Cloudflare Workers rejects `redirect: "error"` in fetch options — [the workerd source throws a `TypeError` at Request construction time](https://github.com/cloudflare/workerd/blob/01bb2e6deca73934885507d25ba105a0dfe202e6/src/workerd/api/http.c%2B%2B#L483). The `@atproto` packages use this option pervasively as an SSRF guard: they explicitly don't want to follow redirects on DID/handle lookups and OAuth metadata fetches, since those URLs come from user input.
+
+The fix is a Vite plugin that rewrites all occurrences at build time, replacing `"error"` with `"manual"`:
 
 ```typescript
 function patchAtprotoRedirectError(): Plugin {
@@ -82,12 +84,14 @@ function patchAtprotoRedirectError(): Plugin {
     name: "patch-atproto-redirect-error",
     transform(code: string, id: string) {
       if (id.includes("@atproto") || id.includes("atproto-labs")) {
-        return code.replace(/redirect:\s*['"]error['"]/g, "redirect: 'follow'");
+        return code.replace(/redirect:\s*['"]error['"]/g, "redirect: 'manual'");
       }
     },
   };
 }
 ```
+
+`"manual"` is [supported by workerd](https://developers.cloudflare.com/workers/runtime-apis/request/) and keeps the closest semantics to `"error"`: instead of throwing, it returns the `3xx` response to the caller as-is. Because all of the affected atproto call sites check `response.ok` immediately after the fetch, an unexpected redirect surfaces as a non-ok response and fails — preserving the intended guard. Using `"follow"` would also silence the `TypeError` but would silently drop that guard by automatically following unexpected redirects.
 
 This goes first in the Vite plugin list, before the Cloudflare and RedwoodSDK plugins.
 
