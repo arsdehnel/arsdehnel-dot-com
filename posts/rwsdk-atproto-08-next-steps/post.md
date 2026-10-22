@@ -35,7 +35,7 @@ In practice this window is sub-second for most regions. It's a rare failure, and
 
 **Accept the rare failure.** For most apps this is the right call. Login is retryable, the window for this race condition is small, and adding complexity to solve an occasional edge case isn't always worth it.
 
-**Retry in the callback.** If the `stateStore.get()` returns nothing, wait briefly and try again. A couple of retries with exponential backoff — 500ms, then 1.5s — would cover nearly all propagation lag without any meaningful impact on the user experience. No new bindings required, and it's entirely self-contained in the callback handler.
+**Retry in the callback.** If the `stateStore.get()` returns nothing, wait briefly and try again. A couple of retries with exponential backoff — 500ms, then 1.5s — would cover a decent amount of propagation lag without any meaningful impact on the user experience. No new bindings required, and it's entirely self-contained in the callback handler. Cloudflare KV docs do say [this could take up to 60 seconds](https://developers.cloudflare.com/kv/concepts/how-kv-works/#consistency) so certainly a couple seconds of retry isn't going to cover that.  However most callbacks are going to be within the same PoP which greatly reduces the lag experienced.  Moving this to a Durable Object could solve for this as DOs guarantee consistency. The mechanics of using a DO are a little more involved so we went with KV here. 
 
 **Use a Durable Object for `stateStore`.** DOs provide strong consistency. A single DO instance handles all state reads and writes, so there's no propagation window. This adds a binding and a small amount of boilerplate, but it's the cleanest option if you genuinely need zero-failure-rate login for a high-traffic app.
 
