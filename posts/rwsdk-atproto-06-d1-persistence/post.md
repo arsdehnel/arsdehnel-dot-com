@@ -167,7 +167,7 @@ The destructuring `const [currentEntry] = ...` is idiomatic Drizzle for a single
 
 ## The SSE endpoint: async before the stream
 
-The SSE setup from [Post 5](./rwsdk-atproto-05-tap-sync) needs one adjustment for D1. The handler sends the current snapshot immediately when a client connects, but previously it read from the synchronous Map inside `ReadableStream.start()`. D1 queries are async, and `start()` doesn't support `await`, so the fetch has to happen before the stream is constructed:
+The SSE setup from [Post 5](./rwsdk-atproto-05-tap-sync) needs one adjustment for D1. The handler sends the current snapshot immediately when a client connects, but previously it read from the synchronous Map inside `ReadableStream.start()`. D1 queries are async, and while `start()` does have Promise support having the stream be a Promise feels harder to follow than just having the query done first before we define the stream.
 
 ```typescript
 export async function get(): Promise<Response> {
