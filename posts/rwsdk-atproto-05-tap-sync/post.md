@@ -53,6 +53,7 @@ tap:
     TAP_LOG_LEVEL: info
   extra_hosts:
     - "localhost:host-gateway"
+    - "host.docker.internal:host-gateway"
   volumes:
     - tap-data:/data
   ports:
@@ -68,11 +69,11 @@ tap:
 
 A few things worth explaining:
 
-- **`TAP_WEBHOOK_URL`:** instead of the WebSocket channel mode (where your app connects to Tap), this puts Tap in webhook mode: it POSTs events to your app's URL. That's the right model for a Cloudflare Worker, which handles incoming requests rather than maintaining persistent outgoing connections. The default points at `host.docker.internal:5173` — Docker Desktop's special hostname that resolves to the host machine from inside a container. On Linux, override this with your Docker bridge IP as this hostname doesn't work there.
+- **`TAP_WEBHOOK_URL`:** instead of the WebSocket channel mode (where your app connects to Tap), this puts Tap in webhook mode: it POSTs events to your app's URL. That's the right model for a Cloudflare Worker, which handles incoming requests rather than maintaining persistent outgoing connections. The default points at `host.docker.internal:5173`, which resolves to the host machine from inside the container — see `extra_hosts` below for how that's wired up.
 
 - **`TAP_COLLECTION_FILTERS`:** Tap only delivers events for this collection. Everything else on the firehose is silently and conveniently dropped before the webhook fires.  Given that this is a local network for events it probably isn't necessary but it's a good pattern to establish regardless.
 
-- **`extra_hosts: ["localhost:host-gateway"]`:** this one is gnarly and is similar to what we managed to sidestep in [Post 3](https://arsdehnel.com/posts/rwsdk-atproto-03-local-dev-setup) in the networking between the Worker and PDS. Here we're working on the PDS response being resolvable inside a docker compose network where localhost doesn't resolve like it does in a "normal" network.  When a user's DID is registered on the local PDS, their DID document records the PDS address as `http://localhost:3000`  because `PDS_HOSTNAME: localhost` is there and that is what makes OAuth work from the browser. When Tap later tries to resync a repo, it resolves the DID document and finds `localhost:3000`. Inside the Tap container, `localhost` is the container itself, not the host. `host-gateway` maps `localhost` to the host machine, where the PDS is exposed on port 3000. Without this, every resync attempt logs a connection refused error.
+- **`extra_hosts`:** two entries, both using Docker's `host-gateway` special value which resolves to the host machine's IP regardless of platform (macOS, Linux, Windows). The first — `localhost:host-gateway` — is needed because the PDS registers itself as `http://localhost:3000` (that's what `PDS_HOSTNAME: localhost` does, and it's what makes OAuth work from your browser). When Tap later resolves a user's DID document, it finds `localhost:3000`. Inside the container `localhost` means the container itself, not the host — so without this mapping every repo resync attempt fails with connection refused. The second — `host.docker.internal:host-gateway` — makes the `TAP_WEBHOOK_URL` default work everywhere: Docker Desktop provides `host.docker.internal` automatically on macOS and Windows, but on Linux with Docker Engine you need the explicit mapping.
 
 - **`TAP_DISABLE_ACKS: "true"`:** in development, fire-and-forget delivery is fine. Acks are for production reliability.
 
