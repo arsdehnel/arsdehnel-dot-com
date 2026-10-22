@@ -24,9 +24,7 @@ The payoff is modest and honest: user picks a status, something else causes the 
 
 ## Why module-level state doesn't survive restarts
 
-In a Cloudflare Worker, module-level variables are initialized once per isolate. In development, that means once per `pnpm dev` session. When the dev server restarts (ie every file save in dev server mode) a new isolate starts with fresh module state. The Map is empty.
-
-In production the situation is worse: Cloudflare runs many isolates across many machines, and any given request can land on any of them. A Map set by one request is invisible to every other isolate.
+In a Cloudflare Worker, module-level variables are initialized once per isolate. When running `pnpm dev` that means they are wiped every time you save a file or manually restart the process. In production the situation isn't any better: Cloudflare runs many isolates across many machines, and any given request can land on any of them. A Map set by one request is invisible to every other isolate.
 
 The fix is to stop treating module-level memory as a data store and use an actual database instead.
 

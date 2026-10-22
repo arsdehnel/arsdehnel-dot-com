@@ -161,7 +161,7 @@ export const statusStore = new Map<string, StatusEntry>();
 export const sseClients = new Set<ReadableStreamDefaultController<Uint8Array>>();
 ```
 
-Module-level state in a Cloudflare Worker is shared within a single isolate for the lifetime of that isolate. In dev mode that's the duration of the `pnpm dev` session. It's not shared across isolates in a multi-worker production deployment, and it doesn't survive restarts. That's intentional for this post — we're demonstrating the event-driven pattern, not the persistence layer.
+Module-level state in a Cloudflare Worker is shared within a single isolate for the lifetime of that isolate. In `pnpm dev` that means every time you save a file you get a new isolate and the in-memory state is empty. It's not shared across isolates in a multi-worker production deployment, and it doesn't survive restarts. That's intentional for this post — we're demonstrating the event-driven pattern, not the persistence layer.
 
 The SSE endpoint returns a streaming response and registers the controller:
 

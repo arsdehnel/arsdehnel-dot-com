@@ -142,7 +142,7 @@ The `repo:xyz.statusphere.status` scope explicitly requests write access to that
 
 ## The OAuth session storage problem
 
-There's a lingering problem that's been deferred since Post 2 and that now actually breaks things: `NodeOAuthClient` needs a `stateStore` and `sessionStore` to persist OAuth state and tokens. The previous implementation used in-memory Maps on `globalThis`. This works within a single worker process session but falls apart the moment the worker restarts which happens constantly during development when files change.
+There's a lingering problem that's been deferred since Post 2 and that now actually breaks things: `NodeOAuthClient` needs a `stateStore` and `sessionStore` to persist OAuth state and tokens. The previous implementation used in-memory Maps on `globalThis`. This works within a single worker process session but falls apart the moment the worker restarts (which happens each time a file is saved if you're running `pnpm dev`).
 
 The symptom: the `UserSession` Durable Object (which stores the HTTP session cookie → DID mapping) survives worker restarts because it's backed by SQLite. So the user still appears logged in. But the OAuth tokens stored in the in-memory Map are gone, so `client.restore(did)` throws "The session was deleted by another process" when the app tries to write a record.
 
