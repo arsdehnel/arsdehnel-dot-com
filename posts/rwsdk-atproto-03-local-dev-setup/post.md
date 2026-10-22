@@ -97,6 +97,27 @@ pnpm dev
 
 Then log in with `alice.devnet.test` / `alice-devnet-pass`.
 
+### 400 "error" log entries during token exchange
+
+I was debugging some parts of this and noticed this in the logs of the `pds` container which made me a little nervous:
+
+```
+OAuthProvider error (OAuth "use_dpop_nonce" error): UseDpopNonceError: Authorization server requires nonce in DPoP proof
+    at DpopManager.checkProof (/app/node_modules/.pnpm/@atproto+oauth-provider@0.23.1/node_modules/@atproto/oauth-provider/src/dpop/dpop-manager.ts:116:13)
+    at async OAuthProvider.checkDpopProof (/app/node_modules/.pnpm/@atproto+oauth-provider@0.23.1/node_modules/@atproto/oauth-provider/src/oauth-verifier.ts:121:23)
+    at async <anonymous> (/app/node_modules/.pnpm/@atproto+oauth-provider@0.23.1/node_modules/@atproto/oauth-provider/src/router/create-oauth-middleware.ts:110:25)
+    at async <anonymous> (/app/node_modules/.pnpm/@atproto+oauth-provider@0.23.1/node_modules/@atproto/oauth-provider/src/router/create-oauth-middleware.ts:220:22)
+    at async <anonymous> (/app/node_modules/.pnpm/@atproto+oauth-provider@0.23.1/node_modules/@atproto/oauth-provider/src/lib/http/response.ts:109:32) {
+  error: 'use_dpop_nonce',
+  error_description: 'Authorization server requires nonce in DPoP proof',
+  status: 400,
+  expose: true,
+  [cause]: undefined
+}
+```
+
+The error I was debugging when I came across this turned out to be unrelated but I still felt like it was worth mentioning.  This "error" is entirely valid and expected!  It's not truly an error, they're just part of the [DPoP nonce handshake](https://datatracker.ietf.org/doc/html/rfc9449). DPoP (Demonstration of Proof of Possession) is the token binding mechanism AT Protocol OAuth uses. The PDS responds to the first token request with a 400 and a `DPoP-Nonce` header; the client retries with that nonce included in the proof and the exchange succeeds. It's entirely handled by `@atproto/oauth-client-node`. The 400s are just visible because the first attempt always has to fail before the nonce is known, nothing to fix or worry about as long as the subsequent one works.
+
 ## The proof
 
 After logging in, the app fetches `com.atproto.repo.describeRepo` from the local PDS and displays the raw response. The key field is in the DID document:

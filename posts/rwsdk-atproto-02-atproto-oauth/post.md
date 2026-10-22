@@ -91,10 +91,6 @@ function patchAtprotoRedirectError(): Plugin {
 
 This goes first in the Vite plugin list, before the Cloudflare and RedwoodSDK plugins.
 
-### 401 log entries during token exchange
-
-You'll see 401 responses in the Worker logs during the OAuth flow. These are not actually errors they're the [DPoP nonce handshake](https://datatracker.ietf.org/doc/html/rfc9449). DPoP (Demonstration of Proof of Possession) is the token binding mechanism AT Protocol OAuth uses. The PDS responds to the first token request with a 401 and a `DPoP-Nonce` header; the client retries with that nonce included in the proof and the exchange succeeds. It's entirely handled by `@atproto/oauth-client-node`. The 401s are just visible because the first attempt always has to fail before the nonce is known, nothing to fix or worry about as long as the subsequent one works.
-
 ## The companion code
 
 The starter kit changes are too numerous to list here but [this PR](https://github.com/arsdehnel/rwsdk-atproto-starter/pull/9) shows the changes from Step 1 to Step 2.  To skip that the [post/02-atproto-oauth](https://github.com/arsdehnel/rwsdk-atproto-starter/tree/post/02-atproto-oauth) branch has the completed OAuth2 implementation: the DO class, the OAuth client setup, four route handlers (`/oauth/login`, `/oauth/callback`, `/oauth/logout`, `/client-metadata.json`), and the session middleware in `worker.tsx`. 
