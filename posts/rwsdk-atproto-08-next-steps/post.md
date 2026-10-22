@@ -51,10 +51,23 @@ The AT Protocol [lexicon spec](https://atproto.com/specs/lexicon) covers the for
 
 ## Further reading
 
+### AT Protocol
+
 - **[AT Protocol docs](https://atproto.com/docs):** the spec, guides, and tutorials from the protocol team
 - **[Statusphere tutorial](https://atproto.com/guides/statusphere-tutorial):** the official AT Protocol tutorial this series builds on; worth reading alongside the series for the protocol team's framing
 - **[AT Protocol streaming data guide](https://atproto.com/guides/streaming-data):** the protocol team's overview of the firehose and Jetstream; good framing for understanding the subscription model
 - **[Feed generator starter kit](https://github.com/bluesky-social/feed-generator):** the official reference implementation for a feed generator (Node.js, not Workers); useful for seeing how the standard approach splits the firehose subscriber from the feed server
 - **[Tap](https://www.npmjs.com/package/@atproto/tap):** the firehose subscription tool used throughout this series
 - **[Jetstream](https://github.com/bluesky-social/jetstream):** a lighter-weight alternative to the full firehose relay; useful if you only need a subset of record types and want reduced message volume
+
+### RedwoodSDK
+
 - **[RedwoodSDK docs](https://docs.rwsdk.com/):** framework docs, deployment, and more
+- **[SyntaxFM Podcast Episode on RWSDK](https://syntax.fm/show/902/fullstack-cloudflare-with-react-and-vite-redwood-sdk):** good intro and explanation of how it came to be and why you should use it
+
+### Cloudflare
+
+- **[Workers](https://www.cloudflare.com/products/workers/):** serverless global edge functions; the primary runtime concept for running apps on Cloudflare
+- **[Durable Objects](https://developers.cloudflare.com/durable-objects/):** a "special kind of worker" that behaves in interestingly different ways and allows a long-lived storage and compute combination worth understanding
+- **[D1](https://developers.cloudflare.com/d1/):** is a serverless SQLite-ish database built for Cloudflare's global network
+- **[KV](https://developers.cloudflare.com/kv/):** is a simple but effective key-value store integrated into Cloudflare's platform
