@@ -185,6 +185,41 @@ sessionStore: {
 
 One remaining gap worth naming: in production, the `stateStore` is still not safe across multiple Worker isolates. The authorization redirect and OAuth callback are likely to land on different isolates, and KV reads are eventually consistent rather than strongly consistent. For a single-instance dev setup this is fine; for production the fix is either a Durable Object or accepting that some login attempts will fail and require a retry. [Post 8](./rwsdk-atproto-08-next-steps) covers making this production-ready.
 
+## Encrypting the stored tokens
+
+Those KV records hold more than access and refresh tokens — they also include the DPoP private key material. [DPoP (Demonstration of Proof-of-Possession)](https://dpop.info/) binds a token to a specific keypair: a DPoP-bound access token is useless without the matching private key. That sounds like a reason to feel safe leaving the tokens unencrypted, but both halves live in the same `sessionStore` KV record. Exfiltrating the record gets you everything you need.
+
+Encrypting KV values at rest adds a meaningful layer of defense. The Web Crypto API is native to the workerd runtime, so no dependencies are needed. I've added a couple helpers to make it cleaner and more consistent and to abstract away the mechanics of the Web Crypto API.
+
+```typescript
+// src/lib/auth/crypto.ts
+async function deriveKey(): Promise<CryptoKey> {
+  // pull secret from env var, return derived key
+}
+
+export async function kvEncrypt(plaintext: string): Promise<string> {
+  // grab derived key, encrypt, return base64 string version
+}
+
+export async function kvDecrypt(stored: string): Promise<string> {
+  // grab derived key, un-base64 the string, return the plain text
+}
+```
+
+And then the `stateStore` and `sessionStore` implementations become thin wrappers around those helpers rather than bloating each call site. The [secret is declared in `wrangler.jsonc`](https://developers.cloudflare.com/workers/wrangler/configuration/#secrets-configuration-property) so `wrangler types` knows to include it in the generated environment types.
+
+```jsonc
+"secrets": {
+  "required": ["OAUTH_KV_ENCRYPTION_KEY"]
+}
+```
+
+For local dev, `.dev.vars.example` ships with a pre-filled value that's fine for development. Copy it to `.dev.vars` (which is gitignored) before starting the dev server. For production, set it as a Wrangler secret:
+
+```sh
+wrangler secret put OAUTH_KV_ENCRYPTION_KEY
+```
+
 ## Reading back publicly
 
 After writing, the app reads the status collection back from the PDS to display the raw record. This is the same sort of thing we did in [Post 1](./rwsdk-atproto-01-first-read) but now tied to our own app's data.  You can still just open this in your browser without OAuth or anything and see the record:
