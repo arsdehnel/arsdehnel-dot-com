@@ -1,8 +1,8 @@
 ---
-title: "RWSDK + ATP: First Read"
-excerpt: AT Protocol records are publicly readable over plain HTTP — no account, no auth, no magic. A single fetch call returns real data from the live network.
+title: "RWSDK + ATP: Get Started"
+excerpt: Start from a fresh RedwoodSDK app and fetch your first live AT Protocol records — no account, no auth, no magic. A single fetch call returns real data from the live network.
 thumbnail: thumbnail.png
-date: '2026-10-16T20:54:00'
+date: '2026-10-28T22:18:00'
 categories:
   - development
   - at-protocol
@@ -12,6 +12,21 @@ categories:
 
 I've been nerding out on the [AT Protocol](https://atproto.com/) (aka `ATP`) recently mostly around learning what it is, how it works, and why it is awesome.  When it came time to try my hand at _building_ on the protocol, I found things a little rockier than I'd hoped.  While many aspects of the protocol are the same as any traditional web app there are some key differences and it was hard to figure out how to make the mental shift. This is the first post in a series walking through my own experience of taking a framework I'm familiar with and getting something usable built on the protocol.  I built a quick little ["table of contents"](https://arsdehnel.github.io/rwsdk-atproto-starter/) site for the project, as well, if you prefer to navigate these posts that way.
 
+## RWSDK Starer Project
+
+To get us started quickly we're starting from the [RWSDK `create-rwsdk` command](https://docs.rwsdk.com/getting-started/quick-start).This gets us a quick working RedwoodSDK app to build on.  I like `pnpm` for my package manager but you change change to `npm`, `yarn`, or probably `bun` throughout.
+
+```sh
+pnpx create-rwsdk rwsdk-atproto-starter
+```
+
+Once you have that done you can start up with these two commands.
+
+```sh
+pnpm install
+pnpm dev
+```
+
 ## First ATP Read
 
 While many things about the ATP were mind-bending to think about perhaps the best place to start is that the data is just... public. No API key, no OAuth dance, no account required. You can make a plain `fetch` call to a URL right now and get real records back from real people. That's where I wanted to start this series — with the simplest possible thing that actually works.
@@ -20,7 +35,7 @@ While many things about the ATP were mind-bending to think about perhaps the bes
 
 As mentioned, this is Post 1 of an 8-part series building [a starter AT Protocol app](https://atproto.com/guides/statusphere-tutorial) on [RedwoodSDK](https://rwsdk.dev) and [Cloudflare Workers](https://developers.cloudflare.com/workers). Each post has a companion branch in [the starter kit repo](https://github.com/arsdehnel/rwsdk-atproto-starter). By the end we'll have a local development environment capable of OAuth login against local or real Bluesky accounts, a typed lexicon client for reading and writing records, and a basic AppView that indexes data from other users. But I'm getting ahead of myself.  None of that matters until you understand what a record even is.  The series tries to add these new terms and concepts only as they are needed to avoid overwhelming you with learning before you've built anything.  
 
-## A little vocab
+## Initial terms
 
 Two terms you'll need for this post with further reading links if you want to go deeper.
 
@@ -58,7 +73,7 @@ The response comes back as a `records` array. Each entry looks like this:
 }
 ```
 
-A few things worth understanding here:
+A few more concepts we should cover here in working through the response:
 
 - **AT URI:** the `uri` field is the globally unique address of this record in the AT Protocol network. It breaks down as `at://<did>/<collection>/<rkey>`. The DID is the account identifier. The collection is the record type. The [**rkey** (record key)](https://atproto.com/specs/record-key) is the unique ID of this specific record within that collection — in this case `3mxp32vwd4c24`.
     - [atproto.com AT URI spec](https://atproto.com/specs/at-uri-scheme)
@@ -103,4 +118,4 @@ This approach is nothing you'd do for a full app in production.  The public read
 
 ## Up Next
 
-Check out the [`post/01-first-read`](https://github.com/arsdehnel/rwsdk-atproto-starter/tree/post/01-first-read) branch to see the full code. [Post 2](./rwsdk-atproto-02-atproto-oauth) is where things get more interesting — AT Protocol OAuth against a real Bluesky account.
+Check out the [`post/series-1/01-get-started`](https://github.com/arsdehnel/rwsdk-atproto-starter/tree/post/series-1/01-get-started) branch to see the full code. [Post 2](./rwsdk-atp-s1-p2-atp-oauth) is where things get more interesting: AT Protocol OAuth against a real Bluesky account.

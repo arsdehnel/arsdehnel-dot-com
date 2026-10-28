@@ -1,8 +1,8 @@
 ---
-title: "RWSDK + ATP: AT Proto Writes"
-excerpt: In order to perform writes (and predictable reads) on the ATP you'll need to use Lexicons.  They are the schema and definition of data types on the protocol. This post defines one, generates typed TypeScript from it, and uses it to write a record to the local PDS.
+title: "RWSDK + ATP: ATP Writes"
+excerpt: Define a lexicon, codegen TypeScript types, and write records to your local PDS using an authenticated XRPC client. KV is introduced to persist OAuth tokens across Worker restarts.
 thumbnail: thumbnail.png
-date: '2026-10-19T15:00:00Z'
+date: '2026-10-28T15:10:00'
 categories:
   - development
   - at-protocol
@@ -10,7 +10,7 @@ categories:
   - cloudflare
 ---
 
-[Post 3](./rwsdk-atproto-03-local-dev-setup) set up a local AT Protocol development environment so nothing has to touch Bluesky or anything on the ATmosphere during development. Building on that we start getting into actual feature development. As a part of that we need to write some data which means we define a lexicon, generate TypeScript from it, and write an actual record to the local PDS. In doing this we'll hit the OAuth token problem we mentioned in [Post 2](./rwsdk-atproto-02-atproto-oauth) so we'll solve that while we're adding our Status Emoji feature, too.
+[Post 3](./rwsdk-atp-s1-p3-local-dev) set up a local AT Protocol development environment so nothing has to touch Bluesky or anything on the [Atmosphere](https://atproto.com/guides/glossary#atmosphere) during development. Building on that we can do a little feature development including writing some data which means we define a lexicon, generate TypeScript from it, and write an actual record to the local PDS. 
 
 ## What a lexicon is
 
@@ -52,7 +52,7 @@ lex install xyz.statusphere.status   # fetches the lexicon JSON from the network
 lex build                            # generates TypeScript from the fetched JSON
 ```
 
-`lex install` fetches the lexicon from where it lives in the AT Protocol network. In this case that is a record published by the Statusphere tutorial authors.  The results are written to `lexicons.json` as sort of a "lexicons lock file":
+`lex install` fetches the lexicon from where it lives in the AT Protocol network. In this case that is a record published by the Statusphere tutorial authors.  The results are written to `lexicons.json` locally which acts as sort of a "lexicons lock file":
 
 ```json
 {
@@ -80,7 +80,7 @@ You can skip this section if you want, but since the AT Protocol is new to me I 
 
 ## Handling the results
 
-Back to our local repo the produced `lexicons.json` should get committed as it tracks the version your code is developed against and where to find the lexicons for future builds and contributors. In addition to this file the actual JSON files that hold the schemas are fetched into `lexicons/` and should be gitignored. Following that `install` command run `lex build` to generate the TypeScript definitions for those schemas into `src/lexicons/` and gitignore those as well. They're both reproducible build artifacts, not source. It's your call on if you want to add a script to `package.json` for them but we decided to include it and even add them to the `dev:init` script rwsdk calls so a fresh clone is one command away:
+Back to our local repo. The produced `lexicons.json` should get committed as it tracks the version your code is developed against and where to find the lexicons for future builds and contributors. In addition to this file the actual JSON files that hold the schemas are fetched into `lexicons/` and should be gitignored. Following that `install` command run `lex build` to generate the TypeScript definitions for those schemas into `src/lexicons/` and gitignore those as well. They're both reproducible build artifacts, not source. It's your call on if you want to add a script to `package.json` for them but we decided to include it and even add them to the `dev:init` script rwsdk calls so a fresh clone is one command away:
 
 ```jsonc
 "dev:init": "pnpm lex:install && pnpm lex:generate && rw-scripts dev-init",
@@ -92,7 +92,7 @@ The `--ci` flag on `lex install` pins behavior to the CIDs in `lexicons.json` ra
 
 **Note:** If you're in an air-gapped setup this will fail as these commands make calls to the internet.  Perhaps commit these files in that case or figure out another path.
 
-## What gets generated
+## Types generation
 
 `lex build` outputs a TypeScript representation of the lexicon under `src/lexicons/`. The interesting file is `xyz/statusphere/status.defs.ts`:
 
@@ -140,51 +140,6 @@ export const SCOPE = "atproto repo:xyz.statusphere.status";
 
 The `repo:xyz.statusphere.status` scope explicitly requests write access to that collection. The PDS enforces this when the record is created; the access token must carry the scope that covers the collection being written to. Changing the scope means existing sessions are no longer valid for the new scope. Users need to log out and re-authenticate.
 
-## The OAuth session storage problem
-
-There's a lingering problem that's been deferred since Post 2 and that now actually breaks things: `NodeOAuthClient` needs a `stateStore` and `sessionStore` to persist OAuth state and tokens. The previous implementation used in-memory Maps on `globalThis`. This works within a single worker process session but falls apart the moment the worker restarts (which happens each time a file is saved if you're running `pnpm dev`).
-
-The symptom: the `UserSession` Durable Object (which stores the HTTP session cookie → DID mapping) survives worker restarts because it's backed by SQLite. So the user still appears logged in. But the OAuth tokens stored in the in-memory Map are gone, so `client.restore(did)` throws "The session was deleted by another process" when the app tries to write a record.
-
-The fix is two Cloudflare KV namespaces each with their own semantics and lifecycles.
-
-```jsonc
-"kv_namespaces": [
-  { "binding": "OAUTH_STATE_KV", "id": "OAUTH_STATE_KV_LOCAL" },
-  { "binding": "OAUTH_SESSION_KV", "id": "OAUTH_SESSION_KV_LOCAL" }
-]
-```
-
-- State entries are ephemeral: OAuth flow state only needs to survive the seconds between the authorization redirect and the callback
-- Session entries are durable: they need to survive restarts and (in production) isolate evictions
-
-```typescript
-stateStore: {
-  async get(key) {
-    const raw = await env.OAUTH_STATE_KV.get(key);
-    return raw ? JSON.parse(raw) : undefined;
-  },
-  async set(key, value) {
-    await env.OAUTH_STATE_KV.put(key, JSON.stringify(value), {
-      expirationTtl: 600, // 10 minutes
-    });
-  },
-  async del(key) { await env.OAUTH_STATE_KV.delete(key); },
-},
-sessionStore: {
-  async get(did) {
-    const raw = await env.OAUTH_SESSION_KV.get(did);
-    return raw ? JSON.parse(raw) : undefined;
-  },
-  async set(did, value) {
-    await env.OAUTH_SESSION_KV.put(did, JSON.stringify(value));
-  },
-  async del(did) { await env.OAUTH_SESSION_KV.delete(did); },
-},
-```
-
-One remaining gap worth naming: in production, the `stateStore` is still not safe across multiple Worker isolates. The authorization redirect and OAuth callback are likely to land on different isolates, and KV reads are eventually consistent rather than strongly consistent. For a single-instance dev setup this is fine; for production the fix is either a Durable Object or accepting that some login attempts will fail and require a retry. [Post 8](./rwsdk-atproto-08-next-steps) covers making this production-ready.
-
 ## Reading back publicly
 
 After writing, the app reads the status collection back from the PDS to display the raw record. This is the same sort of thing we did in [Post 1](./rwsdk-atproto-01-first-read) but now tied to our own app's data.  You can still just open this in your browser without OAuth or anything and see the record:
@@ -215,24 +170,22 @@ The `uri` is an [AT URI (`at://`) scheme](https://atproto.com/specs/at-uri-schem
 
 ## The direct PDS read
 
-The app reads the status back from the same PDS it just wrote to. This works, and it's fine for a demo — it'll even hold up at small scale in production. But as your app grows there are more idiomatic patterns worth knowing about.
+The app reads the status back from the same PDS it just wrote to. This works, it's fine for a demo, and it'll even hold up at small scale in production. But as your app grows there are more idiomatic patterns worth knowing about.
 
-In the real atmosphere, once you have confirmation from the PDS that a write succeeded, you already have the data — you don't need to ask for it back. And for reading data from other users, the right path is through [Relays](https://atproto.com/guides/the-at-stack#relays) that manage the firehose of events across the Atmosphere rather than polling each user's PDS directly. Your write will come back through these but there would be a delay — more on that in [Post 5](./rwsdk-atproto-05-tap-sync).
+In the real atmosphere, once you have confirmation from the PDS that a write succeeded, you already have the data so you don't need to ask for it back. And for reading data from other users, the right path is through [Relays](https://atproto.com/guides/the-at-stack#relays) that manage the firehose of events across the Atmosphere rather than polling each user's PDS directly. Your write will come back through these but there would be a delay, we'll go through this more in the [D1 persistence post in the second series of ATP with RWSDK](./rwsdk-atp-s2-p3-d1-persistence).
 
-There's also a more fundamental reason to care about the relay: AT Protocol is an open ecosystem. Other apps can write records using the same lexicons, and those writes will never flow through your app at all. If you're only watching for writes that originate in your own UI, you're missing everything that happens outside it. The firehose is how you see the full picture.
+There's also a more fundamental reason to care about the relay: AT Protocol is an open ecosystem. Other apps can write records using the same lexicons, and those writes will never flow through your app at all. If you're only watching for writes that originate in your own UI, you're missing everything that happens outside it. The firehose is how you see the full picture but, again, more on that in future posts.
 
 ## The companion code
 
-The [`post/04-atproto-writes`](https://github.com/arsdehnel/rwsdk-atproto-starter/tree/post/04-atproto-writes) branch has the working code for this step ready to rock. To specifically look at the changes we made here in Step 4 compared to the end result of Step 3, take a look at [this PR](https://github.com/arsdehnel/rwsdk-atproto-starter/pull/11).
+The [`post/series-1/04-atp-writes`](https://github.com/arsdehnel/rwsdk-atproto-starter/tree/post/series-1/04-atp-writes) branch has the working code for this step ready to rock. To specifically look at the changes we made here in Post 4 compared to the end result of Post 3, take a look at [this PR](https://github.com/arsdehnel/rwsdk-atproto-starter/pull/100).
 
 ## Current architecture diagram
 
-Removing the details of the docker setup (even though they still exist) from the diagram makes this one pretty simple.  We'll show the Wrangler-managed KV stores here since they were added in this step to solve the token management problem.  This is all still local to our machine since Wrangler is running these for us via miniflare. 
+Removing the details of the docker setup (even though they still exist, just removed them for simplicity's sake) from the diagram makes this one pretty simple. This post wasn't about adding pieces here, just about using the ones setup in the previous post. This will set the stage for the final piece of our local setup we add in [post 5](./rwsdk-atp-s1-p5-tap-sync).
 
 ![](./app-architecture.png "App architecture diagram for our current build")
 
 ## Up Next
 
-Alright that ended up to be a lot.  Take a look at [`post/04-atproto-writes`](https://github.com/arsdehnel/rwsdk-atproto-starter/tree/post/04-atproto-writes) branch to see the fully working version at this point.  The changes for this step are in [this PR](https://github.com/arsdehnel/rwsdk-atproto-starter/pull/11) if you're curious about that sort of thing.
-
-Continuing our feature build [Post 5](./rwsdk-atproto-05-tap-sync) looks at the two patterns for handling reads in AT Protocol apps, when you'd reach for each, and wires up the relay side using Tap.
+Alright that ended up to be a lot but it didn't seem to have a good breaking point to make it into smaller conceptually-complete posts. Finishing up our local Atmosphere setup [Post 5](./rwsdk-atp-s1-p5-tap-sync) works through the Tap-Relay-Firehose requirements for local development, when you'd reach for each, and wires up what we need for a reasonable approximation of production data flows.

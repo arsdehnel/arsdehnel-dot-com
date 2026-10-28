@@ -1,8 +1,8 @@
 ---
 title: "RWSDK + ATP: Local Dev Setup"
-excerpt: "Developing an app while running against production resources and publishing development records into the public space isn't the best way to go about things.  This post sets up a local AT Protocol dev environment with docker compose so you can iterate freely and more quickly."
+excerpt: Run a full AT Protocol stack locally in Docker Compose. OAuth works against the local PDS so you never touch production during development.
 thumbnail: thumbnail.png
-date: '2026-10-18T20:00:00Z'
+date: '2026-10-28T13:45:00'
 categories:
   - development
   - at-protocol
@@ -10,21 +10,21 @@ categories:
   - cloudflare
 ---
 
-[Post 2](./rwsdk-atproto-02-atproto-oauth) got OAuth working against a real Bluesky account. Every time you clicked "Sign in" during that development cycle, your Worker resolved your handle against `bsky.social`, initiated a Pushed Authorization Request against it, and exchanged tokens with it. That's fine for a quick proof of concept, but it's not a sustainable way to develop. Not only are production rate limits real and every test creates audit trail entries on production infrastructure but as you start to build your own app logic you shouldn't be building that against production.  You wouldn't do it for traditional web apps and you shouldn't do it for Atmosphere apps.
+[Post 2](./rwsdk-atp-s1-p2-atp-oauth) got OAuth working against a production Bluesky account. Every time you clicked "Sign in" during that development cycle, your Worker resolved your handle against `bsky.social`, initiated a Pushed Authorization Request against it, and exchanged tokens with it. That's fine for a quick proof of concept, but it's not a sustainable way to develop. Not only are production rate limits real and every test creates audit trail entries on production infrastructure but as you start to build your own app logic you shouldn't be building that against production.  You wouldn't do it for traditional web apps and you shouldn't do it for Atmosphere apps.
 
-Post 3 fixes that. By the end you'll have a local AT Protocol stack running in Docker: a PDS, a DID registry, an SMTP sink.  With that the OAuth login will work against it without touching any production infrastructure. 
+This post fixes that by the end you'll have a local AT Protocol stack running in Docker: a PDS, a DID registry, an SMTP sink.  With that the OAuth login will work against it without touching any production infrastructure. 
 
-**Full transparency:** the core pieces of this `docker compose` setup were pulled from [OpenMeet-Team's atproto-devnet](https://github.com/OpenMeet-Team/atproto-devnet) repo.
+**Full transparency:** the core pieces of this `docker compose` setup were pulled from [OpenMeet-Team's atproto-devnet](https://github.com/OpenMeet-Team/atproto-devnet) repo which has now become Snowglobe.  Looking before [this commit](https://github.com/OpenMeet-Team/snowglobe/tree/deadece9e397446813322410afeaac951674ea92) you can see the reference docker compose files. 
 
 ## What's actually running
 
-Three services matter for this post:
+We've created a base `docker compose` setup with the minimum services needed for a local Atmosphere.
 
-[**PLC** is the DID registry](https://atproto.com/guides/the-at-stack#did-plc). When you create an account on AT Protocol, your identity is a `did:plc:*` identifier something like `did:plc:bcu5cnyeyel3u7rtghyg34vi`. Resolving that DID to a DID document (which contains your PDS's public URL and signing keys) goes through a PLC server. In production that's [`plc.directory`](https://web.plc.directory/). In our dev setup it needs to be local, because locally-created DIDs don't exist on the real `plc.directory`. The PLC server needs a Postgres database to store those records, so Postgres is in the stack too.
+- [**PLC** is the DID registry](https://atproto.com/guides/the-at-stack#did-plc): when you create an account on AT Protocol, your identity is a `did:plc:*` identifier something like `did:plc:bcu5cnyeyel3u7rtghyg34vi`. Resolving that DID to a DID document (which contains your PDS's public URL and signing keys) goes through a PLC server. In production that's [`plc.directory`](https://web.plc.directory/). In our dev setup it needs to be local, because locally-created DIDs don't exist on the real `plc.directory`. The PLC server needs a Postgres database to store those records, so Postgres is in the stack too.
 
-[**PDS** is the Personal Data Server](https://atproto.com/guides/the-at-stack#pds) where accounts and records actually live. The PDS we run locally is the same one Bluesky operates in production (`ghcr.io/bluesky-social/pds`), just pointed at our local PLC instead of the real one.
+- [**PDS** is the Personal Data Server](https://atproto.com/guides/the-at-stack#pds): where accounts and records actually live. The PDS we run locally is the same code of the one Bluesky operates in production (`ghcr.io/bluesky-social/pds`), just pointed at our local PLC instead of the real one.
 
-**maildev** is an SMTP sink. OpenMeet already includes this in their setup and it's a hard requirement because the PDS tries to send a welcome email on every account creation, even locally inside a Docker network. Without a running SMTP server account creation fails entirely. maildev accepts everything and exposes a web UI at port 1081 if you ever want to see what got sent.
+- **maildev**: an SMTP sink. OpenMeet already includes this in their setup and it's a hard requirement because the PDS tries to send a welcome email on every account creation, even locally inside a Docker network. Without a running SMTP server account creation fails entirely. maildev accepts everything and exposes a web UI at port 1081 if you ever want to see what got sent.
 
 ![](./docker-compose.png "Simple diagram of Docker Compose-based setup")
 
@@ -136,7 +136,7 @@ After logging in, the app fetches `com.atproto.repo.describeRepo` from the local
 
 ## The companion code
 
-The [`post/03-local-dev-setup`](https://github.com/arsdehnel/rwsdk-atproto-starter/tree/post/03-local-dev-setup) branch has the end result of all of this (the full Docker Compose setup, init script, and OAuth client changes). To specifically look at the changes we made here in Step 3 compared to the end result of Step 2 [this PR](https://github.com/arsdehnel/rwsdk-atproto-starter/pull/10) shows that nicely.
+The [`post/series-1/03-local-dev`](https://github.com/arsdehnel/rwsdk-atproto-starter/tree/post/series-1/03-local-dev) branch has the end result of all of this (the full Docker Compose setup, init script, and OAuth client changes). To specifically look at the changes we made here in Post 3 compared to the end result of Post 2 [this PR](https://github.com/arsdehnel/rwsdk-atproto-starter/pull/99) shows that nicely.
 
 ## Current flow diagram
 
@@ -146,6 +146,4 @@ The actual flow here doesn't change much from Post 2: all we really changed was 
 
 ## Up Next
 
-Wrapping up we have our [`post/03-local-dev-setup`](https://github.com/arsdehnel/rwsdk-atproto-starter/tree/post/03-local-dev-setup) branch with the current state of things as of the end of this post.  And as we've done before we have [the Step 3 Additions PR](https://github.com/arsdehnel/rwsdk-atproto-starter/pull/10) for what's been changed in this step since step 2.
-
-[Post 4](./rwsdk-atproto-04-atproto-writes) gets into lexicons and writing records and comes back to that OAuth token store we setup last post both being useful and having some problems with our original implementation.
+[Post 4](./rwsdk-atp-s1-p4-atp-writes) gets into lexicons and writing records and comes back to that OAuth token store we setup last post both being useful and having some problems with our original implementation.
