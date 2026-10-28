@@ -29,8 +29,7 @@ The first read-from-D1 feature is a "top picked" panel: which emoji statuses hav
 ```typescript
 // src/db/statuses.ts
 export async function getPopularStatuses(limit = 8) {
-  const readDb = await db.getReader();
-  return readDb
+  return db
     .select({ status: statuses.status, count: count() })
     .from(statuses)
     .groupBy(statuses.status)
@@ -104,17 +103,28 @@ export class AppViewSyncState extends SyncedStateServer {
   }
 
   private async seedFromD1() {
-    const rows = await readDb.select({ did, status, receivedAt, handle })
+    const rows = await db
+      .select({
+        did: statuses.did,
+        status: statuses.status,
+        receivedAt: statuses.receivedAt,
+        handle: users.handle,
+      })
       .from(statuses)
       .leftJoin(users, eq(statuses.did, users.did))
       .orderBy(desc(statuses.receivedAt));
 
-    // Build a latest-status-per-user map from newest-first rows
+    // Build a latest-status-per-user map. Rows are ordered newest-first so
+    // the first entry for each DID is the current status.
     const map: Record<string, StatusEntry> = {};
     for (const row of rows) {
       if (!map[row.did]) {
-        map[row.did] = { did: row.did, handle: row.handle ?? null,
-          status: row.status, updatedAt: row.receivedAt };
+        map[row.did] = {
+          did: row.did,
+          handle: row.handle ?? null,
+          status: row.status,
+          updatedAt: row.receivedAt,
+        };
       }
     }
     this.setState(map, "statusMap");
