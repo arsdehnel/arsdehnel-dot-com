@@ -1,8 +1,8 @@
 ---
-title: "RWSDK + ATP S2P3: AppView Features"
+title: "RWSDK + ATP: AppView Features"
 excerpt: Add AppView-style aggregations — reading community status data from D1 rather than directly from individual PDSs. This is the pattern real AppViews use to serve aggregated data at scale.
 thumbnail: thumbnail.png
-date: '2026-10-26T15:00:00'
+date: '2026-10-28T20:13:00'
 categories:
   - development
   - at-protocol

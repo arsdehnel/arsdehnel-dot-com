@@ -1,8 +1,8 @@
 ---
-title: "RWSDK + ATP S2P2: D1 Persistence"
+title: "RWSDK + ATP: D1 Persistence"
 excerpt: Add Cloudflare D1 as a relational store for status records synced from the Tap firehose. Drizzle ORM manages the schema and queries, records are upserted from the webhook handler.
 thumbnail: thumbnail.png
-date: '2026-10-26T14:00:00'
+date: '2026-10-28T19:10:00'
 categories:
   - development
   - at-protocol

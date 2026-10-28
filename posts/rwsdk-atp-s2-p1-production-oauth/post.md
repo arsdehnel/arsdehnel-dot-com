@@ -1,8 +1,8 @@
 ---
-title: "RWSDK + ATP S2P1: Production OAuth"
+title: "RWSDK + ATP: Production OAuth"
 excerpt: Swap the loopback OAuth client for a confidential client that works with any AT Protocol PDS. Introduces Web Crypto for signing client assertions and adapts the metadata endpoint for public deployment.
 thumbnail: thumbnail.png
-date: '2026-10-26T13:00:00'
+date: '2026-10-28T16:50:00'
 categories:
   - development
   - at-protocol
