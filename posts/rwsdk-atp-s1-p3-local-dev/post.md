@@ -2,7 +2,7 @@
 title: "RWSDK + ATP: Local Dev Setup"
 excerpt: Run a full AT Protocol stack locally in Docker Compose. OAuth works against the local PDS so you never touch production during development.
 thumbnail: thumbnail.png
-date: '2026-10-2T13:45:00'
+date: '2026-10-28T13:45:00'
 categories:
   - development
   - at-protocol
