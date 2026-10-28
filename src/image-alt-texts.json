@@ -33,6 +33,7 @@
 	"posts/rwsdk-atp-s1-p4-atp-writes/app-architecture.png": "Architecture diagram: RWSDK App on host makes status reads and writes to PDS, with PLC in Docker Compose network.",
 	"posts/rwsdk-atp-s1-p4-atp-writes/lex-install-flow.png": "Sequence: lex install — DNS TXT lookup, PLC DID resolution, PDS record fetch via CAR file, and local commit verification.",
 	"posts/rwsdk-atp-s1-p4-atp-writes/thumbnail.png": "Thumbnail for Series 1 Post 4 of the RedwoodSDK + AT Protocol series: ATP Writes.",
+	"posts/rwsdk-atp-s1-p5-tap-sync/app-architecture.png": "Architecture: RWSDK App and Wrangler Sync State DO on host; Docker Compose network with PDS, PLC, and Tap.",
 	"posts/rwsdk-atp-s1-p5-tap-sync/optimistic-update-flow.png": "Optimistic update flow: browser picks status, app PUT record to PDS, on 200 OK upserts local store and returns updated UI.",
 	"posts/rwsdk-atp-s1-p5-tap-sync/relay-flow.png": "Relay flow: PUT record to PDS triggers firehose event; Tap delivers webhook to app, which upserts store and pushes via SSE.",
 	"posts/rwsdk-atp-s1-p5-tap-sync/thumbnail.png": "Thumbnail for Series 1 Post 5 of the RedwoodSDK + AT Protocol series: Tap Sync.",
