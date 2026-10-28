@@ -2,7 +2,7 @@
 title: "RWSDK + ATP: ATP Writes"
 excerpt: Define a lexicon, codegen TypeScript types, and write records to your local PDS using an authenticated XRPC client. KV is introduced to persist OAuth tokens across Worker restarts.
 thumbnail: thumbnail.png
-date: '2026-10-26T11:00:00'
+date: '2026-10-28T15:10:00'
 categories:
   - development
   - at-protocol
