@@ -118,4 +118,4 @@ This approach is nothing you'd do for a full app in production.  The public read
 
 ## Up Next
 
-Check out the [`post/01-first-read`](https://github.com/arsdehnel/rwsdk-atproto-starter/tree/post/01-first-read) branch to see the full code. [Post 2](./rwsdk-atproto-02-atproto-oauth) is where things get more interesting — AT Protocol OAuth against a real Bluesky account.
+Check out the [`post/series-1/01-get-started`](https://github.com/arsdehnel/rwsdk-atproto-starter/tree/post/series-1/01-get-started) branch to see the full code. [Post 2](./rwsdk-atp-s1-p2-atp-oauth) is where things get more interesting: AT Protocol OAuth against a real Bluesky account.
