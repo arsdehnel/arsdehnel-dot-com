@@ -2,7 +2,7 @@
 title: "RWSDK + ATP: Get Started"
 excerpt: Start from a fresh RedwoodSDK app and fetch your first live AT Protocol records — no account, no auth, no magic. A single fetch call returns real data from the live network.
 thumbnail: thumbnail.png
-date: '2026-10-26T08:00:00'
+date: '2026-10-28T22:18:00'
 categories:
   - development
   - at-protocol

@@ -2,7 +2,7 @@
 title: "RWSDK + ATP: AT Protocol OAuth"
 excerpt: AT Protocol OAuth is not a standard drop-in. Here's what makes it different, the Cloudflare Workers-specific hurdles, and what it takes to get a real ATP OAuth login working end to end.
 thumbnail: thumbnail.png
-date: '2026-10-26T09:00:00'
+date: '2026-10-28T12:23:00'
 categories:
   - development
   - at-protocol
