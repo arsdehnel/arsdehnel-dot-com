@@ -12,7 +12,11 @@ categories:
 
 [Post 2](./rwsdk-atp-s2-p2-d1-persistence) wired D1 into the write path — every incoming status event now lands in a relational database. This post reads from it in a way that starts to look like a real [AppView](https://atproto.com/guides/glossary#app-view).
 
-The three things this post adds: an aggregate query over D1, improved handle resolution that works against any PDS on the network, and a cold-start bootstrap that seeds the Durable Object from D1 so the live feed isn't empty when a DO instance starts fresh.
+The three things this post adds to continue our march towards production readiness and turning this into a proper AppView:
+1. an aggregate query over D1
+2. improved handle resolution that works against any PDS on the network
+3. cold-start bootstrap that seeds the Durable Object from D1 so the live feed isn't empty when a DO instance starts fresh
+4. move to the RWSDK-idiomatic Server Action instead of an API call for setting a user's status
 
 ## What an AppView is
 
