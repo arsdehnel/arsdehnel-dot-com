@@ -1,6 +1,6 @@
 #!/bin/bash
 
-for FILE in posts/**/*.excalidraw; do
+for FILE in content/posts/**/*.excalidraw; do
   FRAMES=$(jq -r '.elements[] | select(.type == "frame") | .id' "$FILE")
   FRAME_COUNT=$(echo "$FRAMES" | grep -c .)
 

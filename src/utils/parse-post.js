@@ -4,7 +4,7 @@ import matter from 'gray-matter';
 import imgAltTexts from '../image-alt-texts.json' with { type: 'json' };
 import markdownToHtml from './markdown-to-html.js';
 
-const postsDirectory = path.join(process.cwd(), 'posts');
+const postsDirectory = path.join(process.cwd(), 'content/posts');
 const imgParseRegex = new RegExp(/!\[(?<altText>.*)\]\s*\((?<filename>.*?)(?="|\))(?<title>".*")?\s*\)/g);
 
 export default async function parsePost(slug) {
