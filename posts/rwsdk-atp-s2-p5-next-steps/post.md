@@ -2,7 +2,7 @@
 title: "RWSDK + ATP: Next Steps"
 excerpt: The series ends with a production-ready app. Here's what to harden before shipping further, how to connect to the real Bluesky network, and where to keep reading.
 thumbnail: thumbnail.png
-date: '2026-10-26T22:06:00'
+date: '2026-10-28T22:06:00'
 categories:
   - development
   - at-protocol
