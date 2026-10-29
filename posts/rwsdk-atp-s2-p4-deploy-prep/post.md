@@ -2,7 +2,7 @@
 title: "RWSDK + ATP: Deploy Prep"
 excerpt: Wire up Cloudflare secrets, configure production environment variables, and deploy the app to a live Workers URL. The local dev stack got you here so here we just walk through what changes when you point it at prod.
 thumbnail: thumbnail.png
-date: '2026-10-26T16:00:00'
+date: '2026-10-28T21:12:00'
 categories:
   - development
   - at-protocol
