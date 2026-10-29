@@ -3,7 +3,7 @@ import path from 'node:path';
 import chalkTemplate from 'chalk-template';
 import { glob } from 'glob';
 
-const srcDir = path.resolve(import.meta.dirname, '../posts');
+const srcDir = path.resolve(import.meta.dirname, '../content/posts');
 const destDir = path.resolve(import.meta.dirname, '../public/posts');
 const postImages = await glob(`${srcDir}/**/*.{jpg,png,WebP}`);
 

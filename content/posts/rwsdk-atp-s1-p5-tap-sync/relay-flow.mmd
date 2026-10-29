@@ -1,0 +1,13 @@
+sequenceDiagram
+    participant Other as Other App / User
+    participant PDS
+    participant Tap
+    participant App
+    participant Store as Local Store
+
+    Note over Tap,PDS: Tap subscribes to PDS firehose (persistent WebSocket)
+    Other->>PDS: PUT record
+    PDS-->>Tap: emits event on firehose stream
+    Tap->>App: POST /webhooks/tap
+    App->>Store: Upsert
+    App->>Browser: SSE push
