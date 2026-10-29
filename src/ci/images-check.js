@@ -9,7 +9,7 @@ import chalkTemplate from 'chalk-template';
 const IMG_REGEX = /!\[([^\]]*)\]\(([^)]+)\)/g;
 const HAS_TITLE_REGEX = /\s+"[^"]+"[\s]*$|[\s]+'[^']+'[\s]*$/;
 
-const postsDirectory = path.join(process.cwd(), 'posts');
+const postsDirectory = path.join(process.cwd(), 'content/posts');
 const postDirs = await fs.readdir(postsDirectory);
 
 // Map of relativeFilePath -> [{lineNum, src, reasons[]}]
